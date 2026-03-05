@@ -40,6 +40,11 @@ NK_StringPoolConstruct(
         &pool->direct_pointers,
         sizeof(NK_StringPoolEntry)
     );
+
+    NK_VectorConstruct(
+        &pool->empty_spots,
+        sizeof(NK_U64)
+    );
 }
 
 void
@@ -48,6 +53,7 @@ NK_StringPoolDestruct(
 )
 {
     NK_VectorDestruct(&pool->direct_pointers);
+    NK_VectorDestruct(&pool->empty_spots);
     NK_TableDestruct(&pool->references);
 }
 
@@ -57,30 +63,17 @@ P_NK_StringPoolInsertGetValidEntrance(
     NK_StringPool* pool
 )
 {
-    /** 
-     * NOTE: We traverse the pool to find NULL, if we traverse everything, and
-     * found no empty spot, then we PUSH an new empty value.
-     */
     NK_StringPoolEntry empty_spot;
     NK_RedirectMemset((void*)&empty_spot, 0, sizeof(NK_StringPoolEntry));
-
     NK_U64 valid_spot;
-    NK_Size index = 0;
 
-    /** We map to this: */
-    NK_StringPoolEntry* maybe_reference;
-
-    /** Try to find the spot: */
-    for(index; index < NK_VectorSize(&pool->direct_pointers); index++)
+    /** Can we get an valid spot? */
+    if(NK_VectorSize(&pool->empty_spots) > 0)
     {
-        maybe_reference = NK_VectorAt(&pool->direct_pointers, index);
-        if(maybe_reference->referencing == NULL)
-        {
-            valid_spot = index;
-            goto found_valid_spot_ending;
-        }
+        NK_VectorPop(&pool->empty_spots, (void*)(&valid_spot));
+        goto found_valid_spot_ending;
     }
-    
+
     /** In this case, we found nothing, so: */
     NK_VectorPush(&pool->direct_pointers, (void*)&empty_spot);
     valid_spot = NK_VectorSize(&pool->direct_pointers) - 1;
@@ -204,11 +197,17 @@ P_NK_StringPoolDegradeSweep(
     const NK_U64 id
 )
 {
-    NK_StringPoolEntry* maybe_entry =
+    /** 
+     * NOTE: We mark this value as an empty spot, that way, we keep everything
+     * O(1), because check the direct_pointers would just be O(n).
+     */
+    NK_StringPoolEntry* maybe_entry = 
         (NK_StringPoolEntry*)(NK_VectorAt(&pool->direct_pointers, id));
     NK_TableRemove(&pool->references, maybe_entry->referencing);
-    /** Delete: */
+    
+    /** This sets the place to 0. */
     NK_RedirectMemset(maybe_entry, 0, sizeof(NK_StringPoolEntry));
+    NK_VectorPush(&pool->empty_spots, (const void*)&id);
 }
 
 void

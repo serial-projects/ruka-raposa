@@ -42,6 +42,7 @@ typedef struct NK_StringPool
 {
     /** Contain the strings: */
     NK_Table references;
+    NK_Vector empty_spots;
     NK_Vector direct_pointers;
 } NK_StringPool;
 
