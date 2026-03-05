@@ -6,5 +6,5 @@ Build
 *.a
 
 # Some scripts I don't want people to see ;-)
-RRBuildAll
-RRBuildReleaseAll
+RRBuildAll.sh
+RRBuildReleaseAll.sh
