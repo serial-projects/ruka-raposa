@@ -8,7 +8,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-/** Expose some basic types we demand for the NK. */
+/** Basic Types (aka. Primitives): */
 
 typedef int8_t          NK_S8;
 typedef uint8_t         NK_U8;
@@ -19,10 +19,11 @@ typedef uint32_t        NK_U32;
 typedef int64_t         NK_S64;
 typedef uint64_t        NK_U64;
 
-typedef char            NK_C8;
+/** Special Types: */
+
 typedef uint8_t         NK_Boolean;
 typedef uint8_t         NK_Result;
-
+typedef char            NK_C8;
 typedef size_t          NK_Size;
 
 /** Define Boolean: */
@@ -33,5 +34,9 @@ typedef size_t          NK_Size;
 #ifndef false
     #define false 0
 #endif
+
+/** Floating Point: */
+typedef float           NK_F32;
+typedef double          NK_F64;
 
 #endif
