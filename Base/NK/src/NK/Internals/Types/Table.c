@@ -314,13 +314,12 @@ NK_TableInsertOrAssign(
 
     /** We increment the capacity here! */
     cc_header->explored++;
-
-    /* Several possible endings: */
-assignment_ending:
+    
 found_empty_spot_ending:
-
-    /** For any, we increment the number of things on our table. */
     table->counter++;
+
+    /** NOTE: During an assignment, we don't have an table->counter++ */
+assignment_ending:
     return cc_node_header;
 }
 

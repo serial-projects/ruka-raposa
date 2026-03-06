@@ -264,9 +264,11 @@ NK_MapInsertOrAssign(
     );
     cc_header->explored++;
 
-assignment_ending:
 empty_spot_found_ending:
     map->count++;
+    
+    /** NOTE: During an assignment, we don't have an map->count increment! */
+assignment_ending:
     return cc_node_header;
 }
 
