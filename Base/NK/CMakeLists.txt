@@ -86,7 +86,7 @@ function(NK_FetchTests)
             endif()
             set(prev_test ${CURRENT_TEST})
         endif()
-    endforeach(test ${NK_TESTS})
+    endforeach(index RANGE 0 ${nk_tests_length_limit} 2)
 endfunction(NK_FetchTests)
 
 function(NK_Main)
