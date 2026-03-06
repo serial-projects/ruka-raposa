@@ -44,7 +44,7 @@ endfunction(RR_FetchBase)
 # Third Party
 #
 
-set(RR_THIRDPARTY)
+set(RR_THIRDPARTY "SDL" "SDL_image" "SDL_ttf")
 
 function(RR_FetchThirdPartyExportSDLConfiguration)
     # Makes SDL NOT dump on the wrong path:
