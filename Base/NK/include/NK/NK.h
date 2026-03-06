@@ -10,10 +10,22 @@
 #include "NK/Support.h"
 #include "NK/Redirects.h"
 
+/**
+ * @brief Initialize the NK subsystems that are necessary.
+ */
 void
 NK_Init();
 
+/**
+ * @brief Free the NK subsystems that are necessary.
+ */
 void
 NK_Quit();
+
+/**
+ * @brief Get the NK initialization status.
+ */
+const NK_Result
+NK_IsInitialized();
 
 #endif
