@@ -7,7 +7,8 @@
 
 #include "NK/Types/Basics.h"
 
-void NK_Panic(
+void
+NK_Panic(
     const NK_C8* format,
     ...
 );
