@@ -9,7 +9,9 @@
 PG_BackendsOG33Texture* PG_BackendsOG33TextureNew()
 {
     PG_BackendsOG33Texture* new_texture =
-        (PG_BackendsOG33Texture*)(NK_malloc(sizeof(PG_BackendsOG33Texture*)));
+        (PG_BackendsOG33Texture*)(
+            NK_AllocatorGet(sizeof(PG_BackendsOG33Texture*))
+        );
     return new_texture;
 }
 
@@ -17,7 +19,7 @@ void PG_BackendsOG33TextureDestroy(
     PG_BackendsOG33Texture* texture
 )
 {
-    NK_free(texture);
+    NK_AllocatorFree(texture);
 }
 
 void PG_BackendsOG33TextureConstruct(

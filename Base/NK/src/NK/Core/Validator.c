@@ -34,14 +34,14 @@ NK_ValidatorConstruct(
 {
     NK_Size index = 0;
 
-    validator->buffer_index = 0;
-    validator->buffer_limit = buffer_limit;
+    validator->content.buffer_index = 0;
+    validator->content.buffer_limit = buffer_limit;
     
     /** Initialize the listeners first, it is simpler: */
     NK_VectorConstruct(&validator->listeners, sizeof(NK_ValidatorListener));
 
     /** Initialize the beast: */
-    validator->buffer = 
+    validator->content.buffer = 
         (NK_DynamicString*)(
             NK_AllocatorGet(
                 (buffer_limit * sizeof(NK_DynamicString))
@@ -51,7 +51,7 @@ NK_ValidatorConstruct(
     {
         NK_DynamicStringConstruct(
             (NK_DynamicString*)(
-                ((NK_U8*)(validator->buffer)) +
+                ((NK_U8*)(validator->content.buffer)) +
                 (
                     index *
                     sizeof(NK_DynamicString)
@@ -67,21 +67,23 @@ NK_ValidatorDestruct(
 )
 {
     NK_Size index = 0;
-    for(index; index < validator->buffer_limit; index++)
+    for(index; index < validator->content.buffer_limit; index++)
     {
         NK_DynamicStringDestruct(
-            ((NK_U8*)(validator->buffer)) + 
-            (
-                index *
-                sizeof(NK_DynamicString)
+            (NK_DynamicString*)(
+                ((NK_U8*)(validator->content.buffer)) + 
+                (
+                    index *
+                    sizeof(NK_DynamicString)
+                )
             )
         );
     }
-    NK_AllocatorFree(validator->buffer);
-    validator->buffer = NULL;
+    NK_AllocatorFree(validator->content.buffer);
+    validator->content.buffer = NULL;
 
     /** Destroy the list of listeners: */
     NK_VectorDestruct(&validator->listeners);
-    validator->buffer_index = 0;
-    validator->buffer_limit = 0;
+    validator->content.buffer_index = 0;
+    validator->content.buffer_limit = 0;
 }

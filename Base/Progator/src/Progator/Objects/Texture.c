@@ -8,7 +8,9 @@
 
 PG_Texture* PG_TextureNew()
 {
-    PG_Texture* new_texture = (PG_Texture*)(NK_malloc(sizeof(PG_Texture)));
+    PG_Texture* new_texture = (PG_Texture*)(
+        NK_AllocatorGet(sizeof(PG_Texture))
+    );
     return new_texture;
 }
 
@@ -16,7 +18,7 @@ void PG_TextureDestroy(
     PG_Texture* texture
 )
 {
-    NK_free(texture);
+    NK_AllocatorFree(texture);
 }
 
 void PG_TextureConstruct(

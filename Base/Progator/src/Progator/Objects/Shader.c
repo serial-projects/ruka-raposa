@@ -8,7 +8,9 @@
 
 PG_Shader* PG_ShaderNew()
 {
-    PG_Shader* new_shader = (PG_Shader*)(NK_malloc(sizeof(PG_Shader)));
+    PG_Shader* new_shader = (PG_Shader*)(
+        NK_AllocatorGet(sizeof(PG_Shader))
+    );
     return new_shader;
 }
 
@@ -16,7 +18,7 @@ void PG_ShaderDestroy(
     PG_Shader* shader
 )
 {
-    NK_free(shader);
+    NK_AllocatorFree(shader);
 }
 
 void PG_ShaderConstruct(

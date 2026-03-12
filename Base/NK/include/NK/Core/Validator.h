@@ -14,14 +14,42 @@
 #include "NK/Types/String/Dynamic.h"
 
 /**
+ * @brief This is content for the `NK_Validator` which comes first definition
+ * than the `NK_Validator` itself.
+ */
+typedef struct NK_ValidatorContent
+{
+    /**
+     * @brief This is a userdata that is defined by the programmer.
+     */
+    void* userdata;
+
+    /**
+     * @brief This is the buffer, containing the messages. This is actually an
+     * ring buffer, so we cycle on the new and past messages.
+     */
+    NK_DynamicString* buffer;
+
+    /**
+     * @brief The index of the buffer.
+     */
+    NK_U64 buffer_index;
+
+    /**
+     * @brief The index of the 
+     */
+    NK_U64 buffer_limit;
+} NK_ValidatorContent;
+
+/**
  * @brief This is the function that is called when the `NK_Validator` has an 
  * `Broadcast`, each broadcast has a level(s), and the `NK_ValidatorListener`
  * contains the *TUNED* channels the `NK_ValidatorListener` is listening to.
  */
 typedef
 void(*NK_ValidatorCallback)(
-    NK_Validator* validator,
-    void* userdata
+    NK_ValidatorContent* content,
+    const NK_C8* message
 );
 
 /**
@@ -44,26 +72,12 @@ typedef struct NK_ValidatorListener
 typedef struct NK_Validator
 {
     /**
-     * @brief Despite this being an `NK_Vector` what the `NK_Validator` does is
-     * a circular buffer, it means the log messages kinda wrap around the limit
-     * imposed on the `NK_ValidatorConstruct`, this guarantees that we don't 
-     * need to be resizing things around.
+     * @brief This is the validator content, which contains the code.
      */
-    NK_DynamicString* buffer;
+    NK_ValidatorContent content;
 
     /**
-     * @brief How many messages it can contain.
-     */
-    NK_Size buffer_limit;
-
-    /**
-     * @brief How many messages there is, this is a counter, means each 
-     * message is actually counted.
-     */
-    NK_Size buffer_index;
-
-    /**
-     * @brief Contain all the listeners.
+     * @brief This is a listener.
      */
     NK_Vector listeners;
 } NK_Validator;

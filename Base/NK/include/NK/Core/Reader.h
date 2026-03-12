@@ -67,8 +67,8 @@ typedef struct NK_ReaderInterfaceFunctions
 {
     NK_ReaderInterfaceOpenFunction open;
     NK_ReaderInterfaceCloseFunction close;
-    NK_ReaderInterfaceGetPositionFunction get_position;
     NK_ReaderInterfaceSetPositionFunction set_position;
+    NK_ReaderInterfaceGetPositionFunction get_position;
     NK_ReaderInterfaceGetCharacterFunction get_character;
 } NK_ReaderInterfaceFunctions;
 

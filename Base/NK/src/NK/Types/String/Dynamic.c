@@ -62,6 +62,20 @@ NK_DynamicStringResize(
                 (sizeof(NK_C8) * (new_size + 1))
             )
         );
+    /** NOTE: We clean the allocated memory. */
+    if(new_size > string->capacity)
+    {
+        NK_RedirectMemset(
+            (NK_C8*)(new_buffer) + 
+            (
+                (new_size - string->capacity) *
+                sizeof(NK_C8)
+            ),
+            0,
+            sizeof(NK_C8) * (new_size - string->capacity)
+        );
+    }
+
     /** NOTE: reset the '\0' to the end: */
     string->top = new_size > string->top ? string->top : new_size;
     string->capacity = new_size;

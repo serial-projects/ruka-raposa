@@ -39,8 +39,19 @@ set(SDLTTF_HARFBUZZ OFF CACHE BOOL "" FORCE)
 set(SDLTTF_VENDORED OFF)
 add_subdirectory(SDL_ttf)
 
+# Setup for GLAD:
+add_subdirectory(GLAD)
+
+# Setup for CGLM:
+set(CGLM_SHARED OFF)
+set(CGLM_STATIC ON)
+set(CGLM_USE_C99 OFF)
+set(CGLM_USE_TEST OFF)
+add_subdirectory(CGLM)
+
 # Set the `RR_ThirdParty` interface.
 add_library(RR_ThirdParty INTERFACE)
 target_link_libraries(RR_ThirdParty INTERFACE SDL3::SDL3-static)
 target_link_libraries(RR_ThirdParty INTERFACE SDL3_image::SDL3_image-static)
 target_link_libraries(RR_ThirdParty INTERFACE SDL3_ttf::SDL3_ttf-static)
+target_link_libraries(RR_ThirdParty INTERFACE GLAD)

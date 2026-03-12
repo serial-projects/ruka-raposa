@@ -8,7 +8,10 @@
 
 PG_Renderer* PG_RendererNew()
 {
-    PG_Renderer* new_renderer = NK_malloc(sizeof(PG_Renderer));
+    PG_Renderer* new_renderer =
+        (PG_Renderer*)(
+            NK_AllocatorGet(sizeof(PG_Renderer))
+        );
     return new_renderer;
 }
 
@@ -16,7 +19,7 @@ void PG_RendererDestroy(
     PG_Renderer* renderer
 )
 {
-    NK_free(renderer);
+    NK_AllocatorFree(renderer);
 }
 
 PG_Result PG_RendererConstruct(

@@ -9,7 +9,9 @@
 PG_BackendsOG33Shader* PG_BackendsOG33ShaderNew()
 {
     PG_BackendsOG33Shader* new_shader = 
-        (PG_BackendsOG33Shader*)(NK_malloc(sizeof(PG_BackendsOG33Shader)));
+        (PG_BackendsOG33Shader*)(
+            NK_AllocatorGet(sizeof(PG_BackendsOG33Shader))
+        );
     return new_shader;
 }
 
@@ -17,7 +19,7 @@ void PG_BackendsOG33ShaderDestroy(
     PG_BackendsOG33Shader* shader
 )
 {
-    NK_free(shader);
+    NK_AllocatorFree(shader);
 }
 
 void PG_BackendsOG33ShaderConstruct(
@@ -31,7 +33,7 @@ void PG_BackendsOG33ShaderConstruct(
      * at the runtime to avoid creating useless elements, but we do clean the
      * memory to make sure it is clean.
      */
-    NK_memset(
+    NK_RedirectMemset(
         (void*)(&shader->UBO_pool),
         0,
         (

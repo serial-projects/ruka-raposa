@@ -4,14 +4,16 @@
 PG_BackendsOG33Renderer* PG_BackendsOG33RendererNew()
 {
     PG_BackendsOG33Renderer* new_renderer = 
-        (PG_BackendsOG33Renderer*)(NK_malloc(sizeof(PG_BackendsOG33Renderer)));
+        (PG_BackendsOG33Renderer*)(
+            NK_AllocatorGet(sizeof(PG_BackendsOG33Renderer))
+        );
     return new_renderer;
 }
 void PG_BackendsOG33RendererDestroy(
     PG_BackendsOG33Renderer* renderer
 )
 {
-    NK_free(renderer);
+    NK_AllocatorFree(renderer);
 }
 
 PG_Result PG_BackendsOG33RendererConstruct(

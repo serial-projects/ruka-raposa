@@ -9,7 +9,9 @@
 PG_BackendsOG33Window* PG_BackendsOG33WindowNew()
 {
     PG_BackendsOG33Window* new_window =
-        (PG_BackendsOG33Window*)(NK_malloc(sizeof(PG_BackendsOG33Window)));
+        (PG_BackendsOG33Window*)(
+            NK_AllocatorGet(sizeof(PG_BackendsOG33Window))
+        );
     return new_window;
 }
 
@@ -17,7 +19,7 @@ void PG_BackendsOG33WindowDestroy(
     PG_BackendsOG33Window* window
 )
 {
-    NK_free(window);
+    NK_AllocatorFree(window);
 }
 
 PG_Result PG_BackendsOG33WindowConstruct(

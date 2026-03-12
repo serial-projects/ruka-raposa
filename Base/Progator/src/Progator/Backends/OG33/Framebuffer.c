@@ -10,7 +10,7 @@ PG_BackendsOG33Framebuffer* PG_BackendsOG33FramebufferNew()
 {
     PG_BackendsOG33Framebuffer* new_framebuffer =
         (PG_BackendsOG33Framebuffer*)(
-            NK_malloc(sizeof(PG_BackendsOG33Framebuffer))
+            NK_AllocatorGet(sizeof(PG_BackendsOG33Framebuffer))
         );
     return new_framebuffer;
 }
@@ -19,7 +19,7 @@ void PG_BackendsOG33FramebufferDestroy(
     PG_BackendsOG33Framebuffer* framebuffer
 )
 {
-    NK_free(framebuffer);
+    NK_AllocatorFree(framebuffer);
 }
 
 PG_Result PG_BackendsOG33FramebufferConstruct(

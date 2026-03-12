@@ -9,7 +9,9 @@
 PG_Framebuffer* PG_FramebufferNew()
 {
     PG_Framebuffer* new_framebuffer =
-        (PG_Framebuffer*)(NK_malloc(sizeof(PG_Framebuffer)));
+        (PG_Framebuffer*)(
+            NK_AllocatorGet(sizeof(PG_Framebuffer))
+        );
     return new_framebuffer;
 }
 
@@ -17,7 +19,7 @@ void PG_FramebufferDestroy(
     PG_Framebuffer* framebuffer
 )
 {
-    NK_free(framebuffer);
+    NK_AllocatorFree(framebuffer);
 }
 
 PG_Result PG_FramebufferConstruct(

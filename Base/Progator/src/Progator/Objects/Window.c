@@ -8,7 +8,10 @@
 
 PG_Window* PG_WindowNew()
 {
-    PG_Window* new_window = NK_malloc(sizeof(PG_Window));
+    PG_Window* new_window =
+        (PG_Window*)(
+            NK_AllocatorGet(sizeof(PG_Window))
+        );
     return new_window;
 }
 
@@ -16,7 +19,7 @@ void PG_WindowDestroy(
     PG_Window* window
 )
 {
-    NK_free(window);
+    NK_AllocatorFree(window);
 }
 
 PG_Result PG_WindowConstruct(

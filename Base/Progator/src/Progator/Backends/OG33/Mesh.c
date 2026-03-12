@@ -9,7 +9,9 @@
 PG_BackendsOG33Mesh* PG_BackendsOG33MeshNew()
 {
     PG_BackendsOG33Mesh* new_mesh = 
-        (PG_BackendsOG33Mesh*)(NK_malloc(sizeof(PG_BackendsOG33Mesh)));
+        (PG_BackendsOG33Mesh*)(
+            NK_AllocatorGet(sizeof(PG_BackendsOG33Mesh))
+        );
     return new_mesh;
 }
 
@@ -17,7 +19,7 @@ void PG_BackendsOG33MeshDestroy(
     PG_BackendsOG33Mesh* mesh
 )
 {
-    NK_free(mesh);
+    NK_AllocatorFree(mesh);
 }
 
 void PG_BackendsOG33MeshConstruct(

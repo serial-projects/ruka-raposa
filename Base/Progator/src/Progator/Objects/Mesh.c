@@ -9,7 +9,9 @@
 PG_Mesh* PG_MeshNew()
 {
     PG_Mesh* new_mesh =
-        (PG_Mesh*)(NK_malloc(sizeof(PG_Mesh)));
+        (PG_Mesh*)(
+            NK_AllocatorGet(sizeof(PG_Mesh))
+        );
     return new_mesh;
 }
 
@@ -17,7 +19,7 @@ void PG_MeshDestroy(
     PG_Mesh* mesh
 )
 {
-    NK_free(mesh);
+    NK_AllocatorFree(mesh);
 }
 
 void PG_MeshConstruct(
