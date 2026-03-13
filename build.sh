@@ -21,7 +21,7 @@ RR_RunCMAKEToConstructDebugVersion(){
             -DRR_ENABLE_ASAN_SUPPORT=true
             # --debug-find                            \
             # --trace-expand
-        [[ $? -eq 0 ]] && cmake --build . -v -j1
+        [[ $? -eq 0 ]] && cmake --build . -v -j128
     cd ..
 }
 
