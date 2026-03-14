@@ -18,10 +18,12 @@ RR_RunCMAKEToConstructDebugVersion(){
             -G Ninja                                \
             ..                                      \
             -DCMAKE_BUILD_TYPE="Debug"              \
-            -DRR_ENABLE_ASAN_SUPPORT=true
+            -DRR_ENABLE_ASAN=true                   \
+            -DRR_ENABLE_TESTS=true
             # --debug-find                            \
             # --trace-expand
-        [[ $? -eq 0 ]] && cmake --build . -v -j128
+        [[ $? -eq 0 ]] && cmake --build . -v -j10
+        [[ $? -eq 0 ]] && ctest . --extra-verbose --stop-on-failure --progress
     cd ..
 }
 

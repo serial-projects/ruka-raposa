@@ -11,11 +11,13 @@ project(
 # We need to enable testing, some modules like `NK` can support tests.
 enable_testing()
 
+# Define several options for the RR project:
+option(RR_ENABLE_ASAN "If ASAN should be enabled on the project" OFF)
+option(RR_ENABLE_TESTS "If tests should be considered" OFF)
+
 # We import our functions from the library:
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
-include(ANSICDemand)
-include(ASanSupport)
-include(TestGenerator)
+include(RR_SetupNK)
 
 function(RR_Main)
     # We also need to add the `NK_ThirdParty` to the main universe, after all,
