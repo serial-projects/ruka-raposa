@@ -13,3 +13,6 @@
 [submodule "ThirdParty/CGLM"]
 	path = ThirdParty/CGLM
 	url = https://github.com/recp/cglm.git
+[submodule "Base/NK"]
+	path = Base/NK
+	url = https://github.com/serial-projects/nk-project.git
