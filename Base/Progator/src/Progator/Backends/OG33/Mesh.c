@@ -17,7 +17,7 @@ PG_BackendsOG33MeshNew()
 }
 
 void
-PG_BackendsOG33MeshDestroy(
+PG_BackendsOG33MeshFree(
     PG_BackendsOG33Mesh* mesh
 )
 {

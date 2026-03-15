@@ -17,7 +17,7 @@ PG_BackendsOG33WindowNew()
 }
 
 void
-PG_BackendsOG33WindowDestroy(
+PG_BackendsOG33WindowFree(
     PG_BackendsOG33Window* window
 )
 {
@@ -66,8 +66,8 @@ PG_BackendsOG33WindowDestruct(
     PG_BackendsOG33Window* window
 )
 {
-    /** Destroy the window: */
-    SDL_DestroyWindow(window->os_window);
+    /** Free the window: */
+    SDL_FreeWindow(window->os_window);
 }
 
 void

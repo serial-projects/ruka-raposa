@@ -28,7 +28,7 @@ typedef struct PG_Pointers
     /** Window: */
 
     PG_PointersWindowNewFunction window_new;
-    PG_PointersWindowDestroyFunction window_destroy;
+    PG_PointersWindowFreeFunction window_free;
     PG_PointersWindowConstructFunction window_construct;
     PG_PointersWindowDestructFunction window_destruct;
     PG_PointersWindowDrawFunction window_draw;
@@ -38,7 +38,7 @@ typedef struct PG_Pointers
     /** Renderer: */
 
     PG_PointersRendererNewFunction renderer_new;
-    PG_PointersRendererDestroyFunction renderer_destroy;
+    PG_PointersRendererFreeFunction renderer_free;
     PG_PointersRendererConstructFunction renderer_construct;
     PG_PointersRendererDestructFunction renderer_destruct;
     PG_PointersRendererSetViewportFunction renderer_set_viewport;
@@ -50,7 +50,7 @@ typedef struct PG_Pointers
     /** Shader: */
 
     PG_PointersShaderNewFunction shader_new;
-    PG_PointersShaderDestroyFunction shader_destroy;
+    PG_PointersShaderFreeFunction shader_free;
     PG_PointersShaderConstructFunction shader_construct;
     PG_PointersShaderDestructFunction shader_destruct;
     PG_PointersShaderBeginCompilationFunction shader_begin_compilation;
@@ -64,7 +64,7 @@ typedef struct PG_Pointers
     /** Mesh: */
 
     PG_PointersMeshNewFunction mesh_new;
-    PG_PointersMeshDestroyFunction mesh_destroy;
+    PG_PointersMeshFreeFunction mesh_free;
     PG_PointersMeshConstructFunction mesh_construct;
     PG_PointersMeshDestructFunction mesh_destruct;
     PG_PointersMeshUseFunction mesh_use;
@@ -74,7 +74,7 @@ typedef struct PG_Pointers
     /** Framebuffer: */
     
     PG_PointersFramebufferNewFunction framebuffer_new;
-    PG_PointersFramebufferDestroyFunction framebuffer_destroy;
+    PG_PointersFramebufferFreeFunction framebuffer_free;
     PG_PointersFramebufferConstructFunction framebuffer_construct;
     PG_PointersFramebufferDestructFunction framebuffer_destruct;
     PG_PointersFramebufferUseFunction framebuffer_use;
@@ -84,7 +84,7 @@ typedef struct PG_Pointers
     /** Texture: */
 
     PG_PointersTextureNewFunction texture_new;
-    PG_PointersTextureDestroyFunction texture_destroy;
+    PG_PointersTextureFreeFunction texture_free;
     PG_PointersTextureConstructFunction texture_construct;
     PG_PointersTextureDestructFunction texture_destruct;
     PG_PointersTextureUseFunction texture_use;

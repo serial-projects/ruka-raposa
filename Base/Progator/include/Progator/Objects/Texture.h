@@ -46,7 +46,7 @@ PG_TextureNew();
  * @brief Frees an `PG_Texture` created by `PG_TextureNew`
  */
 void
-PG_TextureDestroy(
+PG_TextureFree(
     PG_Texture* texture
 );
 

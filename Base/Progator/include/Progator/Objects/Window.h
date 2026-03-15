@@ -49,7 +49,7 @@ PG_WindowNew();
  * @warning Does not imply on `NK_WindowDestruct`
  */
 void
-PG_WindowDestroy(
+PG_WindowFree(
     PG_Window* window
 );
 

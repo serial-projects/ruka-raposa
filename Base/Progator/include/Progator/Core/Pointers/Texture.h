@@ -18,7 +18,7 @@ void*
 
 typedef
 void
-(*PG_PointersTextureDestroyFunction)(
+(*PG_PointersTextureFreeFunction)(
     void* texture
 );
 

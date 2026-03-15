@@ -46,7 +46,7 @@ PG_MeshNew();
  * @brief Frees an `PG_Mesh` created by `PG_MeshNew`
  */
 void
-PG_MeshDestroy(
+PG_MeshFree(
     PG_Mesh* mesh
 );
 

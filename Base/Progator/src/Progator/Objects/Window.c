@@ -15,7 +15,7 @@ PG_Window* PG_WindowNew()
     return new_window;
 }
 
-void PG_WindowDestroy(
+void PG_WindowFree(
     PG_Window* window
 )
 {
@@ -55,7 +55,7 @@ void PG_WindowDestruct(
         );
     window->
         pointers->
-        window_destroy(
+        window_free(
             window->backend_object
         );
 
@@ -68,7 +68,7 @@ void PG_WindowDestruct(
      *  [02] - Renderer
      *  [03] (and final) - Window
      * 
-     * This is the order you should DESTROY things.
+     * This is the order you should FREE things.
      */
     window->pointers    = NULL;
     window->base        = NULL;
