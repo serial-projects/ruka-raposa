@@ -6,7 +6,8 @@
  */
 #include "Progator/Backends/OG33/Mesh.h"
 
-PG_BackendsOG33Mesh* PG_BackendsOG33MeshNew()
+PG_BackendsOG33Mesh*
+PG_BackendsOG33MeshNew()
 {
     PG_BackendsOG33Mesh* new_mesh = 
         (PG_BackendsOG33Mesh*)(
@@ -15,14 +16,16 @@ PG_BackendsOG33Mesh* PG_BackendsOG33MeshNew()
     return new_mesh;
 }
 
-void PG_BackendsOG33MeshDestroy(
+void
+PG_BackendsOG33MeshDestroy(
     PG_BackendsOG33Mesh* mesh
 )
 {
     NK_AllocatorFree(mesh);
 }
 
-void PG_BackendsOG33MeshConstruct(
+void
+PG_BackendsOG33MeshConstruct(
     PG_Base* base,
     PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Mesh* mesh
@@ -33,7 +36,8 @@ void PG_BackendsOG33MeshConstruct(
     mesh->nverts = 0;
 }
 
-void PG_BackendsOG33MeshDestruct(
+void
+PG_BackendsOG33MeshDestruct(
     PG_Base* base,
     PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Mesh* mesh
@@ -52,7 +56,8 @@ void PG_BackendsOG33MeshDestruct(
     mesh->nverts = 0;
 }
 
-void PG_BackendsOG33MeshUse(
+void
+PG_BackendsOG33MeshUse(
     PG_Base* base,
     PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Mesh* mesh
@@ -62,7 +67,8 @@ void PG_BackendsOG33MeshUse(
     glBindVertexArray(mesh->VAO);
 }
 
-void PG_BackendsOG33MeshSetData(
+void
+PG_BackendsOG33MeshSetData(
     PG_Base* base, 
     PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Mesh* mesh,
@@ -85,7 +91,15 @@ void PG_BackendsOG33MeshSetData(
      * backend is as consistent as possible.
      */
     #define _S (3 + 2 + 3) * sizeof(PG_F32)
-    #define _A(a_, b_, c_) glVertexAttribPointer(a_, b_, GL_FLOAT, GL_FALSE, _S, (void*)((0 + c_) * sizeof(PG_F32)))
+    #define _A(a_, b_, c_)                      \
+        glVertexAttribPointer(                  \
+            a_,                                 \
+            b_,                                 \
+            GL_FLOAT,                           \
+            GL_FALSE,                           \
+            _S,                                 \
+            (void*)((0 + c_) * sizeof(PG_F32))  \
+        )
         _A(0, 3, 0);
         _A(1, 2, 3);
         _A(2, 3, 3 + 2);
@@ -96,7 +110,8 @@ void PG_BackendsOG33MeshSetData(
     #undef _S
 }
 
-void PG_BackendsOG33MeshDraw(
+void
+PG_BackendsOG33MeshDraw(
     PG_Base* base,
     PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Mesh* mesh

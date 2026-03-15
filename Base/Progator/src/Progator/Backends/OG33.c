@@ -1,26 +1,73 @@
 #include "Progator/Backends/OG33.h"
 
-static PG_Pointers PG_BackendsOG33Implementation = 
+/**
+ * @brief Contains the function table for the `PG_Pointers` for OpenGL 33
+ * Backend system.
+ */
+static
+PG_Pointers PG_BackendsOG33Implementation = 
 {
-    .window_new                 = (PG_PointersWindowNew)(PG_BackendsOG33WindowNew),
-    .window_destroy             = (PG_PointersWindowDestroy)(PG_BackendsOG33WindowDestroy),
-    .window_construct           = (PG_PointersWindowConstruct)(PG_BackendsOG33WindowConstruct),
-    .window_destruct            = (PG_PointersWindowDestruct)(PG_BackendsOG33WindowDestruct),
-    .window_draw                = (PG_PointersWindowDraw)(PG_BackendsOG33WindowDraw),
-    .window_set_size            = (PG_PointersWindowSetSize)(PG_BackendsOG33WindowSetSize),
-    .window_set_title           = (PG_PointersWindowSetTitle)(PG_BackendsOG33WindowSetTitle),
-    .renderer_new               = (PG_PointersRendererNew)(PG_BackendsOG33RendererNew),
-    .renderer_destroy           = (PG_PointersRendererDestroy)(PG_BackendsOG33RendererDestroy),
-    .renderer_construct         = (PG_PointersRendererConstruct)(PG_BackendsOG33RendererConstruct),
-    .renderer_destruct          = (PG_PointersRendererDestruct)(PG_BackendsOG33RendererDestruct),
-    .renderer_set_viewport      = (PG_PointersRendererSetViewport)(PG_BackendsOG33RendererSetViewport),
-    .renderer_draw              = (PG_PointersRendererDraw)(PG_BackendsOG33RendererDraw),
-    .renderer_clear             = (PG_PointersRendererClear)(PG_BackendsOG33RendererClear),
-    .renderer_enable_feature    = (PG_PointersRendererEnableFeature)(PG_BackendsOG33RendererEnableFeature),
-    .renderer_disable_feature   = (PG_PointersRendererDisableFeature)(PG_BackendsOG33RendererDisableFeature)
+    /* Window: */
+    (PG_PointersWindowNewFunction)(PG_BackendsOG33WindowNew),
+    (PG_PointersWindowDestroyFunction)(PG_BackendsOG33WindowDestroy),
+    (PG_PointersWindowConstructFunction)(PG_BackendsOG33WindowConstruct),
+    (PG_PointersWindowDestructFunction)(PG_BackendsOG33WindowDestruct),
+    (PG_PointersWindowDrawFunction)(PG_BackendsOG33WindowDraw),
+    (PG_PointersWindowSetSizeFunction)(PG_BackendsOG33WindowSetSize),
+    (PG_PointersWindowSetTitleFunction)(PG_BackendsOG33WindowSetTitle),
+
+    /* Renderer: */
+    (PG_PointersRendererNewFunction)(PG_BackendsOG33RendererNew),
+    (PG_PointersRendererDestroyFunction)(PG_BackendsOG33RendererDestroy),
+    (PG_PointersRendererConstructFunction)(PG_BackendsOG33RendererConstruct),
+    (PG_PointersRendererDestructFunction)(PG_BackendsOG33RendererDestruct),
+    (PG_PointersRendererSetViewportFunction)(PG_BackendsOG33RendererSetViewport),
+    (PG_PointersRendererDrawFunction)(PG_BackendsOG33RendererDraw),
+    (PG_PointersRendererClearFunction)(PG_BackendsOG33RendererClear),
+    (PG_PointersRendererEnableFeatureFunction)(PG_BackendsOG33RendererEnableFeature),
+    (PG_PointersRendererDisableFeatureFunction)(PG_BackendsOG33RendererDisableFeature),
+    
+    /** Shader: */
+    (PG_PointersShaderNewFunction)(PG_BackendsOG33ShaderNew),
+    (PG_PointersShaderDestroyFunction)(PG_BackendsOG33ShaderDestroy),
+    (PG_PointersShaderConstructFunction)(PG_BackendsOG33ShaderConstruct),
+    (PG_PointersShaderDestructFunction)(PG_BackendsOG33ShaderDestruct),
+    (PG_PointersShaderBeginCompilationFunction)(PG_BackendsOG33ShaderBeginCompilation),
+    (PG_PointersShaderLoadVertexShaderFunction)(PG_BackendsOG33ShaderLoadVertexShader),
+    (PG_PointersShaderLoadFragmentShaderFunction)(PG_BackendsOG33ShaderLoadFragmentShader),
+    (PG_PointersShaderLoadGeometryShaderFunction)(PG_BackendsOG33ShaderLoadGeometryShader),
+    (PG_PointersShaderFinishCompilationFunction)(PG_BackendsOG33ShaderFinishCompilation),
+    (PG_PointersShaderUseFunction)(PG_BackendsOG33ShaderUse),
+    (PG_PointersShaderSetDataFunction)(PG_BackendsOG33ShaderSetData),
+
+    /** Mesh: */
+    (PG_PointersMeshNewFunction)(PG_BackendsOG33MeshNew),
+    (PG_PointersMeshDestroyFunction)(PG_BackendsOG33MeshDestroy),
+    (PG_PointersMeshConstructFunction)(PG_BackendsOG33MeshConstruct),
+    (PG_PointersMeshDestructFunction)(PG_BackendsOG33MeshDestruct),
+    (PG_PointersMeshUseFunction)(PG_BackendsOG33MeshUse),
+    (PG_PointersMeshSetDataFunction)(PG_BackendsOG33MeshSetData),
+    (PG_PointersMeshDrawFunction)(PG_BackendsOG33MeshDraw),
+
+    /** Framebuffer: */
+    (PG_PointersFramebufferNewFunction)(PG_BackendsOG33FramebufferNew),
+    (PG_PointersFramebufferDestroyFunction)(PG_BackendsOG33FramebufferDestroy),
+    (PG_PointersFramebufferConstructFunction)(PG_BackendsOG33FramebufferConstruct),
+    (PG_PointersFramebufferDestructFunction)(PG_BackendsOG33FramebufferDestruct),
+    (PG_PointersFramebufferUseFunction)(PG_BackendsOG33FramebufferUse),
+    (PG_PointersFramebufferLeaveFunction)(PG_BackendsOG33FramebufferLeave),
+    (PG_PointersFramebufferBeTextureFunction)(PG_BackendsOG33FramebufferBeTexture),
+
+    /** Texture: */
+    (PG_PointersTextureNewFunction)(PG_BackendsOG33TextureNew),
+    (PG_PointersTextureDestroyFunction)(PG_BackendsOG33TextureDestroy),
+    (PG_PointersTextureConstructFunction)(PG_BackendsOG33TextureConstruct),
+    (PG_PointersTextureUseFunction)(PG_BackendsOG33TextureUse),
+    (PG_PointersTextureSetDataFunction)(PG_BackendsOG33TextureSetData)
 };
 
-PG_Pointers* PG_BackendsOG33Get()
+PG_Pointers*
+PG_BackendsOG33Get()
 {
     return &PG_BackendsOG33Implementation;
 }

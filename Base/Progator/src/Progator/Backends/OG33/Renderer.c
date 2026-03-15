@@ -1,7 +1,8 @@
 #include "Progator/Backends/OG33/Renderer.h"
 #include "Progator/Enums/Renderer.h"
 
-PG_BackendsOG33Renderer* PG_BackendsOG33RendererNew()
+PG_BackendsOG33Renderer*
+PG_BackendsOG33RendererNew()
 {
     PG_BackendsOG33Renderer* new_renderer = 
         (PG_BackendsOG33Renderer*)(
@@ -9,14 +10,16 @@ PG_BackendsOG33Renderer* PG_BackendsOG33RendererNew()
         );
     return new_renderer;
 }
-void PG_BackendsOG33RendererDestroy(
+void
+PG_BackendsOG33RendererDestroy(
     PG_BackendsOG33Renderer* renderer
 )
 {
     NK_AllocatorFree(renderer);
 }
 
-PG_Result PG_BackendsOG33RendererConstruct(
+PG_Result
+PG_BackendsOG33RendererConstruct(
     PG_Base* base,
     PG_BackendsOG33Window* window,
     PG_BackendsOG33Renderer* renderer
@@ -98,10 +101,10 @@ PG_Result PG_BackendsOG33RendererConstruct(
     renderer->context = SDL_GL_CreateContext(window->os_window);
     if(renderer->context == NULL)
     {
-        NK_ValidatorError(
+        NK_ValidatorPushMessage(
             base->attached_validator,
-            1,
-            "[Progator/ OpenGL33 Backend]: Failed to initialize Context using SDL_GL_CreateContext, got: %s",
+            NK_VALIDATOR_LEVEL_ERROR,
+            "[Progator/ OpenGL 3.3]: Failed to initialize context due: %s",
             SDL_GetError()
         );
         good = false;
@@ -111,10 +114,10 @@ PG_Result PG_BackendsOG33RendererConstruct(
     /** We initialize GLAD now: */
     if(!gladLoadGLLoader((GLADloadproc)(SDL_GL_GetProcAddress)))
     {
-        NK_ValidatorError(
+        NK_ValidatorPushMessage(
             base->attached_validator,
-            1,
-            "[Progator/ OpenGL33 Backend]: Failed to initialize GLAD"
+            NK_VALIDATOR_LEVEL_ERROR,
+            "[Progator/ OpenGL 3.3]: Failed to initialize GLAD"
         );
         good = false;
         goto failed_initialize_glad_ending;
@@ -123,44 +126,52 @@ PG_Result PG_BackendsOG33RendererConstruct(
     /** Make this context be our main to this window: */
     SDL_GL_MakeCurrent(window->os_window, renderer->context);
 
-    /** We set the early viewport: */
-    NK_ValidatorDebug(
+    /**
+     * NOTE: Set an early viewport to avoid total black screen.
+     */
+    NK_ValidatorPushMessage(
         base->attached_validator,
-        "[Progator/ OpenGL33 Backend]: Setting Early Viewport to be: 800x640x0x0"
+        NK_VALIDATOR_LEVEL_DEBUG,
+        "[Progator/ OpenGL 3.3]: Setting Viewport to 800x640x0x0"
     );
-
     glViewport(0, 0, 800, 640);
 
-    /** Debug some information: */
-    NK_ValidatorDebug(
+    /**
+     * For debug reasons, we want to see some information from the OpenGL
+     * instance we just have open!
+     */
+    NK_ValidatorPushMessage(
         base->attached_validator,
-        "[Progator/ OpenGL33 Backend]: GL_VENDOR = %s",
+        NK_VALIDATOR_LEVEL_DEBUG,
+        "[Progator/ OpenGL 3.3]: GL_VENDOR = %s",
         glGetString(GL_VENDOR)
     );
-
-    NK_ValidatorDebug(
+    NK_ValidatorPushMessage(
         base->attached_validator,
-        "[Progator/ OpenGL33 Backend]: GL_RENDERER = %s",
+        NK_VALIDATOR_LEVEL_DEBUG,
+        "[Progator/ OpenGL 3.3]: GL_RENDERER = %s",
         glGetString(GL_RENDERER)
     );
-
-    NK_ValidatorDebug(
+    NK_ValidatorPushMessage(
         base->attached_validator,
-        "[Progator/ OpenGL33 Backend]: GL_VERSION = %s",
+        NK_VALIDATOR_LEVEL_DEBUG,
+        "[Progator/ OpenGL 3.3]: GL_VERSION = %s",
         glGetString(GL_VERSION)
     );
 
-    /** We try the adaptative vsync: */
+    /**
+     * NOTE: By default, on OpenGL backend, we use adaptative v-sync, if that
+     * fails, we try to use normal.
+     */
     if(!SDL_GL_SetSwapInterval(-1))
     {
-        /** If this fails, then you get no VSYNC, unfortunately. */
         SDL_GL_SetSwapInterval(1);
     }
 
-    /** We set the window we are using: */
+    /**
+     * NOTE: Initially, we want only the color buffer to be cleaning!
+     */
     renderer->using_window = window;
-
-    /** Set the current working buffers: */
     renderer->cleaning_buffers = GL_COLOR_BUFFER_BIT;
 
     failed_initialize_context_ending:
@@ -181,14 +192,17 @@ void PG_BackendsOG33RendererDestruct(
 void PG_BackendsOG33RendererSetViewport(
     PG_Base* base,
     PG_BackendsOG33Renderer* renderer,
-    const PG_ViewportGeometry viewport_geometry
+    const PG_U16 width,
+    const PG_U16 height,
+    const PG_U16 x_position,
+    const PG_U16 y_position
 )
 {
     glViewport(
-        (GLint)viewport_geometry.x,
-        (GLint)viewport_geometry.y,
-        (GLsizei)viewport_geometry.width,
-        (GLsizei)viewport_geometry.height
+        (GLint)(x_position),
+        (GLint)(y_position),
+        (GLsizei)(width),
+        (GLsizei)(height)
     );
 }
 
@@ -197,8 +211,14 @@ void PG_BackendsOG33RendererDraw(
     PG_BackendsOG33Renderer* renderer
 )
 {
-    /** We need to swap the window: */
-    SDL_GL_SwapWindow(renderer->using_window->os_window);
+    /** 
+     * TODO: move this to PG_BackendsOG33WindowDraw: We don't need any special
+     * code for OpenGL to render anything, all we need to do is flip the window
+     * and voi-a lá! The window is drawn!
+     */
+    SDL_GL_SwapWindow(
+        renderer->using_window->os_window
+    );
 }
 
 void PG_BackendsOG33RendererClear(

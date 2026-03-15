@@ -6,7 +6,8 @@
  */
 #include "Progator/Backends/OG33/Texture.h"
 
-PG_BackendsOG33Texture* PG_BackendsOG33TextureNew()
+PG_BackendsOG33Texture*
+PG_BackendsOG33TextureNew()
 {
     PG_BackendsOG33Texture* new_texture =
         (PG_BackendsOG33Texture*)(
@@ -15,14 +16,16 @@ PG_BackendsOG33Texture* PG_BackendsOG33TextureNew()
     return new_texture;
 }
 
-void PG_BackendsOG33TextureDestroy(
+void
+PG_BackendsOG33TextureDestroy(
     PG_BackendsOG33Texture* texture
 )
 {
     NK_AllocatorFree(texture);
 }
 
-void PG_BackendsOG33TextureConstruct(
+void
+PG_BackendsOG33TextureConstruct(
     PG_Base* base,
     PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Texture* texture
@@ -33,7 +36,8 @@ void PG_BackendsOG33TextureConstruct(
     texture->height = 0;
 }
 
-void PG_BackendsOG33TextureDestruct(
+void
+PG_BackendsOG33TextureDestruct(
     PG_Base* base,
     PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Texture* texture
@@ -42,7 +46,8 @@ void PG_BackendsOG33TextureDestruct(
     glDeleteTextures(1, &texture->handle);
 }
 
-void PG_BackendsOG33TextureUse(
+void
+PG_BackendsOG33TextureUse(
     PG_Base* base,
     PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Texture* texture,
@@ -53,7 +58,8 @@ void PG_BackendsOG33TextureUse(
     glActiveTexture(GL_TEXTURE0 + slot);
 }
 
-void PG_BackendsOG33TextureSetData(
+void
+PG_BackendsOG33TextureSetData(
     PG_Base* base,
     PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Texture* texture,

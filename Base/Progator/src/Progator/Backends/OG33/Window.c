@@ -6,7 +6,8 @@
  */
 #include "Progator/Backends/OG33/Window.h"
 
-PG_BackendsOG33Window* PG_BackendsOG33WindowNew()
+PG_BackendsOG33Window*
+PG_BackendsOG33WindowNew()
 {
     PG_BackendsOG33Window* new_window =
         (PG_BackendsOG33Window*)(
@@ -15,14 +16,16 @@ PG_BackendsOG33Window* PG_BackendsOG33WindowNew()
     return new_window;
 }
 
-void PG_BackendsOG33WindowDestroy(
+void
+PG_BackendsOG33WindowDestroy(
     PG_BackendsOG33Window* window
 )
 {
     NK_AllocatorFree(window);
 }
 
-PG_Result PG_BackendsOG33WindowConstruct(
+PG_Result
+PG_BackendsOG33WindowConstruct(
     PG_Base* base,
     PG_BackendsOG33Window* window
 )
@@ -57,7 +60,8 @@ PG_Result PG_BackendsOG33WindowConstruct(
     return good;
 }
 
-void PG_BackendsOG33WindowDestruct(
+void
+PG_BackendsOG33WindowDestruct(
     PG_Base* base,
     PG_BackendsOG33Window* window
 )
@@ -66,7 +70,8 @@ void PG_BackendsOG33WindowDestruct(
     SDL_DestroyWindow(window->os_window);
 }
 
-void PG_BackendsOG33WindowDraw(
+void
+PG_BackendsOG33WindowDraw(
     PG_Base* base,
     PG_BackendsOG33Window* window
 )
@@ -84,27 +89,23 @@ void PG_BackendsOG33WindowDraw(
     return;
 }
 
-void PG_BackendsOG33WindowSetSize(
+void
+PG_BackendsOG33WindowSetSize(
     PG_Base* base,
     PG_BackendsOG33Window* window,
-    const PG_WindowGeometry window_geometry
+    const PG_U16 width,
+    const PG_U16 height
 )
 {
     SDL_SetWindowSize(
         window->os_window,
-        (int)(window_geometry.width),
-        (int)(window_geometry.height)
-    );
-
-    /** TODO: We always align in the center of the screen: */
-    SDL_SetWindowPosition(
-        window->os_window,
-        SDL_WINDOWPOS_CENTERED,
-        SDL_WINDOWPOS_CENTERED
+        (int)(width),
+        (int)(height)
     );
 }
 
-void PG_BackendsOG33WindowSetTitle(
+void
+PG_BackendsOG33WindowSetTitle(
     PG_Base* base,
     PG_BackendsOG33Window* window,
     const PG_C8* title

@@ -6,11 +6,15 @@
  */
 
 #include "Progator/Core/Base.h"
-#include "Progator/SDL.h"
+#include "Progator/Redirects.h"
 
-PG_Base* PG_BaseNew()
+PG_Base*
+PG_BaseNew()
 {
-    PG_Base* new_base = NK_malloc(sizeof(PG_Base));
+    PG_Base* new_base =
+        (PG_Base*)(
+            NK_AllocatorGet(sizeof(PG_Base))
+        );
     return new_base;
 }
 
@@ -18,7 +22,7 @@ void PG_BaseDestroy(
     PG_Base* base
 )
 {
-    NK_free(base);
+    NK_AllocatorFree(base);
 }
 
 NK_Result PG_BaseConstruct(
@@ -26,10 +30,14 @@ NK_Result PG_BaseConstruct(
     NK_Validator* use_validator
 )
 {
+    NK_Result initialized;
+
     base->attached_validator = use_validator;
     base->memory_used = 0;
-
-    /** We give SDL an hint about what we are: */
+    /**
+     * TODO: This gives an internal hint to what we are, but in the future, we
+     * should allow the game maker to also make their internal hints as well!
+     */
     SDL_SetAppMetadata(
         "Ruka Raposa Engine",
         "1.0.0-Alpha(1)",
@@ -41,7 +49,7 @@ NK_Result PG_BaseConstruct(
     );
     
     /** We initialize SDL here: */
-    const NK_Result initialized =
+    initialized =
         SDL_Init(
             SDL_INIT_EVENTS |
             SDL_INIT_VIDEO  |
@@ -65,7 +73,6 @@ NK_Result PG_BaseConstruct(
             SDL_GetVersion()
         );
     }
-
     return initialized;
 }
 

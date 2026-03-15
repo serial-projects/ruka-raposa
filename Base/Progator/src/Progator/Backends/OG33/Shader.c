@@ -6,7 +6,8 @@
  */
 #include "Progator/Backends/OG33/Shader.h"
 
-PG_BackendsOG33Shader* PG_BackendsOG33ShaderNew()
+PG_BackendsOG33Shader*
+PG_BackendsOG33ShaderNew()
 {
     PG_BackendsOG33Shader* new_shader = 
         (PG_BackendsOG33Shader*)(
@@ -15,14 +16,16 @@ PG_BackendsOG33Shader* PG_BackendsOG33ShaderNew()
     return new_shader;
 }
 
-void PG_BackendsOG33ShaderDestroy(
+void
+PG_BackendsOG33ShaderDestroy(
     PG_BackendsOG33Shader* shader
 )
 {
     NK_AllocatorFree(shader);
 }
 
-void PG_BackendsOG33ShaderConstruct(
+void
+PG_BackendsOG33ShaderConstruct(
     PG_Base* base,
     PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Shader* shader
@@ -54,14 +57,17 @@ void PG_BackendsOG33ShaderConstruct(
     shader->SP = 0;
 }
 
-void PG_BackendsOG33ShaderDestruct(
+void
+PG_BackendsOG33ShaderDestruct(
     PG_Base* base,
     PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Shader* shader
 )
 {
+    /** Iterate on the uniform buffers: */
+    PG_U8 index = 0;
     for(
-        PG_U8 index = 0;
+        index;
         index < PG_CONFIG_BACKENDS_OG33_MAX_SHADER_DATA_SLOTS;
         index++
     )
@@ -84,141 +90,147 @@ void PG_BackendsOG33ShaderDestruct(
     glDeleteProgram(shader->SP);
 }
 
-PG_Result PG_BackendsOG33ShaderBeginCompilation(
+PG_Result
+PG_BackendsOG33ShaderBeginCompilation(
     PG_Base* base,
     PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Shader* shader
 )
 {
-    /**
-     * NOTE: We don't need to do anything to prepare OpenGL to shader
-     * compilation, for example, if we had an libncurses, we could prepare the
-     * compiler on this stage (imagining an whole compiler around here).
-     * 
-     * This is most kept to keep an extra layer of support to LoadXXXShader()
-     * functions.
-     */
+    /** NOTE: This is a empty function, we don't need to warm up OpenGL. */
     return true;
 }
 
-PG_Result PG_BackendsOG33ShaderLoadVertexShader(
+PG_Result
+PG_BackendsOG33ShaderLoadVertexShader(
     PG_Base* base,
     PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Shader* shader,
     const PG_U8* buffer
 )
 {
+    GLchar* b;
+    GLint adquired_status;
+    PG_C8 log_buffer[PG_CONFIG_BACKENDS_OG33_SHADER_LOG_SIZE];
+
     /** NOTE: We do the whole steps to compiling shaders: */
     shader->VS = glCreateShader(GL_VERTEX_SHADER);
-    const GLchar* b = (const GLchar*)buffer;
+
+    /** Pass the shader to be compiled: */
+    b = (const GLchar*)buffer;
     glShaderSource(shader->VS, 1, &b, NULL);
     glCompileShader(shader->VS);
 
-    GLint adquired_status;
+    /** Check for errors: */
     glGetShaderiv(shader->VS, GL_COMPILE_STATUS, &adquired_status);
     if(adquired_status == GL_FALSE)
     {
-        PG_C8 log_buffer[PG_CONFIG_BACKENDS_OG33_SHADER_LOG_SIZE];
         glGetShaderInfoLog(
             shader->VS,
             PG_CONFIG_BACKENDS_OG33_SHADER_LOG_SIZE,
             NULL,
             (GLchar*)(&log_buffer)
         );
-
-        NK_ValidatorWarning(
+        NK_ValidatorPushMessage(
             base->attached_validator,
-            "[Progator/ OG33 Backend Shader]: Failed to compile VS, reason: \"%s\"",
+            NK_VALIDATOR_LEVEL_ERROR,
+            "[Progator/ OpenGL 3.3]: Failed to compile vertex shader due: %s",
             log_buffer
         );
-
         return false;
     }
-
     return true;
 }
 
-PG_Result PG_BackendsOG33ShaderLoadFragmentShader(
+PG_Result
+PG_BackendsOG33ShaderLoadFragmentShader(
     PG_Base* base,
     PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Shader* shader,
     const PG_U8* buffer
 )
 {
+    GLchar* b;
+    GLint adquired_status;
+    PG_C8 log_buffer[PG_CONFIG_BACKENDS_OG33_SHADER_LOG_SIZE];
+
     /** NOTE: We do the whole steps to compiling shaders: */
     shader->FS = glCreateShader(GL_FRAGMENT_SHADER);
 
-    const GLchar* b = (const GLchar*)buffer;
+    b = (const GLchar*)buffer;
     glShaderSource(shader->FS, 1, &b, NULL);
     glCompileShader(shader->FS);
 
-    GLint adquired_status;
+    /** Check for errors: */
     glGetShaderiv(shader->FS, GL_COMPILE_STATUS, &adquired_status);
     if(adquired_status == GL_FALSE)
     {
-        PG_C8 log_buffer[PG_CONFIG_BACKENDS_OG33_SHADER_LOG_SIZE];
         glGetShaderInfoLog(
             shader->FS,
             PG_CONFIG_BACKENDS_OG33_SHADER_LOG_SIZE,
             NULL,
             (GLchar*)(&log_buffer)
         );
-
-        NK_ValidatorWarning(
+        NK_ValidatorPushMessage(
             base->attached_validator,
-            "[Progator/ OG33 Backend Shader]: Failed to compile FS, reason: \"%s\"",
+            NK_VALIDATOR_LEVEL_ERROR,
+            "[Progator/ OpenGL 3.3]: Failed to compile fragment shader due: %s",
             log_buffer
         );
-
         return false;
     }
-
     return true;
 }
 
-PG_Result PG_BackendsOG33ShaderLoadGeometryShader(
+PG_Result
+PG_BackendsOG33ShaderLoadGeometryShader(
     PG_Base* base,
     PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Shader* shader,
     const PG_U8* buffer
 )
 {
+    GLchar* b;
+    GLint adquired_status;
+    PG_C8 log_buffer[PG_CONFIG_BACKENDS_OG33_SHADER_LOG_SIZE];
+
     /** NOTE: We do the whole steps to compiling shaders: */
     shader->GS = glCreateShader(GL_GEOMETRY_SHADER);
-    const GLchar* b = (const GLchar*)buffer;
+    b = (const GLchar*)buffer;
     glShaderSource(shader->GS, 1, &b, NULL);
     glCompileShader(shader->GS);
 
-    GLint adquired_status;
+    /** Check for errors: */
     glGetShaderiv(shader->GS, GL_COMPILE_STATUS, &adquired_status);
     if(adquired_status == GL_FALSE)
     {
-        PG_C8 log_buffer[PG_CONFIG_BACKENDS_OG33_SHADER_LOG_SIZE];
         glGetShaderInfoLog(
             shader->GS,
             PG_CONFIG_BACKENDS_OG33_SHADER_LOG_SIZE,
             NULL,
             (GLchar*)(&log_buffer)
         );
-
-        NK_ValidatorWarning(
+        NK_ValidatorPushMessage(
             base->attached_validator,
-            "[Progator/ OG33 Backend Shader]: Failed to compile GS, reason: \"%s\"",
+            NK_VALIDATOR_LEVEL_ERROR,
+            "[Progator/ OpenGL 3.3]: Failed to compile geometry shader due: %s",
             log_buffer
         );
-
         return false;
     }
-
     return true;
 }
 
-PG_Result PG_BackendsOG33ShaderFinishCompilation(
+PG_Result
+PG_BackendsOG33ShaderFinishCompilation(
     PG_Base* base,
     PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Shader* shader
 )
 {
+    GLint linkage_status;
+    PG_C8 log_buffer[PG_CONFIG_BACKENDS_OG33_SHADER_LOG_SIZE];
+    
     shader->SP = glCreateProgram();
     #define _A(shader_) \
         if(shader_ != 0) { glAttachShader(shader->SP, shader_); }
@@ -230,32 +242,29 @@ PG_Result PG_BackendsOG33ShaderFinishCompilation(
     /** Link: */
     glLinkProgram(shader->SP);
 
-    /** Check the status: */
-    GLint linkage_status;
+    /** Check for errors: */
     glGetProgramiv(shader->SP, GL_LINK_STATUS, &linkage_status);
     if(linkage_status == GL_FALSE)
     {
-        PG_C8 log_buffer[PG_CONFIG_BACKENDS_OG33_SHADER_LOG_SIZE];
         glGetProgramInfoLog(
             shader->SP,
             PG_CONFIG_BACKENDS_OG33_SHADER_LOG_SIZE,
             NULL,
             (GLchar*)(&log_buffer)
         );
-
-        NK_ValidatorWarning(
+        NK_ValidatorPushMessage(
             base->attached_validator,
-            "[Progator/ OG33 Backend Shader]: Failed to link shaders, reason: \"%s\"",
+            NK_VALIDATOR_LEVEL_ERROR,
+            "[Progator/ OpenGL 3.3]: Failed to link shaders due: %s",
             log_buffer
         );
-
         return false;
     }
-
     return true;
 }
 
-void PG_BackendsOG33ShaderUse(
+void
+PG_BackendsOG33ShaderUse(
     PG_Base* base,
     PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Shader* shader
@@ -264,7 +273,8 @@ void PG_BackendsOG33ShaderUse(
     glUseProgram(shader->SP);
 }
 
-void PG_BackendsOG33ShaderSetData(
+void
+PG_BackendsOG33ShaderSetData(
     PG_Base* base,
     PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Shader* shader,
@@ -273,12 +283,15 @@ void PG_BackendsOG33ShaderSetData(
     const PG_Size data_size
 )
 {
+    PG_BackendsOG33UniformBufferHandle* using_handle;
+
     /** Are we within the range? */
     if(slot >= PG_CONFIG_BACKENDS_OG33_MAX_SHADER_DATA_SLOTS)
     {
-        NK_ValidatorWarning(
+        NK_ValidatorPushMessage(
             base->attached_validator,
-            "[Progator/ OG33 Backend Shader]: Failed to copy data to slot %d (max: %d)",
+            NK_VALIDATOR_LEVEL_WARNING,
+            "[Progator/ OpenGL 3.3]: Failed to copy data to slot %d (max: %d)",
             (PG_S32)(slot),
             (PG_S32)(PG_CONFIG_BACKENDS_OG33_MAX_SHADER_DATA_SLOTS)
         );
@@ -286,7 +299,7 @@ void PG_BackendsOG33ShaderSetData(
     }
 
     /** We get the current using handle: */
-    PG_BackendsOG33UniformBufferHandle* using_handle = &shader->UBO_pool[slot];
+    using_handle = &shader->UBO_pool[slot];
 
     /** No UBO? Then create one: */
     if(*using_handle == 0)

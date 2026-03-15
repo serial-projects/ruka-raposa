@@ -33,7 +33,8 @@ PG_BackendsOG33FramebufferConstruct(
     PG_Base* base,
     PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Framebuffer* framebuffer,
-    const PG_ViewportGeometry viewport_geometry
+    const PG_U16 width,
+    const PG_U16 height
 );
 
 void

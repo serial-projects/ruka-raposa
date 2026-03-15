@@ -6,7 +6,8 @@
  */
 #include "Progator/Backends/OG33/Framebuffer.h"
 
-PG_BackendsOG33Framebuffer* PG_BackendsOG33FramebufferNew()
+PG_BackendsOG33Framebuffer*
+PG_BackendsOG33FramebufferNew()
 {
     PG_BackendsOG33Framebuffer* new_framebuffer =
         (PG_BackendsOG33Framebuffer*)(
@@ -15,20 +16,25 @@ PG_BackendsOG33Framebuffer* PG_BackendsOG33FramebufferNew()
     return new_framebuffer;
 }
 
-void PG_BackendsOG33FramebufferDestroy(
+void
+PG_BackendsOG33FramebufferDestroy(
     PG_BackendsOG33Framebuffer* framebuffer
 )
 {
     NK_AllocatorFree(framebuffer);
 }
 
-PG_Result PG_BackendsOG33FramebufferConstruct(
+PG_Result
+PG_BackendsOG33FramebufferConstruct(
     PG_Base* base,
     PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Framebuffer* framebuffer,
-    const PG_ViewportGeometry viewport_geometry
+    const PG_U16 width,
+    const PG_U16 height
 )
 {
+    GLenum status;
+
     /** We generate the framebuffer here: */
     glGenFramebuffers(1, &framebuffer->FBO);
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffer->FBO);
@@ -42,8 +48,8 @@ PG_Result PG_BackendsOG33FramebufferConstruct(
         GL_TEXTURE_2D,
         0,
         GL_RGBA8,
-        viewport_geometry.width,
-        viewport_geometry.height,
+        width,
+        height,
         0,
         GL_RGBA,
         GL_UNSIGNED_BYTE,
@@ -73,8 +79,8 @@ PG_Result PG_BackendsOG33FramebufferConstruct(
     glRenderbufferStorage(
         GL_RENDERBUFFER,
         GL_DEPTH24_STENCIL8,
-        viewport_geometry.width,
-        viewport_geometry.height
+        width,
+        height
     );
 
     glFramebufferRenderbuffer(
@@ -85,8 +91,7 @@ PG_Result PG_BackendsOG33FramebufferConstruct(
     );
 
     /** We need to check for the status: */
-    GLenum status =
-        glCheckFramebufferStatus(GL_FRAMEBUFFER);
+    status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
     if(status != GL_FRAMEBUFFER_COMPLETE)
     {
         glDeleteRenderbuffers(1, &framebuffer->RBO);
@@ -100,7 +105,8 @@ PG_Result PG_BackendsOG33FramebufferConstruct(
     return true;
 }
 
-void PG_BackendsOG33FramebufferDestruct(
+void
+PG_BackendsOG33FramebufferDestruct(
     PG_Base* base,
     PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Framebuffer* framebuffer
@@ -111,7 +117,8 @@ void PG_BackendsOG33FramebufferDestruct(
     glDeleteTextures(1, &framebuffer->FB_texture);
 }
 
-void PG_BackendsOG33FramebufferUse(
+void
+PG_BackendsOG33FramebufferUse(
     PG_Base* base,
     PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Framebuffer* framebuffer
@@ -121,7 +128,8 @@ void PG_BackendsOG33FramebufferUse(
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffer->FBO);
 }
 
-void PG_BackendsOG33FramebufferLeave(
+void
+PG_BackendsOG33FramebufferLeave(
     PG_Base* base,
     PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Framebuffer* framebuffer
@@ -131,7 +139,8 @@ void PG_BackendsOG33FramebufferLeave(
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void PG_BackendsOG33FramebufferBeTexture(
+void
+PG_BackendsOG33FramebufferBeTexture(
     PG_Base* base,
     PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Framebuffer* framebuffer,
