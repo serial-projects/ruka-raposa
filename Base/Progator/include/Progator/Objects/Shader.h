@@ -44,7 +44,7 @@ PG_ShaderNew();
  * @warning Does not imply on `PG_ShaderConstruct`
  */
 void
-PG_ShaderDestruct(
+PG_ShaderFree(
     PG_Shader* shader
 );
 

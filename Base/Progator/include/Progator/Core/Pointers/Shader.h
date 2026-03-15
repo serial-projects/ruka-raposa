@@ -18,7 +18,7 @@ void*
 
 typedef
 void
-(*PG_PointersShaderDestructFunction)(
+(*PG_PointersShaderFreeFunction)(
     void* shader
 );
 

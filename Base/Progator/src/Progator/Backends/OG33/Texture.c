@@ -17,7 +17,7 @@ PG_BackendsOG33TextureNew()
 }
 
 void
-PG_BackendsOG33TextureDestruct(
+PG_BackendsOG33TextureFree(
     PG_BackendsOG33Texture* texture
 )
 {

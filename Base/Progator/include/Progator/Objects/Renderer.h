@@ -45,7 +45,7 @@ PG_RendererNew();
  * @warning Does not imply on `PG_RendererDestruct`
  */
 void
-PG_RendererDestruct(
+PG_RendererFree(
     PG_Renderer* renderer
 );
 

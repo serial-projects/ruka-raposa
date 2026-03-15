@@ -11,7 +11,7 @@ PG_BackendsOG33RendererNew()
     return new_renderer;
 }
 void
-PG_BackendsOG33RendererDestruct(
+PG_BackendsOG33RendererFree(
     PG_BackendsOG33Renderer* renderer
 )
 {
@@ -186,7 +186,7 @@ void PG_BackendsOG33RendererDestruct(
 )
 {
     /** We don't need to use the window. */
-    SDL_GL_DestructContext(renderer->context);
+    SDL_GL_DestroyContext(renderer->context);
 }
 
 void PG_BackendsOG33RendererSetViewport(

@@ -18,7 +18,7 @@ void*
 
 typedef
 void
-(*PG_PointersRendererDestructFunction)(
+(*PG_PointersRendererFreeFunction)(
     void* window
 );
 

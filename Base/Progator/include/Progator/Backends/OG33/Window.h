@@ -29,7 +29,7 @@ PG_BackendsOG33Window*
 PG_BackendsOG33WindowNew();
 
 void
-PG_BackendsOG33WindowDestruct(
+PG_BackendsOG33WindowFree(
     PG_BackendsOG33Window* window
 );
 

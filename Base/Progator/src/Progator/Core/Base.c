@@ -18,7 +18,7 @@ PG_BaseNew()
     return new_base;
 }
 
-void PG_BaseDestruct(
+void PG_BaseFree(
     PG_Base* base
 )
 {

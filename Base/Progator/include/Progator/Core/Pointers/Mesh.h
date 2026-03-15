@@ -18,7 +18,7 @@ void*
 
 typedef
 void
-(*PG_PointersMeshDestructFunction)(
+(*PG_PointersMeshFreeFunction)(
     void* mesh
 );
 

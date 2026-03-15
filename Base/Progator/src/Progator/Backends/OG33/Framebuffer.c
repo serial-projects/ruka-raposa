@@ -17,7 +17,7 @@ PG_BackendsOG33FramebufferNew()
 }
 
 void
-PG_BackendsOG33FramebufferDestruct(
+PG_BackendsOG33FramebufferFree(
     PG_BackendsOG33Framebuffer* framebuffer
 )
 {
