@@ -15,7 +15,7 @@ PG_Mesh* PG_MeshNew()
     return new_mesh;
 }
 
-void PG_MeshDestroy(
+void PG_MeshDestruct(
     PG_Mesh* mesh
 )
 {
@@ -75,7 +75,7 @@ void PG_MeshDestruct(
         renderer->
         window->
         pointers->
-        mesh_destroy(
+        mesh_destruct(
             mesh->
                 backend_object
         );

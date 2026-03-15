@@ -18,7 +18,7 @@ void*
 
 typedef
 void
-(*PG_PointersFramebufferDestroyFunction)(
+(*PG_PointersFramebufferDestructFunction)(
     void* mesh
 );
 

@@ -14,7 +14,7 @@ PG_Texture* PG_TextureNew()
     return new_texture;
 }
 
-void PG_TextureDestroy(
+void PG_TextureDestruct(
     PG_Texture* texture
 )
 {
@@ -73,7 +73,7 @@ void PG_TextureDestruct(
         renderer->
         window->
         pointers->
-        texture_destroy(
+        texture_destruct(
             texture->backend_object
         );
 }

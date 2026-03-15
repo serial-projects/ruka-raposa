@@ -15,7 +15,7 @@ PG_Renderer* PG_RendererNew()
     return new_renderer;
 }
 
-void PG_RendererDestroy(
+void PG_RendererDestruct(
     PG_Renderer* renderer
 )
 {
@@ -59,7 +59,7 @@ void PG_RendererDestruct(
     renderer->
         window->
         pointers->
-        renderer_destroy(renderer->backend_object);
+        renderer_destruct(renderer->backend_object);
 }
 
 void PG_RendererSetViewport(

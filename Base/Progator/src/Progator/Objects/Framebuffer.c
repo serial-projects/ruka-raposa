@@ -15,7 +15,7 @@ PG_Framebuffer* PG_FramebufferNew()
     return new_framebuffer;
 }
 
-void PG_FramebufferDestroy(
+void PG_FramebufferDestruct(
     PG_Framebuffer* framebuffer
 )
 {
@@ -75,7 +75,7 @@ void PG_FramebufferDestruct(
         renderer->
         window->
         pointers->
-        framebuffer_destroy(
+        framebuffer_destruct(
             framebuffer->backend_object
         );
 }

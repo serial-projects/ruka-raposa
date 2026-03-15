@@ -14,7 +14,7 @@ PG_Shader* PG_ShaderNew()
     return new_shader;
 }
 
-void PG_ShaderDestroy(
+void PG_ShaderDestruct(
     PG_Shader* shader
 )
 {
@@ -76,7 +76,7 @@ void PG_ShaderDestruct(
         renderer->
         window->
         pointers->
-        shader_destroy(
+        shader_destruct(
             shader->
                 backend_object
         );

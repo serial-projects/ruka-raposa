@@ -48,7 +48,7 @@ PG_FramebufferNew();
  * @warning Does not imply on `PG_FramebufferDestruct`
  */
 void
-PG_FramebufferDestroy(
+PG_FramebufferDestruct(
     PG_Framebuffer* framebuffer
 );
 

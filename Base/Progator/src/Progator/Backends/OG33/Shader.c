@@ -17,7 +17,7 @@ PG_BackendsOG33ShaderNew()
 }
 
 void
-PG_BackendsOG33ShaderDestroy(
+PG_BackendsOG33ShaderDestruct(
     PG_BackendsOG33Shader* shader
 )
 {

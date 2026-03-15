@@ -9,7 +9,7 @@ PG_Pointers PG_BackendsOG33Implementation =
 {
     /* Window: */
     (PG_PointersWindowNewFunction)(PG_BackendsOG33WindowNew),
-    (PG_PointersWindowDestroyFunction)(PG_BackendsOG33WindowDestroy),
+    (PG_PointersWindowDestructFunction)(PG_BackendsOG33WindowDestruct),
     (PG_PointersWindowConstructFunction)(PG_BackendsOG33WindowConstruct),
     (PG_PointersWindowDestructFunction)(PG_BackendsOG33WindowDestruct),
     (PG_PointersWindowDrawFunction)(PG_BackendsOG33WindowDraw),
@@ -18,7 +18,7 @@ PG_Pointers PG_BackendsOG33Implementation =
 
     /* Renderer: */
     (PG_PointersRendererNewFunction)(PG_BackendsOG33RendererNew),
-    (PG_PointersRendererDestroyFunction)(PG_BackendsOG33RendererDestroy),
+    (PG_PointersRendererDestructFunction)(PG_BackendsOG33RendererDestruct),
     (PG_PointersRendererConstructFunction)(PG_BackendsOG33RendererConstruct),
     (PG_PointersRendererDestructFunction)(PG_BackendsOG33RendererDestruct),
     (PG_PointersRendererSetViewportFunction)(PG_BackendsOG33RendererSetViewport),
@@ -29,7 +29,7 @@ PG_Pointers PG_BackendsOG33Implementation =
     
     /** Shader: */
     (PG_PointersShaderNewFunction)(PG_BackendsOG33ShaderNew),
-    (PG_PointersShaderDestroyFunction)(PG_BackendsOG33ShaderDestroy),
+    (PG_PointersShaderDestructFunction)(PG_BackendsOG33ShaderDestruct),
     (PG_PointersShaderConstructFunction)(PG_BackendsOG33ShaderConstruct),
     (PG_PointersShaderDestructFunction)(PG_BackendsOG33ShaderDestruct),
     (PG_PointersShaderBeginCompilationFunction)(PG_BackendsOG33ShaderBeginCompilation),
@@ -42,7 +42,7 @@ PG_Pointers PG_BackendsOG33Implementation =
 
     /** Mesh: */
     (PG_PointersMeshNewFunction)(PG_BackendsOG33MeshNew),
-    (PG_PointersMeshDestroyFunction)(PG_BackendsOG33MeshDestroy),
+    (PG_PointersMeshDestructFunction)(PG_BackendsOG33MeshDestruct),
     (PG_PointersMeshConstructFunction)(PG_BackendsOG33MeshConstruct),
     (PG_PointersMeshDestructFunction)(PG_BackendsOG33MeshDestruct),
     (PG_PointersMeshUseFunction)(PG_BackendsOG33MeshUse),
@@ -51,7 +51,7 @@ PG_Pointers PG_BackendsOG33Implementation =
 
     /** Framebuffer: */
     (PG_PointersFramebufferNewFunction)(PG_BackendsOG33FramebufferNew),
-    (PG_PointersFramebufferDestroyFunction)(PG_BackendsOG33FramebufferDestroy),
+    (PG_PointersFramebufferDestructFunction)(PG_BackendsOG33FramebufferDestruct),
     (PG_PointersFramebufferConstructFunction)(PG_BackendsOG33FramebufferConstruct),
     (PG_PointersFramebufferDestructFunction)(PG_BackendsOG33FramebufferDestruct),
     (PG_PointersFramebufferUseFunction)(PG_BackendsOG33FramebufferUse),
@@ -60,7 +60,7 @@ PG_Pointers PG_BackendsOG33Implementation =
 
     /** Texture: */
     (PG_PointersTextureNewFunction)(PG_BackendsOG33TextureNew),
-    (PG_PointersTextureDestroyFunction)(PG_BackendsOG33TextureDestroy),
+    (PG_PointersTextureDestructFunction)(PG_BackendsOG33TextureDestruct),
     (PG_PointersTextureConstructFunction)(PG_BackendsOG33TextureConstruct),
     (PG_PointersTextureUseFunction)(PG_BackendsOG33TextureUse),
     (PG_PointersTextureSetDataFunction)(PG_BackendsOG33TextureSetData)

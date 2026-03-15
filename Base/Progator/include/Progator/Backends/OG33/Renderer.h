@@ -39,7 +39,7 @@ PG_BackendsOG33Renderer*
 PG_BackendsOG33RendererNew();
 
 void
-PG_BackendsOG33RendererDestroy(
+PG_BackendsOG33RendererDestruct(
     PG_BackendsOG33Renderer* renderer
 );
 

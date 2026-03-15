@@ -20,7 +20,7 @@ void*
 
 typedef
 void
-(*PG_PointersWindowDestroyFunction)(
+(*PG_PointersWindowDestructFunction)(
     void* window
 );
 

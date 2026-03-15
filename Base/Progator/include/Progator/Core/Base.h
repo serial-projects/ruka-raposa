@@ -42,7 +42,7 @@ PG_BaseNew();
  * @brief Frees the `PG_Base` created by the function `PG_BaseNew`
  */
 void
-PG_BaseDestroy(
+PG_BaseDestruct(
     PG_Base* base
 );
 
