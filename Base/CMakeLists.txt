@@ -2,6 +2,7 @@
 # Project is under GPL3-license, read LICENSE.md on the root.
 
 # This includes the modules:
+include(RR_SetupNK)
 add_subdirectory(NK)
 
 # This creates an main interface called: `RR_Base`, this will provide access to

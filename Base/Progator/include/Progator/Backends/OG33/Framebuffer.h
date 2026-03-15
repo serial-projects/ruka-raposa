@@ -20,12 +20,48 @@ typedef struct PG_BackendsOG33Framebuffer
     PG_BackendsOG33FramebufferTextureHandle FB_texture;
 } PG_BackendsOG33Framebuffer;
 
-PG_BackendsOG33Framebuffer* PG_BackendsOG33FramebufferNew();
-void PG_BackendsOG33FramebufferDestroy(PG_BackendsOG33Framebuffer* framebuffer);
-PG_Result PG_BackendsOG33FramebufferConstruct(PG_Base* base, PG_BackendsOG33Renderer* renderer, PG_BackendsOG33Framebuffer* framebuffer, const PG_ViewportGeometry viewport_geometry);
-void PG_BackendsOG33FramebufferDestruct(PG_Base* base, PG_BackendsOG33Renderer* renderer, PG_BackendsOG33Framebuffer* framebuffer);
-void PG_BackendsOG33FramebufferUse(PG_Base* base, PG_BackendsOG33Renderer* renderer, PG_BackendsOG33Framebuffer* framebuffer);
-void PG_BackendsOG33FramebufferLeave(PG_Base* base, PG_BackendsOG33Renderer* renderer, PG_BackendsOG33Framebuffer* framebuffer);
-void PG_BackendsOG33FramebufferBeTexture(PG_Base* base, PG_BackendsOG33Renderer* renderer, PG_BackendsOG33Framebuffer* framebuffer, const PG_U8 slot);
+PG_BackendsOG33Framebuffer*
+PG_BackendsOG33FramebufferNew();
+
+void
+PG_BackendsOG33FramebufferDestroy(
+    PG_BackendsOG33Framebuffer* framebuffer
+);
+
+PG_Result
+PG_BackendsOG33FramebufferConstruct(
+    PG_Base* base,
+    PG_BackendsOG33Renderer* renderer,
+    PG_BackendsOG33Framebuffer* framebuffer,
+    const PG_ViewportGeometry viewport_geometry
+);
+
+void
+PG_BackendsOG33FramebufferDestruct(
+    PG_Base* base,
+    PG_BackendsOG33Renderer* renderer,
+    PG_BackendsOG33Framebuffer* framebuffer
+);
+
+void
+PG_BackendsOG33FramebufferUse(
+    PG_Base* base,
+    PG_BackendsOG33Renderer* renderer,
+    PG_BackendsOG33Framebuffer* framebuffer
+);
+
+void
+PG_BackendsOG33FramebufferLeave(
+    PG_Base* base,
+    PG_BackendsOG33Renderer* renderer,
+    PG_BackendsOG33Framebuffer* framebuffer
+);
+
+void PG_BackendsOG33FramebufferBeTexture(
+    PG_Base* base,
+    PG_BackendsOG33Renderer* renderer,
+    PG_BackendsOG33Framebuffer* framebuffer,
+    const PG_U8 slot
+);
 
 #endif

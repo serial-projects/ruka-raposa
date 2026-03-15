@@ -13,7 +13,16 @@
  */
 typedef struct RG_Backend
 {
+    /* Window Functions: */
 
+    RG_BackendWindowNew window_new;
+    RG_BackendWindowFree window_free;
+    RG_BackendWindowConstruct window_construct;
+    RG_BackendWindowDestruct window_destruct;
+    RG_BackendWindowSetSize window_set_size;
+    RG_BackendWindowSetTitle window_set_title;
+
+    /* Renderer Functions: */
 } RG_Backend;
 
 #endif

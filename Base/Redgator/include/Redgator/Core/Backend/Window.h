@@ -38,4 +38,31 @@ void(*RG_BackendWindowDestruct)(
     void* window
 );
 
+/**
+ * @brief This should set the size of the window.
+ */
+typedef
+void(*RG_BackendWindowSetSize)(
+    void* window,
+    const RG_WindowSize width,
+    const RG_WindowSize height
+);
+
+/**
+ * @brief This should set the title of the window.
+ */
+typedef
+void(*RG_BackendWindowSetTitle)(
+    void* window,
+    const RG_WindowTitle title
+);
+
+/**
+ * @brief This should tell the window to draw.
+ */
+typedef
+void(*RG_BackendWindowDraw)(
+    void* window
+);
+
 #endif

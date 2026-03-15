@@ -11,6 +11,7 @@
 #include "Progator/Backends/OG33/Renderer.h"
 #include "Progator/Core/Pointers.h"
 
-PG_Pointers* PG_BackendsOG33Get();
+PG_Pointers*
+PG_BackendsOG33Get();
 
 #endif

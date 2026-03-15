@@ -15,22 +15,80 @@
 
 typedef struct PG_BackendsOG33Renderer
 {
-    /** Context and the window we are attached to. */
+    /**
+     * @brief This contains the current context we are attached (running) into,
+     * in OpenGL, it *seems* that each context is indepedent, but this is no
+     * problem for us, we only use one.
+     */
     SDL_GLContext context;
+
+    /**
+     * @brief We need to point to the window.
+     */
     PG_BackendsOG33Window* using_window;
 
-    /** Set the current buffers to clean. */
+    /**
+     * @brief Contains what we are cleaning, in OpenGL, we can clean stencil
+     * and disable color depth, this is good for when we are dealing with UI
+     * for example, when ZTEST is not useful (we do Z on UI by rendering order).
+     */
     PG_U32 cleaning_buffers;
 } PG_BackendsOG33Renderer;
 
-PG_BackendsOG33Renderer* PG_BackendsOG33RendererNew();
-void PG_BackendsOG33RendererDestroy(PG_BackendsOG33Renderer* renderer);
-PG_Result PG_BackendsOG33RendererConstruct(PG_Base* base, PG_BackendsOG33Window* window, PG_BackendsOG33Renderer* renderer);
-void PG_BackendsOG33RendererDestruct(PG_Base* base, PG_BackendsOG33Window* window, PG_BackendsOG33Renderer* renderer);
-void PG_BackendsOG33RendererSetViewport(PG_Base* base, PG_BackendsOG33Renderer* renderer, const PG_ViewportGeometry viewport_geometry);
-void PG_BackendsOG33RendererDraw(PG_Base* base, PG_BackendsOG33Renderer* renderer);
-void PG_BackendsOG33RendererClear(PG_Base* base, PG_BackendsOG33Renderer* renderer, const PG_U32 rgba_color);
-void PG_BackendsOG33RendererEnableFeature(PG_Base* base, PG_BackendsOG33Renderer* renderer, const PG_U8 feature);
-void PG_BackendsOG33RendererDisableFeature(PG_Base* base, PG_BackendsOG33Renderer* renderer, const PG_U8 feature);
+PG_BackendsOG33Renderer*
+PG_BackendsOG33RendererNew();
+
+void
+PG_BackendsOG33RendererDestroy(
+    PG_BackendsOG33Renderer* renderer
+);
+
+PG_Result
+PG_BackendsOG33RendererConstruct(
+    PG_Base* base,
+    PG_BackendsOG33Window* window,
+    PG_BackendsOG33Renderer* renderer
+);
+
+void
+PG_BackendsOG33RendererDestruct(
+    PG_Base* base,
+    PG_BackendsOG33Window* window,
+    PG_BackendsOG33Renderer* renderer
+);
+
+void
+PG_BackendsOG33RendererSetViewport(
+    PG_Base* base,
+    PG_BackendsOG33Renderer* renderer,
+    const PG_ViewportGeometry viewport_geometry
+);
+
+void
+PG_BackendsOG33RendererDraw(
+    PG_Base* base,
+    PG_BackendsOG33Renderer* renderer
+);
+
+void
+PG_BackendsOG33RendererClear(
+    PG_Base* base,
+    PG_BackendsOG33Renderer* renderer,
+    const PG_U32 rgba_color
+);
+
+void
+PG_BackendsOG33RendererEnableFeature(
+    PG_Base* base,
+    PG_BackendsOG33Renderer* renderer,
+    const PG_U8 feature
+);
+
+void
+PG_BackendsOG33RendererDisableFeature(
+    PG_Base* base,
+    PG_BackendsOG33Renderer* renderer,
+    const PG_U8 feature
+);
 
 #endif

@@ -9,20 +9,36 @@
 
 #include "Progator/Backends/OG33/GL.h"
 
-typedef GLuint          PG_BackendsOG33Texture2DHandle;
-typedef GLuint          PG_BackendsOG33Texture3DHandle;
+/**
+ * @note We give names to the objects to have an consistency around the
+ * OpenGL backend.
+ */
 
-typedef GLuint          PG_BackendsOG33VertexShaderHandle;
-typedef GLuint          PG_BackendsOG33FragmentShaderHandle;
-typedef GLuint          PG_BackendsOG33GeometryShaderHandle;
-typedef GLuint          PG_BackendsOG33ProgramShaderHandle;
-typedef GLuint          PG_BackendsOG33UniformBufferHandle;
+/**
+ * Texture Objects:
+ */
 
-typedef GLuint          PG_BackendsOG33VertexBufferHandle;
-typedef GLuint          PG_BackendsOG33VertexAttributeBufferHandle;
+typedef GLuint PG_BackendsOG33Texture2DHandle;
+typedef GLuint PG_BackendsOG33Texture3DHandle;
 
-typedef GLuint          PG_BackendsOG33FramebufferHandle;
-typedef GLuint          PG_BackendsOG33RenderbufferHandle;
-typedef GLuint          PG_BackendsOG33FramebufferTextureHandle;
+/**
+ * Shader Objects:
+ */
+
+typedef GLuint PG_BackendsOG33VertexShaderHandle;
+typedef GLuint PG_BackendsOG33FragmentShaderHandle;
+typedef GLuint PG_BackendsOG33GeometryShaderHandle;
+typedef GLuint PG_BackendsOG33ProgramShaderHandle;
+typedef GLuint PG_BackendsOG33UniformBufferHandle;
+typedef GLuint PG_BackendsOG33VertexBufferHandle;
+typedef GLuint PG_BackendsOG33VertexAttributeBufferHandle;
+
+/**
+ * Framebuffer Objects:
+ */
+
+typedef GLuint PG_BackendsOG33FramebufferHandle;
+typedef GLuint PG_BackendsOG33RenderbufferHandle;
+typedef GLuint PG_BackendsOG33FramebufferTextureHandle;
 
 #endif

@@ -17,7 +17,6 @@ option(RR_ENABLE_TESTS "If tests should be considered" OFF)
 
 # We import our functions from the library:
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
-include(RR_SetupNK)
 
 function(RR_Main)
     # We also need to add the `NK_ThirdParty` to the main universe, after all,

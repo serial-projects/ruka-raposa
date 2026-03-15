@@ -29,12 +29,49 @@ typedef struct PG_BackendsOG33Mesh
     PG_Size nverts;
 } PG_BackendsOG33Mesh;
 
-PG_BackendsOG33Mesh* PG_BackendsOG33MeshNew();
-void PG_BackendsOG33MeshDestroy(PG_BackendsOG33Mesh* mesh);
-void PG_BackendsOG33MeshConstruct(PG_Base* base, PG_BackendsOG33Renderer* renderer, PG_BackendsOG33Mesh* mesh);
-void PG_BackendsOG33MeshDestruct(PG_Base* base, PG_BackendsOG33Renderer* renderer, PG_BackendsOG33Mesh* mesh);
-void PG_BackendsOG33MeshUse(PG_Base* base, PG_BackendsOG33Renderer* renderer, PG_BackendsOG33Mesh* mesh);
-void PG_BackendsOG33MeshSetData(PG_Base* base, PG_BackendsOG33Renderer* renderer, PG_BackendsOG33Mesh* mesh, const void* data, const PG_Size nverts);
-void PG_BackendsOG33MeshDraw(PG_Base* base, PG_BackendsOG33Renderer* renderer, PG_BackendsOG33Mesh* mesh);
+PG_BackendsOG33Mesh*
+PG_BackendsOG33MeshNew();
+
+void
+PG_BackendsOG33MeshDestroy(
+    PG_BackendsOG33Mesh* mesh
+);
+
+void
+PG_BackendsOG33MeshConstruct(
+    PG_Base* base,
+    PG_BackendsOG33Renderer* renderer,
+    PG_BackendsOG33Mesh* mesh
+);
+
+void
+PG_BackendsOG33MeshDestruct(
+    PG_Base* base,
+    PG_BackendsOG33Renderer* renderer,
+    PG_BackendsOG33Mesh* mesh
+);
+
+void
+PG_BackendsOG33MeshUse(
+    PG_Base* base,
+    PG_BackendsOG33Renderer* renderer,
+    PG_BackendsOG33Mesh* mesh
+);
+
+void
+PG_BackendsOG33MeshSetData(
+    PG_Base* base,
+    PG_BackendsOG33Renderer* renderer,
+    PG_BackendsOG33Mesh* mesh,
+    const void* data,
+    const PG_Size nverts
+);
+
+void
+PG_BackendsOG33MeshDraw(
+    PG_Base* base,
+    PG_BackendsOG33Renderer* renderer,
+    PG_BackendsOG33Mesh* mesh
+);
 
 #endif
