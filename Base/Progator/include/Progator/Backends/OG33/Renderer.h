@@ -11,7 +11,7 @@
 #include "Progator/Backends/OG33/GL.h"
 #include "Progator/Backends/OG33/Types.h"
 #include "Progator/Core/Base.h"
-#include "Progator/SDL.h"
+#include "Progator/Redirects.h"
 
 typedef struct PG_BackendsOG33Renderer
 {
@@ -61,7 +61,10 @@ void
 PG_BackendsOG33RendererSetViewport(
     PG_Base* base,
     PG_BackendsOG33Renderer* renderer,
-    const PG_ViewportGeometry viewport_geometry
+    const NK_U16 width,
+    const NK_U16 height,
+    const NK_U16 x_position,
+    const NK_U16 y_position
 );
 
 void

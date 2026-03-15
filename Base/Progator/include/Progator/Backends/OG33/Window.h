@@ -10,7 +10,7 @@
 #include "Progator/Backends/OG33/GL.h"
 #include "Progator/Backends/OG33/Types.h"
 #include "Progator/Core/Base.h"
-#include "Progator/SDL.h"
+#include "Progator/Redirects.h"
 
 typedef struct PG_BackendsOG33Window
 {
@@ -55,7 +55,8 @@ void
 PG_BackendsOG33WindowSetSize(
     PG_Base* base,
     PG_BackendsOG33Window* window,
-    const PG_WindowGeometry window_geometry
+    const NK_U16 width,
+    const NK_U16 height
 );
 
 void

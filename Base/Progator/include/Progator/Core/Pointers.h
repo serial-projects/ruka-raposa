@@ -7,10 +7,6 @@
 #ifndef PGCorePointers_h
 #define PGCorePointers_h
 
-#include "Progator/Types/Basics.h"
-#include "Progator/Types/Specifications.h"
-#include "Progator/Core/Base.h"
-
 #include "Progator/Core/Pointers/Window.h"
 #include "Progator/Core/Pointers/Renderer.h"
 #include "Progator/Core/Pointers/Shader.h"
@@ -19,11 +15,16 @@
 #include "Progator/Core/Pointers/Texture.h"
 
 /**
- * \brief This is what every backend must implement:
+ * @brief This is every function an backend must implement, they are essential
+ * and map directly to the generic API functions we provide for objects like
+ * `PG_Window` and more.
+ * 
+ * @note All the `PG_PointersWindowNewFunction` always return an `void*` instead
+ * of an determined object, this is done because we actually don't know what
+ * the backend we are using, we just pass the pointer to the implementation.
  */
 typedef struct PG_Pointers
 {
-
     /** Window: */
 
     PG_PointersWindowNewFunction window_new;
@@ -71,6 +72,7 @@ typedef struct PG_Pointers
     PG_PointersMeshDrawFunction mesh_draw;
 
     /** Framebuffer: */
+    
     PG_PointersFramebufferNewFunction framebuffer_new;
     PG_PointersFramebufferDestroyFunction framebuffer_destroy;
     PG_PointersFramebufferConstructFunction framebuffer_construct;
@@ -80,6 +82,7 @@ typedef struct PG_Pointers
     PG_PointersFramebufferBeTextureFunction framebuffer_be_texture;
 
     /** Texture: */
+
     PG_PointersTextureNewFunction texture_new;
     PG_PointersTextureDestroyFunction texture_destroy;
     PG_PointersTextureConstructFunction texture_construct;

@@ -8,34 +8,59 @@
 #define PGCoreBase_h
 
 #include "Progator/Types/Basics.h"
-#include "Progator/Types/Specifications.h"
-#include "NK/NK.h"
 
 /**
- * NOTE: This is passed to EVERY backend, OG33, Vk12, etc.
+ * @brief We need to use `NK` redirect here.
+ */
+#include "Progator/Redirects.h"
+
+/**
+ * @brief This is the structure that is passed to any backend, it contains an
+ * validator in case your backend need to report something.
  */
 typedef struct PG_Base
 {
     /**
-     * \brief The only way to get messages from the backends is by the validator
-     * and also handle error, for example, an unrecoverable OpenGL error is only
-     * adquired by this means.
+     * @brief Contains an backend for message reporting.
      */
     NK_Validator* attached_validator;
 
     /**
-     * \brief Estimated amount of memory used.
-     * 
-     * \warning This is the ESTIMATED amount of memory inside the GPU, it
-     * considers meshes and shaders passed and can only be modified by the 
-     * backend.
+     * @brief This is a estimated usage of memory for Mesh and Textures. It
+     * might not be THAT reliable but, fits the needs for an estimation anyways.
      */
     PG_U64 memory_used;
 } PG_Base;
 
-PG_Base* PG_BaseNew();
-void PG_BaseDestroy(PG_Base* base);
-PG_Result PG_BaseConstruct(PG_Base* base, NK_Validator* use_validator);
-void PG_BaseDestruct(PG_Base* base);
+/**
+ * @brief Creates an new `PG_Base`
+ */
+PG_Base*
+PG_BaseNew();
+
+/**
+ * @brief Frees the `PG_Base` created by the function `PG_BaseNew`
+ */
+void
+PG_BaseDestroy(
+    PG_Base* base
+);
+
+/**
+ * @brief Constructs the base.
+ */
+PG_Result
+PG_BaseConstruct(
+    PG_Base* base,
+    NK_Validator* use_validator
+);
+
+/**
+ * @brief Destructs the base.
+ */
+void
+PG_BaseDestruct(
+    PG_Base* base
+);
 
 #endif
