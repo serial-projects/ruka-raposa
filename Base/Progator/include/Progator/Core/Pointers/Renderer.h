@@ -43,7 +43,10 @@ void
 (*PG_PointersRendererSetViewportFunction)(
     PG_Base* base,
     void* renderer,
-    const PG_ViewportGeometry viewport_geometry
+    const PG_U16 width,
+    const PG_U16 height,
+    const PG_U16 x_position,
+    const PG_U16 y_position
 );
 
 typedef

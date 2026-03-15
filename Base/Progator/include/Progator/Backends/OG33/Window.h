@@ -55,8 +55,8 @@ void
 PG_BackendsOG33WindowSetSize(
     PG_Base* base,
     PG_BackendsOG33Window* window,
-    const NK_U16 width,
-    const NK_U16 height
+    const PG_U16 width,
+    const PG_U16 height
 );
 
 void

@@ -50,7 +50,8 @@ void
 (*PG_PointersWindowSetSizeFunction)(
     PG_Base* base,
     void* window,
-    const PG_WindowGeometry window_geometry
+    const PG_U16 width,
+    const PG_U16 height
 );
 
 typedef

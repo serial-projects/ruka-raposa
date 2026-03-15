@@ -61,10 +61,10 @@ void
 PG_BackendsOG33RendererSetViewport(
     PG_Base* base,
     PG_BackendsOG33Renderer* renderer,
-    const NK_U16 width,
-    const NK_U16 height,
-    const NK_U16 x_position,
-    const NK_U16 y_position
+    const PG_U16 width,
+    const PG_U16 height,
+    const PG_U16 x_position,
+    const PG_U16 y_position
 );
 
 void
