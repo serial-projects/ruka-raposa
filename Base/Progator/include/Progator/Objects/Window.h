@@ -10,7 +10,6 @@
 #include "Progator/Core/Base.h"
 #include "Progator/Core/Pointers.h"
 #include "Progator/Types/Basics.h"
-#include "Progator/Types/Specifications.h"
 
 /**
  * @brief This contains the window, an place where the `PG_Renderer` should
@@ -59,8 +58,8 @@ PG_WindowFree(
 PG_Result
 PG_WindowConstruct(
     PG_Window* window,
-    PG_Base* use_base,
-    PG_Pointers* use_pointers
+    PG_Base* base,
+    PG_Pointers* pointers
 );
 
 /**
@@ -88,7 +87,8 @@ PG_WindowDraw(
 void
 PG_WindowSetSize(
     PG_Window* window,
-    const PG_WindowGeometry window_geometry
+    const PG_U16 width,
+    const PG_U16 height
 );
 
 /**

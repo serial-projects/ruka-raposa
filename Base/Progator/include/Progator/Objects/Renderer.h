@@ -10,7 +10,6 @@
 #include "Progator/Core/Base.h"
 #include "Progator/Core/Pointers.h"
 #include "Progator/Types/Basics.h"
-#include "Progator/Types/Specifications.h"
 #include "Progator/Objects/Window.h"
 
 /**
@@ -23,6 +22,19 @@ typedef struct PG_Renderer
      * @brief Contains the backend object for `PG_Renderer`
      */
     void* backend_object;
+
+    /**
+     * @brief Contains the pointer to the backend: There is a order of the
+     * elements in the engine: `PG_Window` -> `PG_Renderer` -> `PG_<>`, this
+     * way you define an single `PG_Renderer` and all objects become dependent
+     * on the `PG_Renderer` you provide.
+     */
+    PG_Pointers* pointers;
+
+    /**
+     * @brief Contains the base got from the `PG_Window`
+     */
+    PG_Base* base;
 
     /**
      * @brief An renderer is attached to a window and can't be unattached. 
@@ -59,7 +71,7 @@ PG_RendererFree(
 PG_Result
 PG_RendererConstruct(
     PG_Renderer* renderer,
-    PG_Window* use_window
+    PG_Window* window
 );
 
 /**
@@ -76,7 +88,10 @@ PG_RendererDestruct(
 void
 PG_RendererSetViewport(
     PG_Renderer* renderer,
-    const PG_ViewportGeometry viewport_geometry
+    const PG_U16 width,
+    const PG_U16 height,
+    const PG_U16 x_position,
+    const PG_U16 y_position
 );
 
 /**

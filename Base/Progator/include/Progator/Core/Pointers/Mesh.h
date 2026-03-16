@@ -9,7 +9,6 @@
 #define PGCorePointersMesh_h
 
 #include "Progator/Types/Basics.h"
-#include "Progator/Types/Specifications.h"
 #include "Progator/Core/Base.h"
 
 typedef
@@ -25,32 +24,25 @@ void
 typedef
 void
 (*PG_PointersMeshConstructFunction)(
-    PG_Base* base,
-    void* renderer,
-    void* mesh
+    void* mesh,
+    void* renderer
 );
 
 typedef
 void
 (*PG_PointersMeshDestructFunction)(
-    PG_Base* base,
-    void* renderer,
     void* mesh
 );
 
 typedef
 void
 (*PG_PointersMeshUseFunction)(
-    PG_Base* base,
-    void* renderer,
     void* mesh
 );
 
 typedef
 void
 (*PG_PointersMeshSetDataFunction)(
-    PG_Base* base,
-    void* renderer,
     void* mesh,
     const void* data,
     const PG_Size nverts
@@ -59,8 +51,6 @@ void
 typedef
 void
 (*PG_PointersMeshDrawFunction)(
-    PG_Base* base,
-    void* renderer,
     void* mesh
 );
 

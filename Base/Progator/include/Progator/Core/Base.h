@@ -21,15 +21,13 @@
 typedef struct PG_Base
 {
     /**
-     * @brief Contains an backend for message reporting.
+     * @brief It is a reference to a outside validator to report logs, because
+     * `Progator` won't report logs to the stdout, only to the `NK_Validator`
+     * attributed here.
+     * 
+     * @warning You must create an external validator and link it here.
      */
-    NK_Validator* attached_validator;
-
-    /**
-     * @brief This is a estimated usage of memory for Mesh and Textures. It
-     * might not be THAT reliable but, fits the needs for an estimation anyways.
-     */
-    PG_U64 memory_used;
+    NK_Validator* validator;
 } PG_Base;
 
 /**
@@ -52,7 +50,7 @@ PG_BaseFree(
 PG_Result
 PG_BaseConstruct(
     PG_Base* base,
-    NK_Validator* use_validator
+    NK_Validator* validator
 );
 
 /**

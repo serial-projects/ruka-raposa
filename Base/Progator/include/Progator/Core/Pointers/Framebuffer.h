@@ -9,7 +9,6 @@
 #define PGCorePointersFramebuffer_h
 
 #include "Progator/Types/Basics.h"
-#include "Progator/Types/Specifications.h"
 #include "Progator/Core/Base.h"
 
 typedef
@@ -25,41 +24,35 @@ void
 typedef
 PG_Result
 (*PG_PointersFramebufferConstructFunction)(
-    PG_Base* base,
-    void* renderer,
     void* framebuffer,
-    const PG_ViewportGeometry viewport_geometry
+    void* renderer,
+    const PG_U16 width,
+    const PG_U16 height,
+    const PG_U16 x_position,
+    const PG_U16 y_position
 );
 
 typedef
 void
 (*PG_PointersFramebufferDestructFunction)(
-    PG_Base* base,
-    void* renderer,
     void* framebuffer
 );
 
 typedef
 void
 (*PG_PointersFramebufferUseFunction)(
-    PG_Base* base,
-    void* renderer,
     void* framebuffer
 );
 
 typedef
 void
 (*PG_PointersFramebufferLeaveFunction)(
-    PG_Base* base,
-    void* renderer,
     void* framebuffer
 );
 
 typedef
 void
 (*PG_PointersFramebufferBeTextureFunction)(
-    PG_Base* base,
-    void* renderer,
     void* framebuffer,
     const PG_U8 slot
 );

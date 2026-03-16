@@ -6,247 +6,134 @@
  */
 #include "Progator/Objects/Shader.h"
 
-PG_Shader* PG_ShaderNew()
+PG_Shader*
+PG_ShaderNew()
 {
-    PG_Shader* new_shader = (PG_Shader*)(
-        NK_AllocatorGet(sizeof(PG_Shader))
-    );
+    PG_Shader* new_shader = 
+        (PG_Shader*)(
+            NK_AllocatorGet(sizeof(PG_Shader))
+        );
     return new_shader;
 }
 
-void PG_ShaderFree(
+void
+PG_ShaderFree(
     PG_Shader* shader
 )
 {
     NK_AllocatorFree(shader);
 }
 
-void PG_ShaderConstruct(
-    PG_Base* base,
-    PG_Renderer* renderer,
-    PG_Shader* shader
+void
+PG_ShaderConstruct(
+    PG_Shader* shader,
+    PG_Renderer* renderer
 )
 {
     shader->renderer = renderer;
-    shader->backend_object = 
-        shader->
-            renderer->
-            window->
-            pointers->
-            shader_new();
-    shader->
-        renderer->
-        window->
-        pointers->
-        shader_construct(
-            shader->
-                renderer->
-                window->
-                base,
-            shader->
-                renderer->
-                backend_object,
-            shader->
-                backend_object
-        );
+    shader->backend_object = shader->renderer->pointers->shader_new();
+    shader->renderer->pointers->shader_construct(
+        shader->backend_object,
+        shader->renderer->backend_object
+    );
 }
 
-void PG_ShaderDestruct(
-    PG_Base* base,
+void
+PG_ShaderDestruct(
     PG_Shader* shader
 )
 {
-    shader->
-        renderer->
-        window->
-        pointers->
-        shader_destruct(
-            shader->
-                renderer->
-                window->
-                base,
-            shader->
-                renderer->
-                backend_object,
-            shader->
-                backend_object
-        );
-        
-    shader->
-        renderer->
-        window->
-        pointers->
-        shader_free(
-            shader->
-                backend_object
-        );
+    shader->renderer->pointers->shader_destruct(
+        shader->backend_object
+    );
 }
 
-PG_Result PG_ShaderBeginCompilation(
-    PG_Base* base,
+PG_Result
+PG_ShaderBeginCompilation(
     PG_Shader* shader
 )
 {
-    shader->
-        renderer->
-        window->
-        pointers->
-        shader_begin_compilation(
-            shader->
-                renderer->
-                window->
-                base,
-            shader->
-                renderer->
-                backend_object,
-            shader->
-                backend_object
-        );
+    shader->renderer->pointers->shader_begin_compilation(
+        shader->backend_object
+    );
 }
 
-PG_Result PG_ShaderLoadVertexShader(
-    PG_Base* base,
+PG_Result
+PG_ShaderLoadVertexShader(
     PG_Shader* shader,
     const PG_U8* buffer
 )
 {
-    return
-        shader->
-            renderer->
-            window->
-            pointers->
-            shader_load_vertex_shader(
-                shader->
-                    renderer->
-                    window->
-                    base,
-                shader->
-                    renderer->
-                    backend_object,
-                shader->
-                    backend_object,
-                buffer
-            );
+    return (
+        shader->renderer->pointers->shader_load_vertex_shader(
+            shader->backend_object,
+            buffer
+        )
+    );
 }
 
-PG_Result PG_ShaderLoadFragmentShader(
-    PG_Base* base,
+PG_Result
+PG_ShaderLoadFragmentShader(
     PG_Shader* shader,
     const PG_U8* buffer
 )
 {
-    return
-        shader->
-            renderer->
-            window->
-            pointers->
-            shader_load_fragment_shader(
-                shader->
-                    renderer->
-                    window->
-                    base,
-                shader->
-                    renderer->
-                    backend_object,
-                shader->
-                    backend_object,
-                buffer
-            );
+    return (
+        shader->renderer->pointers->shader_load_fragment_shader(
+            shader->backend_object,
+            buffer
+        )
+    );
 }
 
-PG_Result PG_ShaderLoadGeometryShader(
-    PG_Base* base,
+PG_Result
+PG_ShaderLoadGeometryShader(
     PG_Shader* shader,
     const PG_U8* buffer
 )
 {
-    return
-        shader->
-            renderer->
-            window->
-            pointers->
-            shader_load_geometry_shader(
-                shader->
-                    renderer->
-                    window->
-                    base,
-                shader->
-                    renderer->
-                    backend_object,
-                shader->
-                    backend_object,
-                buffer
-            );
+    return (
+        shader->renderer->pointers->shader_load_geometry_shader(
+            shader->backend_object,
+            buffer
+        )
+    );
 }
 
-PG_Result PG_ShaderFinishCompilation(
-    PG_Base* base,
+PG_Result
+PG_ShaderFinishCompilation(
     PG_Shader* shader
 )
 {
-    shader->
-        renderer->
-        window->
-        pointers->
-        shader_finish_compilation(
-            shader->
-                renderer->
-                window->
-                base,
-            shader->
-                renderer->
-                backend_object,
-            shader->
-                backend_object
-        );
+    return (
+        shader->renderer->pointers->shader_finish_compilation(
+            shader->backend_object
+        )
+    );
 }
 
-void PG_ShaderUse(
-    PG_Base* base,
+void
+PG_ShaderUse(
     PG_Shader* shader
 )
 {
-    shader->
-        renderer->
-        window->
-        pointers->
-        shader_use(
-            shader->
-                renderer->
-                window->
-                base,
-            shader->
-                renderer->
-                backend_object,
-            shader->
-                backend_object
-        );
+    shader->renderer->pointers->shader_use(
+        shader->backend_object
+    );
 }
 
-void PG_ShaderSetData(
-    PG_Base* base,
+void
+PG_ShaderSetData(
     PG_Shader* shader,
     const PG_U8 slot,
     const void* data,
     const PG_Size data_size
 )
 {
-    shader->
-        renderer->
-        window->
-        pointers->
-        shader_set_data(
-            shader->
-                renderer->
-                window->
-                base,
-            shader->
-                renderer->
-                backend_object,
-            shader->
-                backend_object,
-            slot,
-            data,
-            data_size
-        );
+    shader->renderer->pointers->shader_set_data(
+        shader->backend_object,
+        slot,
+        data,
+        data_size
+    );
 }

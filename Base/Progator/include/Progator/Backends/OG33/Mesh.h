@@ -15,16 +15,23 @@
 
 typedef struct PG_BackendsOG33Mesh
 {
-    /** The two main buffers we need to draw: */
+    /**
+     * @brief Holds an reference to the renderer.
+     */
+    PG_BackendsOG33Renderer* renderer;
+
+    /**
+     * @brief VBO = Vertex Buffer Object.
+     */
     PG_BackendsOG33VertexBufferHandle VBO;
+
+    /**
+     * @brief VAO = Vertex Attribute Object.
+     */
     PG_BackendsOG33VertexAttributeBufferHandle VAO;
 
     /**
-     * Keep a counter of how much triangles we need to draw:
-     * 
-     * NOTE: By Progator Specification, we can ONLY draw triangles, meaning 
-     * quads will be bugged, so always say how much data you have for triangles,
-     * why? Because most drivers break down QUADS to Triangles.
+     * @brief How many triangles we can draw.
      */
     PG_Size nverts;
 } PG_BackendsOG33Mesh;
@@ -39,29 +46,22 @@ PG_BackendsOG33MeshFree(
 
 void
 PG_BackendsOG33MeshConstruct(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
-    PG_BackendsOG33Mesh* mesh
+    PG_BackendsOG33Mesh* mesh,
+    PG_BackendsOG33Renderer* renderer
 );
 
 void
 PG_BackendsOG33MeshDestruct(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Mesh* mesh
 );
 
 void
 PG_BackendsOG33MeshUse(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Mesh* mesh
 );
 
 void
 PG_BackendsOG33MeshSetData(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Mesh* mesh,
     const void* data,
     const PG_Size nverts
@@ -69,8 +69,6 @@ PG_BackendsOG33MeshSetData(
 
 void
 PG_BackendsOG33MeshDraw(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Mesh* mesh
 );
 

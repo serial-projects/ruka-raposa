@@ -6,103 +6,62 @@
  */
 #include "Progator/Objects/Texture.h"
 
-PG_Texture* PG_TextureNew()
+PG_Texture*
+PG_TextureNew()
 {
-    PG_Texture* new_texture = (PG_Texture*)(
-        NK_AllocatorGet(sizeof(PG_Texture))
-    );
+    PG_Texture* new_texture = 
+        (PG_Texture*)(
+            NK_AllocatorGet(sizeof(PG_Texture))
+        );
     return new_texture;
 }
 
-void PG_TextureFree(
+void
+PG_TextureFree(
     PG_Texture* texture
 )
 {
     NK_AllocatorFree(texture);
 }
 
-void PG_TextureConstruct(
-    PG_Base* base,
-    PG_Renderer* renderer,
-    PG_Texture* texture
+void
+PG_TextureConstruct(
+    PG_Texture* texture,
+    PG_Renderer* renderer
 )
 {
     texture->renderer = renderer;
-    texture->backend_object = 
-        texture->
-            renderer->
-            window->
-            pointers->
-            texture_new();
-    texture->
-        renderer->
-        window->
-        pointers->
-        texture_construct(
-            texture->
-                renderer->
-                window->
-                base,
-            texture->
-                renderer->
-                backend_object,
-            texture->backend_object
-        );
+    texture->backend_object = texture->renderer->pointers->texture_new();
+    texture->renderer->pointers->texture_construct(
+        texture->backend_object,
+        texture->renderer->backend_object
+    );
 }
 
-void PG_TextureDestruct(
-    PG_Base* base,
+void
+PG_TextureDestruct(
     PG_Texture* texture
 )
 {
-    texture->
-        renderer->
-        window->
-        pointers->
-        texture_destruct(
-            texture->
-                renderer->
-                window->
-                base,
-            texture->
-                renderer->
-                backend_object,
-            texture->backend_object
-        );
-    texture->
-        renderer->
-        window->
-        pointers->
-        texture_free(
-            texture->backend_object
-        );
+    texture->renderer->pointers->texture_destruct(
+        texture->backend_object
+    );
 }
 
-void PG_TextureUse(
-    PG_Base* base,
+void
+PG_TextureUse(
     PG_Texture* texture,
     const PG_U8 slot
 )
 {
-    texture->
-        renderer->
-        window->
-        pointers->
-        texture_use(
-            texture->
-                renderer->
-                window->
-                base,
-            texture->
-                renderer->
-                backend_object,
-            texture->backend_object,
-            slot
-        );
+    texture->renderer->pointers->texture_use(
+        texture->backend_object,
+        slot
+    );
 }
 
-void PG_TextureSetData(
-    PG_Base* base,
+void
+PG_TextureSetData(
     PG_Texture* texture,
     const void* data,
     const PG_Size data_size,
@@ -110,22 +69,11 @@ void PG_TextureSetData(
     PG_U32 height
 )
 {
-    texture->
-        renderer->
-        window->
-        pointers->
-        texture_set_data(
-            texture->
-                renderer->
-                window->
-                base,
-            texture->
-                renderer->
-                backend_object,
-            texture->backend_object,
-            data,
-            data_size,
-            width,
-            height
-        );
+    texture->renderer->pointers->texture_set_data(
+        texture->backend_object,
+        data,
+        data_size,
+        width,
+        height
+    );
 }

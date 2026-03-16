@@ -26,11 +26,13 @@ PG_BackendsOG33MeshFree(
 
 void
 PG_BackendsOG33MeshConstruct(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
-    PG_BackendsOG33Mesh* mesh
+    PG_BackendsOG33Mesh* mesh,
+    PG_BackendsOG33Renderer* renderer
 )
 {
+    mesh->renderer = renderer;
+
+    /** Generate the buffers: */
     glGenBuffers(1, &mesh->VBO);
     glGenVertexArrays(1, &mesh->VAO);
     mesh->nverts = 0;
@@ -38,8 +40,6 @@ PG_BackendsOG33MeshConstruct(
 
 void
 PG_BackendsOG33MeshDestruct(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Mesh* mesh
 )
 {
@@ -58,8 +58,6 @@ PG_BackendsOG33MeshDestruct(
 
 void
 PG_BackendsOG33MeshUse(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Mesh* mesh
 )
 {
@@ -69,8 +67,6 @@ PG_BackendsOG33MeshUse(
 
 void
 PG_BackendsOG33MeshSetData(
-    PG_Base* base, 
-    PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Mesh* mesh,
     const void* data,
     const PG_Size nverts
@@ -112,8 +108,6 @@ PG_BackendsOG33MeshSetData(
 
 void
 PG_BackendsOG33MeshDraw(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Mesh* mesh
 )
 {

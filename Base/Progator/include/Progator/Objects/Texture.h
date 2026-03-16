@@ -55,9 +55,8 @@ PG_TextureFree(
  */
 void
 PG_TextureConstruct(
-    PG_Base* base,
-    PG_Renderer* renderer,
-    PG_Texture* texture
+    PG_Texture* texture,
+    PG_Renderer* renderer
 );
 
 /**
@@ -65,7 +64,6 @@ PG_TextureConstruct(
  */
 void
 PG_TextureDestruct(
-    PG_Base* base,
     PG_Texture* texture
 );
 
@@ -74,7 +72,6 @@ PG_TextureDestruct(
  */
 void
 PG_TextureUse(
-    PG_Base* base,
     PG_Texture* texture,
     const PG_U8 slot
 );
@@ -86,7 +83,6 @@ PG_TextureUse(
  */
 void
 PG_TextureSetData(
-    PG_Base* base,
     PG_Texture* texture,
     const void* data,
     const PG_Size data_size,

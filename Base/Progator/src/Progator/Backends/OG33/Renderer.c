@@ -20,12 +20,15 @@ PG_BackendsOG33RendererFree(
 
 PG_Result
 PG_BackendsOG33RendererConstruct(
-    PG_Base* base,
-    PG_BackendsOG33Window* window,
-    PG_BackendsOG33Renderer* renderer
+    PG_BackendsOG33Renderer* renderer,
+    PG_BackendsOG33Window* window
 )
 {
     PG_Result good = true;
+
+    /** Assign the window to the renderer. */
+    renderer->window = window;
+    renderer->base = window->base;
 
     /**
      * Set the 3.3.0 CORE OpenGL for our OG33 Backend.
@@ -102,7 +105,7 @@ PG_BackendsOG33RendererConstruct(
     if(renderer->context == NULL)
     {
         NK_ValidatorPushMessage(
-            base->attached_validator,
+            renderer->base->validator,
             NK_VALIDATOR_LEVEL_ERROR,
             "[Progator/ OpenGL 3.3]: Failed to initialize context due: %s",
             SDL_GetError()
@@ -115,7 +118,7 @@ PG_BackendsOG33RendererConstruct(
     if(!gladLoadGLLoader((GLADloadproc)(SDL_GL_GetProcAddress)))
     {
         NK_ValidatorPushMessage(
-            base->attached_validator,
+            renderer->base->validator,
             NK_VALIDATOR_LEVEL_ERROR,
             "[Progator/ OpenGL 3.3]: Failed to initialize GLAD"
         );
@@ -130,7 +133,7 @@ PG_BackendsOG33RendererConstruct(
      * NOTE: Set an early viewport to avoid total black screen.
      */
     NK_ValidatorPushMessage(
-        base->attached_validator,
+        renderer->base->validator,
         NK_VALIDATOR_LEVEL_DEBUG,
         "[Progator/ OpenGL 3.3]: Setting Viewport to 800x640x0x0"
     );
@@ -141,19 +144,19 @@ PG_BackendsOG33RendererConstruct(
      * instance we just have open!
      */
     NK_ValidatorPushMessage(
-        base->attached_validator,
+        renderer->base->validator,
         NK_VALIDATOR_LEVEL_DEBUG,
         "[Progator/ OpenGL 3.3]: GL_VENDOR = %s",
         glGetString(GL_VENDOR)
     );
     NK_ValidatorPushMessage(
-        base->attached_validator,
+        renderer->base->validator,
         NK_VALIDATOR_LEVEL_DEBUG,
         "[Progator/ OpenGL 3.3]: GL_RENDERER = %s",
         glGetString(GL_RENDERER)
     );
     NK_ValidatorPushMessage(
-        base->attached_validator,
+        renderer->base->validator,
         NK_VALIDATOR_LEVEL_DEBUG,
         "[Progator/ OpenGL 3.3]: GL_VERSION = %s",
         glGetString(GL_VERSION)
@@ -171,7 +174,6 @@ PG_BackendsOG33RendererConstruct(
     /**
      * NOTE: Initially, we want only the color buffer to be cleaning!
      */
-    renderer->using_window = window;
     renderer->cleaning_buffers = GL_COLOR_BUFFER_BIT;
 
     failed_initialize_context_ending:
@@ -179,9 +181,8 @@ PG_BackendsOG33RendererConstruct(
     return good;
 }
 
-void PG_BackendsOG33RendererDestruct(
-    PG_Base* base,
-    PG_BackendsOG33Window* window,
+void
+PG_BackendsOG33RendererDestruct(
     PG_BackendsOG33Renderer* renderer
 )
 {
@@ -189,8 +190,8 @@ void PG_BackendsOG33RendererDestruct(
     SDL_GL_DestroyContext(renderer->context);
 }
 
-void PG_BackendsOG33RendererSetViewport(
-    PG_Base* base,
+void
+PG_BackendsOG33RendererSetViewport(
     PG_BackendsOG33Renderer* renderer,
     const PG_U16 width,
     const PG_U16 height,
@@ -206,23 +207,16 @@ void PG_BackendsOG33RendererSetViewport(
     );
 }
 
-void PG_BackendsOG33RendererDraw(
-    PG_Base* base,
+void
+PG_BackendsOG33RendererDraw(
     PG_BackendsOG33Renderer* renderer
 )
 {
-    /** 
-     * TODO: move this to PG_BackendsOG33WindowDraw: We don't need any special
-     * code for OpenGL to render anything, all we need to do is flip the window
-     * and voi-a lá! The window is drawn!
-     */
-    SDL_GL_SwapWindow(
-        renderer->using_window->os_window
-    );
+    return;
 }
 
-void PG_BackendsOG33RendererClear(
-    PG_Base* base,
+void
+PG_BackendsOG33RendererClear(
     PG_BackendsOG33Renderer* renderer,
     const PG_U32 rgba_color
 )
@@ -238,8 +232,8 @@ void PG_BackendsOG33RendererClear(
     glClear(renderer->cleaning_buffers);
 }
 
-void PG_BackendsOG33RendererEnableFeature(
-    PG_Base* base,
+void
+PG_BackendsOG33RendererEnableFeature(
     PG_BackendsOG33Renderer* renderer,
     const PG_U8 feature
 )
@@ -267,7 +261,6 @@ void PG_BackendsOG33RendererEnableFeature(
 }
 
 void PG_BackendsOG33RendererDisableFeature(
-    PG_Base* base,
     PG_BackendsOG33Renderer* renderer,
     const PG_U8 feature
 )
