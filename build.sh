@@ -11,6 +11,19 @@ RR_TestBuildFolder(){
     fi
 }
 
+RR_RunCMAKEToConstructDebugVersionUseMake(){
+    # This is the same of the RR_RunCMAKEToConstructDebugVersionUseMake:
+    cd ./Build
+        cmake                                       \
+            ..                                      \
+            -DCMAKE_BUILD_TYPE="Debug"              \
+            -DRR_ENABLE_ASAN=ON                     \
+            -DRR_ENABLE_TESTS=ON
+        [[ $? -eq 0 ]] && cmake --build . -v -j10
+        [[ $? -eq 0 ]] && ctest . --extra-verbose --stop-on-failure --progress
+    cd ..
+}
+
 RR_RunCMAKEToConstructDebugVersion(){
     # This will enter the ./Build directory, make sure it is there:
     cd ./Build
@@ -29,6 +42,8 @@ RR_RunCMAKEToConstructDebugVersion(){
 
 RR_Main(){
     RR_TestBuildFolder
-    RR_RunCMAKEToConstructDebugVersion
+    RR_RunCMAKEToConstructDebugVersionUseMake
 }
-RR_Main;
+
+# NOTE: This fix any language problem.
+LANG=C RR_Main;

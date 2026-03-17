@@ -104,7 +104,7 @@ PG_BackendsOG33ShaderLoadVertexShader(
     const PG_U8* buffer
 )
 {
-    GLchar* b;
+    const GLchar* b = (const GLchar*)(buffer);
     GLint adquired_status;
     PG_C8 log_buffer[PG_CONFIG_BACKENDS_OG33_SHADER_LOG_SIZE];
 
@@ -112,7 +112,6 @@ PG_BackendsOG33ShaderLoadVertexShader(
     shader->VS = glCreateShader(GL_VERTEX_SHADER);
 
     /** Pass the shader to be compiled: */
-    b = (const GLchar*)buffer;
     glShaderSource(shader->VS, 1, &b, NULL);
     glCompileShader(shader->VS);
 
@@ -143,14 +142,13 @@ PG_BackendsOG33ShaderLoadFragmentShader(
     const PG_U8* buffer
 )
 {
-    GLchar* b;
+    const GLchar* b = (const GLchar*)(buffer);
     GLint adquired_status;
     PG_C8 log_buffer[PG_CONFIG_BACKENDS_OG33_SHADER_LOG_SIZE];
 
     /** NOTE: We do the whole steps to compiling shaders: */
     shader->FS = glCreateShader(GL_FRAGMENT_SHADER);
 
-    b = (const GLchar*)buffer;
     glShaderSource(shader->FS, 1, &b, NULL);
     glCompileShader(shader->FS);
 
@@ -181,13 +179,12 @@ PG_BackendsOG33ShaderLoadGeometryShader(
     const PG_U8* buffer
 )
 {
-    GLchar* b;
+    const GLchar* b = (const GLchar*)(buffer);
     GLint adquired_status;
     PG_C8 log_buffer[PG_CONFIG_BACKENDS_OG33_SHADER_LOG_SIZE];
 
     /** NOTE: We do the whole steps to compiling shaders: */
     shader->GS = glCreateShader(GL_GEOMETRY_SHADER);
-    b = (const GLchar*)buffer;
     glShaderSource(shader->GS, 1, &b, NULL);
     glCompileShader(shader->GS);
 
@@ -262,8 +259,6 @@ PG_BackendsOG33ShaderUse(
 
 void
 PG_BackendsOG33ShaderSetData(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Shader* shader,
     const PG_U8 slot,
     const void* data,

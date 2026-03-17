@@ -80,6 +80,7 @@ PG_BackendsOG33ShaderLoadVertexShader(
 
 PG_Result
 PG_BackendsOG33ShaderLoadFragmentShader(
+    PG_BackendsOG33Shader* shader,
     const PG_U8* buffer
 );
 

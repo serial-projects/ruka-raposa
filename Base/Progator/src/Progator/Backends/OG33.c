@@ -62,6 +62,7 @@ PG_Pointers PG_BackendsOG33Implementation =
     (PG_PointersTextureNewFunction)(PG_BackendsOG33TextureNew),
     (PG_PointersTextureFreeFunction)(PG_BackendsOG33TextureFree),
     (PG_PointersTextureConstructFunction)(PG_BackendsOG33TextureConstruct),
+    (PG_PointersTextureDestructFunction)(PG_BackendsOG33TextureDestruct),
     (PG_PointersTextureUseFunction)(PG_BackendsOG33TextureUse),
     (PG_PointersTextureSetDataFunction)(PG_BackendsOG33TextureSetData)
 };
