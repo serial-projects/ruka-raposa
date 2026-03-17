@@ -57,9 +57,12 @@ PG_FramebufferFree(
  */
 PG_Result
 PG_FramebufferConstruct(
-    PG_Renderer* renderer,
     PG_Framebuffer* framebuffer,
-    const PG_ViewportGeometry viewport_geometry
+    PG_Renderer* renderer,
+    const PG_U16 width,
+    const PG_U16 height,
+    const PG_U16 x_position,
+    const PG_U16 y_position
 );
 
 /**

@@ -9,7 +9,6 @@
 #define PGCorePointersRenderer_h
 
 #include "Progator/Types/Basics.h"
-#include "Progator/Types/Specifications.h"
 #include "Progator/Core/Base.h"
 
 typedef
@@ -19,29 +18,25 @@ void*
 typedef
 void
 (*PG_PointersRendererFreeFunction)(
-    void* window
+    void* renderer
 );
 
 typedef
 PG_Result
 (*PG_PointersRendererConstructFunction)(
-    PG_Base* base,
-    void* window,
-    void* renderer
+    void* renderer,
+    void* window
 );
 
 typedef
 void
 (*PG_PointersRendererDestructFunction)(
-    PG_Base* base,
-    void* window,
     void* renderer
 );
 
 typedef
 void
 (*PG_PointersRendererSetViewportFunction)(
-    PG_Base* base,
     void* renderer,
     const PG_U16 width,
     const PG_U16 height,
@@ -52,14 +47,12 @@ void
 typedef
 void
 (*PG_PointersRendererDrawFunction)(
-    PG_Base* base,
     void* renderer
 );
 
 typedef
 void
 (*PG_PointersRendererClearFunction)(
-    PG_Base* base,
     void* renderer,
     const PG_U32 rgba_color
 );
@@ -67,7 +60,6 @@ void
 typedef
 void
 (*PG_PointersRendererEnableFeatureFunction)(
-    PG_Base* base,
     void* renderer,
     const PG_U8 feature
 );
@@ -75,7 +67,6 @@ void
 typedef
 void
 (*PG_PointersRendererDisableFeatureFunction)(
-    PG_Base* base,
     void* renderer,
     const PG_U8 feature
 );

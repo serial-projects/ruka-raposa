@@ -18,6 +18,11 @@ typedef struct PG_BackendsOG33Window
      * @brief This contains the OS window, which is based on SDL.
      */
     SDL_Window* os_window;
+    
+    /**
+     * @brief holds the base.
+     */
+    PG_Base* base;
 
     /**
      * @brief An quick access to the window ID.
@@ -35,25 +40,22 @@ PG_BackendsOG33WindowFree(
 
 NK_Result
 PG_BackendsOG33WindowConstruct(
-    PG_Base* base,
-    PG_BackendsOG33Window* window
+    PG_BackendsOG33Window* window,
+    PG_Base* base
 );
 
 void
 PG_BackendsOG33WindowDestruct(
-    PG_Base* base,
     PG_BackendsOG33Window* window
 );
 
 void
 PG_BackendsOG33WindowDraw(
-    PG_Base* base,
     PG_BackendsOG33Window* window
 );
 
 void
 PG_BackendsOG33WindowSetSize(
-    PG_Base* base,
     PG_BackendsOG33Window* window,
     const PG_U16 width,
     const PG_U16 height
@@ -61,7 +63,6 @@ PG_BackendsOG33WindowSetSize(
 
 void
 PG_BackendsOG33WindowSetTitle(
-    PG_Base* base,
     PG_BackendsOG33Window* window,
     const PG_C8* title
 );

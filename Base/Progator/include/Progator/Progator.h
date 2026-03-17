@@ -7,18 +7,10 @@
 #ifndef PG_h
 #define PG_h
 
-/** Libraries: */
-#include "Progator/NK.h"
-#include "Progator/SDL.h"
-
-/** Core and Objects: */
+#include "Progator/Redirects.h"
 #include "Progator/Core.h"
 #include "Progator/Objects.h"
-
-/** Types: */
 #include "Progator/Types.h"
-
-/** Backends: */
 #include "Progator/Backends.h"
 
 #endif

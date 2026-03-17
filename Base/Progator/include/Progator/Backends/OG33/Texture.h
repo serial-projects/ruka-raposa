@@ -16,6 +16,11 @@
 typedef struct PG_BackendsOG33Texture
 {
     /**
+     * @brief Holds the `PG_Renderer`
+     */
+    PG_BackendsOG33Renderer* renderer;
+
+    /**
      * @brief This contains the handle to the OpenGL texture object.
      */
     PG_BackendsOG33Texture2DHandle handle;
@@ -41,30 +46,23 @@ PG_BackendsOG33TextureFree(
 
 void
 PG_BackendsOG33TextureConstruct(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
-    PG_BackendsOG33Texture* texture
+    PG_BackendsOG33Texture* texture,
+    PG_BackendsOG33Renderer* renderer
 );
 
 void
 PG_BackendsOG33TextureDestruct(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Texture* texture
 );
 
 void
 PG_BackendsOG33TextureUse(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Texture* texture,
     const PG_U8 slot
 );
 
 void
 PG_BackendsOG33TextureSetData(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Texture* texture,
     const void* data,
     const PG_Size data_size,

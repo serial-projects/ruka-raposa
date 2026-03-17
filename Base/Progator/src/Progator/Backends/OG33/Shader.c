@@ -26,9 +26,8 @@ PG_BackendsOG33ShaderFree(
 
 void
 PG_BackendsOG33ShaderConstruct(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
-    PG_BackendsOG33Shader* shader
+    PG_BackendsOG33Shader* shader,
+    PG_BackendsOG33Renderer* renderer
 )
 {
     /** 
@@ -55,12 +54,12 @@ PG_BackendsOG33ShaderConstruct(
     shader->FS = 0;
     shader->GS = 0;
     shader->SP = 0;
+
+    shader->renderer = renderer;
 }
 
 void
 PG_BackendsOG33ShaderDestruct(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Shader* shader
 )
 {
@@ -92,8 +91,6 @@ PG_BackendsOG33ShaderDestruct(
 
 PG_Result
 PG_BackendsOG33ShaderBeginCompilation(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Shader* shader
 )
 {
@@ -103,13 +100,11 @@ PG_BackendsOG33ShaderBeginCompilation(
 
 PG_Result
 PG_BackendsOG33ShaderLoadVertexShader(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Shader* shader,
     const PG_U8* buffer
 )
 {
-    GLchar* b;
+    const GLchar* b = (const GLchar*)(buffer);
     GLint adquired_status;
     PG_C8 log_buffer[PG_CONFIG_BACKENDS_OG33_SHADER_LOG_SIZE];
 
@@ -117,7 +112,6 @@ PG_BackendsOG33ShaderLoadVertexShader(
     shader->VS = glCreateShader(GL_VERTEX_SHADER);
 
     /** Pass the shader to be compiled: */
-    b = (const GLchar*)buffer;
     glShaderSource(shader->VS, 1, &b, NULL);
     glCompileShader(shader->VS);
 
@@ -132,7 +126,7 @@ PG_BackendsOG33ShaderLoadVertexShader(
             (GLchar*)(&log_buffer)
         );
         NK_ValidatorPushMessage(
-            base->attached_validator,
+            shader->renderer->base->validator,
             NK_VALIDATOR_LEVEL_ERROR,
             "[Progator/ OpenGL 3.3]: Failed to compile vertex shader due: %s",
             log_buffer
@@ -144,20 +138,17 @@ PG_BackendsOG33ShaderLoadVertexShader(
 
 PG_Result
 PG_BackendsOG33ShaderLoadFragmentShader(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Shader* shader,
     const PG_U8* buffer
 )
 {
-    GLchar* b;
+    const GLchar* b = (const GLchar*)(buffer);
     GLint adquired_status;
     PG_C8 log_buffer[PG_CONFIG_BACKENDS_OG33_SHADER_LOG_SIZE];
 
     /** NOTE: We do the whole steps to compiling shaders: */
     shader->FS = glCreateShader(GL_FRAGMENT_SHADER);
 
-    b = (const GLchar*)buffer;
     glShaderSource(shader->FS, 1, &b, NULL);
     glCompileShader(shader->FS);
 
@@ -172,7 +163,7 @@ PG_BackendsOG33ShaderLoadFragmentShader(
             (GLchar*)(&log_buffer)
         );
         NK_ValidatorPushMessage(
-            base->attached_validator,
+            shader->renderer->base->validator,
             NK_VALIDATOR_LEVEL_ERROR,
             "[Progator/ OpenGL 3.3]: Failed to compile fragment shader due: %s",
             log_buffer
@@ -184,19 +175,16 @@ PG_BackendsOG33ShaderLoadFragmentShader(
 
 PG_Result
 PG_BackendsOG33ShaderLoadGeometryShader(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Shader* shader,
     const PG_U8* buffer
 )
 {
-    GLchar* b;
+    const GLchar* b = (const GLchar*)(buffer);
     GLint adquired_status;
     PG_C8 log_buffer[PG_CONFIG_BACKENDS_OG33_SHADER_LOG_SIZE];
 
     /** NOTE: We do the whole steps to compiling shaders: */
     shader->GS = glCreateShader(GL_GEOMETRY_SHADER);
-    b = (const GLchar*)buffer;
     glShaderSource(shader->GS, 1, &b, NULL);
     glCompileShader(shader->GS);
 
@@ -211,7 +199,7 @@ PG_BackendsOG33ShaderLoadGeometryShader(
             (GLchar*)(&log_buffer)
         );
         NK_ValidatorPushMessage(
-            base->attached_validator,
+            shader->renderer->base->validator,
             NK_VALIDATOR_LEVEL_ERROR,
             "[Progator/ OpenGL 3.3]: Failed to compile geometry shader due: %s",
             log_buffer
@@ -223,8 +211,6 @@ PG_BackendsOG33ShaderLoadGeometryShader(
 
 PG_Result
 PG_BackendsOG33ShaderFinishCompilation(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Shader* shader
 )
 {
@@ -253,7 +239,7 @@ PG_BackendsOG33ShaderFinishCompilation(
             (GLchar*)(&log_buffer)
         );
         NK_ValidatorPushMessage(
-            base->attached_validator,
+            shader->renderer->base->validator,
             NK_VALIDATOR_LEVEL_ERROR,
             "[Progator/ OpenGL 3.3]: Failed to link shaders due: %s",
             log_buffer
@@ -265,8 +251,6 @@ PG_BackendsOG33ShaderFinishCompilation(
 
 void
 PG_BackendsOG33ShaderUse(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Shader* shader
 )
 {
@@ -275,8 +259,6 @@ PG_BackendsOG33ShaderUse(
 
 void
 PG_BackendsOG33ShaderSetData(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Shader* shader,
     const PG_U8 slot,
     const void* data,
@@ -289,7 +271,7 @@ PG_BackendsOG33ShaderSetData(
     if(slot >= PG_CONFIG_BACKENDS_OG33_MAX_SHADER_DATA_SLOTS)
     {
         NK_ValidatorPushMessage(
-            base->attached_validator,
+            shader->renderer->base->validator,
             NK_VALIDATOR_LEVEL_WARNING,
             "[Progator/ OpenGL 3.3]: Failed to copy data to slot %d (max: %d)",
             (PG_S32)(slot),

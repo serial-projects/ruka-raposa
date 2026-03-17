@@ -6,7 +6,8 @@
  */
 #include "Progator/Objects/Mesh.h"
 
-PG_Mesh* PG_MeshNew()
+PG_Mesh*
+PG_MeshNew()
 {
     PG_Mesh* new_mesh =
         (PG_Mesh*)(
@@ -15,135 +16,69 @@ PG_Mesh* PG_MeshNew()
     return new_mesh;
 }
 
-void PG_MeshFree(
+void
+PG_MeshFree(
     PG_Mesh* mesh
 )
 {
     NK_AllocatorFree(mesh);
 }
 
-void PG_MeshConstruct(
-    PG_Base* base,
-    PG_Renderer* renderer,
-    PG_Mesh* mesh
+void
+PG_MeshConstruct(
+    PG_Mesh* mesh,
+    PG_Renderer* renderer
 )
 {
     mesh->renderer = renderer;
     mesh->backend_object = 
-        mesh->
-            renderer->
-            window->
-            pointers->
-            mesh_new();
-    mesh->
-        renderer->
-        window->
-        pointers->
-        mesh_construct(
-            mesh-> 
-                renderer->
-                window->
-                base,
-            mesh->
-                renderer->
-                backend_object,
-            mesh->backend_object
-        );
+        mesh->renderer->pointers->mesh_new();
+    mesh->renderer->pointers->mesh_construct(
+        mesh->backend_object,
+        mesh->renderer->backend_object
+    );
 }
 
-void PG_MeshDestruct(
-    PG_Base* base,
+void
+PG_MeshDestruct(
     PG_Mesh* mesh
 )
 {
-    mesh->
-        renderer->
-        window->
-        pointers->
-        mesh_construct(
-            mesh-> 
-                renderer->
-                window->
-                base,
-            mesh->
-                renderer->
-                backend_object,
-            mesh->backend_object
-        );
-
-    mesh->
-        renderer->
-        window->
-        pointers->
-        mesh_free(
-            mesh->
-                backend_object
-        );
+    mesh->renderer->pointers->mesh_destruct(
+        mesh->backend_object
+    );
 }
 
-void PG_MeshUse(
-    PG_Base* base,
+void
+PG_MeshUse(
     PG_Mesh* mesh
 )
 {
-    mesh->
-        renderer->
-        window->
-        pointers->
-        mesh_use(
-            mesh-> 
-                renderer->
-                window->
-                base,
-            mesh->
-                renderer->
-                backend_object,
-            mesh->backend_object
-        );
+    mesh->renderer->pointers->mesh_use(
+        mesh->backend_object
+    );
 }
 
-void PG_MeshSetData(
-    PG_Base* base,
+void
+PG_MeshSetData(
     PG_Mesh* mesh,
     const void* data,
     const PG_Size nverts
 )
 {
-    mesh->
-        renderer->
-        window->
-        pointers->
-        mesh_set_data(
-            mesh-> 
-                renderer->
-                window->
-                base,
-            mesh->
-                renderer->
-                backend_object,
-            mesh->backend_object,
-            data,
-            nverts
-        );
+    mesh->renderer->pointers->mesh_set_data(
+        mesh->backend_object,
+        data,
+        nverts
+    );
 }
 
-void PG_MeshDraw(
-    PG_Base* base,
+void
+PG_MeshDraw(
     PG_Mesh* mesh
 )
 {
-    mesh->
-        renderer->
-        window->
-        pointers->
-        mesh_draw(
-            mesh-> 
-                renderer->
-                window->
-                base,
-            mesh->
-                renderer->
-                backend_object,
-            mesh->backend_object
-        );
+    mesh->renderer->pointers->mesh_draw(
+        mesh->backend_object
+    );
 }

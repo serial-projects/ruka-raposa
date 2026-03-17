@@ -53,9 +53,8 @@ PG_ShaderFree(
  */
 void
 PG_ShaderConstruct(
-    PG_Base* base,
-    PG_Renderer* renderer,
-    PG_Shader* shader
+    PG_Shader* shader,
+    PG_Renderer* renderer
 );
 
 /**
@@ -63,7 +62,6 @@ PG_ShaderConstruct(
  */
 void
 PG_ShaderDestruct(
-    PG_Base* base,
     PG_Shader* shader
 );
 
@@ -74,7 +72,6 @@ PG_ShaderDestruct(
  */
 PG_Result
 PG_ShaderBeginCompilation(
-    PG_Base* base,
     PG_Shader* shader
 );
 
@@ -83,7 +80,6 @@ PG_ShaderBeginCompilation(
  */
 PG_Result
 PG_ShaderLoadVertexShader(
-    PG_Base* base,
     PG_Shader* shader,
     const PG_U8* buffer
 );
@@ -93,7 +89,6 @@ PG_ShaderLoadVertexShader(
  */
 PG_Result
 PG_ShaderLoadFragmentShader(
-    PG_Base* base,
     PG_Shader* shader,
     const PG_U8* buffer
 );
@@ -103,7 +98,6 @@ PG_ShaderLoadFragmentShader(
  */
 PG_Result
 PG_ShaderLoadGeometryShader(
-    PG_Base* base,
     PG_Shader* shader,
     const PG_U8* buffer
 );
@@ -115,7 +109,6 @@ PG_ShaderLoadGeometryShader(
  */
 PG_Result
 PG_ShaderFinishCompilation(
-    PG_Base* base,
     PG_Shader* shader
 );
 
@@ -124,7 +117,6 @@ PG_ShaderFinishCompilation(
  */
 void
 PG_ShaderUse(
-    PG_Base* base,
     PG_Shader* shader
 );
 
@@ -134,7 +126,6 @@ PG_ShaderUse(
  */
 void
 PG_ShaderSetData(
-    PG_Base* base,
     PG_Shader* shader,
     const PG_U8 slot,
     const void* data,

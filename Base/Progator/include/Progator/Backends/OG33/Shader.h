@@ -15,6 +15,11 @@
 
 typedef struct PG_BackendsOG33Shader
 {
+    /**
+     * @brief Holds an reference to the renderer.
+     */
+    PG_BackendsOG33Renderer* renderer;
+
     /** 
      * @brief VS = Vertex Shader.
      */
@@ -53,67 +58,50 @@ PG_BackendsOG33ShaderFree(
 
 void
 PG_BackendsOG33ShaderConstruct(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
-    PG_BackendsOG33Shader* shader
+    PG_BackendsOG33Shader* shader,
+    PG_BackendsOG33Renderer* renderer
 );
 
 void
 PG_BackendsOG33ShaderDestruct(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Shader* shader
 );
 
 PG_Result
 PG_BackendsOG33ShaderBeginCompilation(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Shader* shader
 );
 
 PG_Result
 PG_BackendsOG33ShaderLoadVertexShader(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Shader* shader,
     const PG_U8* buffer
 );
 
 PG_Result
 PG_BackendsOG33ShaderLoadFragmentShader(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Shader* shader,
     const PG_U8* buffer
 );
 
 PG_Result
 PG_BackendsOG33ShaderLoadGeometryShader(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Shader* shader,
     const PG_U8* buffer
 );
 
 PG_Result
 PG_BackendsOG33ShaderFinishCompilation(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Shader* shader
 );
 
 void
 PG_BackendsOG33ShaderUse(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Shader* shader
 );
 
 void
 PG_BackendsOG33ShaderSetData(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Shader* shader,
     const PG_U8 slot,
     const void* data,

@@ -59,9 +59,8 @@ PG_MeshFree(
  */
 void
 PG_MeshConstruct(
-    PG_Base* base,
-    PG_Renderer* renderer,
-    PG_Mesh* mesh
+    PG_Mesh* mesh,
+    PG_Renderer* renderer
 );
 
 /**
@@ -71,7 +70,6 @@ PG_MeshConstruct(
  */
 void
 PG_MeshDestruct(
-    PG_Base* base,
     PG_Mesh* mesh
 );
 
@@ -86,7 +84,6 @@ PG_MeshDestruct(
  */
 void
 PG_MeshUse(
-    PG_Base* base,
     PG_Mesh* mesh
 );
 
@@ -103,7 +100,6 @@ PG_MeshUse(
  */
 void
 PG_MeshSetData(
-    PG_Base* base,
     PG_Mesh* mesh,
     const void* data,
     const PG_Size nverts
@@ -118,7 +114,6 @@ PG_MeshSetData(
  */
 void
 PG_MeshDraw(
-    PG_Base* base,
     PG_Mesh* mesh
 );
 

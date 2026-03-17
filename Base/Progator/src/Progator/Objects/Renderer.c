@@ -6,131 +6,112 @@
  */
 #include "Progator/Objects/Renderer.h"
 
-PG_Renderer* PG_RendererNew()
+PG_Renderer*
+PG_RendererNew()
 {
-    PG_Renderer* new_renderer =
+    PG_Renderer* new_renderer = 
         (PG_Renderer*)(
             NK_AllocatorGet(sizeof(PG_Renderer))
         );
     return new_renderer;
 }
 
-void PG_RendererFree(
+void
+PG_RendererFree(
     PG_Renderer* renderer
 )
 {
     NK_AllocatorFree(renderer);
 }
 
-PG_Result PG_RendererConstruct(
+PG_Result
+PG_RendererConstruct(
     PG_Renderer* renderer,
-    PG_Window* use_window
+    PG_Window* window
 )
 {
-    renderer->window = use_window;
-    renderer->backend_object = 
-        renderer->
-            window->
-            pointers->
-            renderer_new();
-    return 
-        renderer->
-        window->
-        pointers->
-        renderer_construct(
-            renderer->window->base,
-            renderer->window->backend_object,
-            renderer->backend_object
-        );
-}
-
-void PG_RendererDestruct(
-    PG_Renderer* renderer
-)
-{
-    renderer->
-        window->
-        pointers->
-        renderer_destruct(
-            renderer->window->base,
-            renderer->window->backend_object,
-            renderer->backend_object
-        );
-    renderer->
-        window->
-        pointers->
-        renderer_free(renderer->backend_object);
-}
-
-void PG_RendererSetViewport(
-    PG_Renderer* renderer,
-    const PG_ViewportGeometry viewport_geometry
-)
-{
-    renderer->
-        window->
-        pointers->
-        renderer_set_viewport(
-            renderer->window->base,
+    renderer->window = window;
+    renderer->pointers = window->pointers;
+    renderer->base = window->base;
+    renderer->backend_object = renderer->pointers->renderer_new();
+    return (
+        renderer->pointers->renderer_construct(
             renderer->backend_object,
-            viewport_geometry
-        );
+            renderer->window->backend_object
+        )
+    );
 }
 
-void PG_RendererDraw(
+void
+PG_RendererDestruct(
     PG_Renderer* renderer
 )
 {
-    renderer->
-        window->
-        pointers->
-        renderer_draw(
-            renderer->window->base,
-            renderer->backend_object
-        );
+    renderer->pointers->renderer_destruct(
+        renderer->backend_object
+    );
 }
 
-void PG_RendererClear(
+void
+PG_RendererSetViewport(
+    PG_Renderer* renderer,
+    const PG_U16 width,
+    const PG_U16 height,
+    const PG_U16 x_position,
+    const PG_U16 y_position
+)
+{
+    renderer->pointers->renderer_set_viewport(
+        renderer->backend_object,
+        width,
+        height,
+        x_position,
+        y_position
+    );
+}
+
+void
+PG_RendererDraw(
+    PG_Renderer* renderer
+)
+{
+    renderer->pointers->renderer_draw(
+        renderer->backend_object
+    );
+}
+
+void
+PG_RendererClear(
     PG_Renderer* renderer,
     const PG_U32 rgba_color
 )
 {
-    renderer->
-        window->
-        pointers->
-        renderer_clear(
-            renderer->window->base,
-            renderer->backend_object,
-            rgba_color
-        );
+    renderer->pointers->renderer_clear(
+        renderer->backend_object,
+        rgba_color
+    );
 }
 
-void PG_RendererEnableFeature(
+void
+PG_RendererEnableFeature(
     PG_Renderer* renderer,
     const PG_U8 feature
 )
 {
-    renderer->
-        window->
-        pointers->
-        renderer_enable_feature(
-            renderer->window->base,
-            renderer->backend_object,
-            feature
-        );
+    renderer->pointers->renderer_enable_feature(
+        renderer->backend_object,
+        feature
+    );
 }
 
-void PG_RendererDisableFeature(
+void
+PG_RendererDisableFeature(
     PG_Renderer* renderer,
     const PG_U8 feature
 )
 {
-    renderer->
-        window->
-        pointers->
-        renderer_disable_feature(
-            renderer->window->base,
-            renderer->backend_object,
-            feature
-        );
+    renderer->pointers->renderer_disable_feature(
+        renderer->backend_object,
+        feature
+    );
 }

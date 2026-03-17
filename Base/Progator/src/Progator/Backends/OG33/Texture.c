@@ -26,20 +26,18 @@ PG_BackendsOG33TextureFree(
 
 void
 PG_BackendsOG33TextureConstruct(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
-    PG_BackendsOG33Texture* texture
+    PG_BackendsOG33Texture* texture,
+    PG_BackendsOG33Renderer* renderer
 )
 {
     glGenTextures(1, &texture->handle);
     texture->width = 0;
     texture->height = 0;
+    texture->renderer = renderer;
 }
 
 void
 PG_BackendsOG33TextureDestruct(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Texture* texture
 )
 {
@@ -48,8 +46,6 @@ PG_BackendsOG33TextureDestruct(
 
 void
 PG_BackendsOG33TextureUse(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Texture* texture,
     const PG_U8 slot
 )
@@ -60,8 +56,6 @@ PG_BackendsOG33TextureUse(
 
 void
 PG_BackendsOG33TextureSetData(
-    PG_Base* base,
-    PG_BackendsOG33Renderer* renderer,
     PG_BackendsOG33Texture* texture,
     const void* data,
     const PG_Size data_size,

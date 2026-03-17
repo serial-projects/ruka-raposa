@@ -25,15 +25,15 @@ void PG_BaseFree(
     NK_AllocatorFree(base);
 }
 
-NK_Result PG_BaseConstruct(
+NK_Result
+PG_BaseConstruct(
     PG_Base* base,
-    NK_Validator* use_validator
+    NK_Validator* validator
 )
 {
     NK_Result initialized;
+    base->validator = validator;
 
-    base->attached_validator = use_validator;
-    base->memory_used = 0;
     /**
      * TODO: This gives an internal hint to what we are, but in the future, we
      * should allow the game maker to also make their internal hints as well!
@@ -58,18 +58,19 @@ NK_Result PG_BaseConstruct(
 
     if(!initialized)
     {
-        NK_ValidatorError(
-            base->attached_validator,
-            1,
+        NK_ValidatorPushMessage(
+            base->validator,
+            NK_VALIDATOR_LEVEL_ERROR,
             "Failed to initialize SDL due: %s",
             SDL_GetError()
         );
     }
     else
     {
-        NK_ValidatorDebug(
-            base->attached_validator,
-            "Initialize SDL, version = %d",
+        NK_ValidatorPushMessage(
+            base->validator,
+            NK_VALIDATOR_LEVEL_DEBUG,
+            "Initialized SDL, version = %d",
             SDL_GetVersion()
         );
     }
