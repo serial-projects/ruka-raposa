@@ -5,6 +5,7 @@
 
 #include "Engine/Instance.h"
 #include "Engine/Redirects/NK.h"
+#include "Engine/Enums.h"
 
 EN_Instance*
 EN_InstanceNew()
@@ -74,7 +75,37 @@ EN_InstanceTick(
     EN_Instance* instance
 )
 {
+    /** Should we do the tick? or skip it entirely? */
+    if(instance->core.basics.flags_bits.skip_tick)
+    {
+        instance->core.basics.flags_bits.skip_tick = false;
+    }
+    else
+    {
+        switch(instance->core.basics.current_mode)
+        {
+            case EN_ENUMS_ENGINE_MODE_INITIALIZATION:
+                EN_InitializationModeTick(
+                    &instance->initialization_mode
+                );
+                break;
+            case EN_ENUMS_ENGINE_MODE_SCENE:
+                EN_SceneModeTick(
+                    &instance->scene_mode
+                );
+                break;
+            default:
+                NK_Panic(
+                    "%s: Selected invalid mode: %d\n",
+                    NK_CURRENT_WHERE,
+                    (int)(instance->core.basics.current_mode)
+                );
+                break;
+        };
 
+        /** Increment on the tick counter here. */
+        instance->core.basics.tick_counter++;
+    }
 }
 
 void
@@ -82,5 +113,37 @@ EN_InstanceDraw(
     EN_Instance* instance
 )
 {
-    
+    /**
+     * NOTE: Skip draw is persistant, unlike skip_tick, you can stop drawing
+     * for an long time, you can control it by internal event:
+     *      `EN_ToggleSkipDraw` (which can toggle it);
+     *      `EN_GetSkipDraw`    (which can get if we are skipping or not).
+     *      `EN_SetSkipDraw`    (which sets if we are skipping drawing).
+     */
+    if(!(instance->core.basics.flags_bits.skip_draw))
+    {
+        switch(instance->core.basics.current_mode)
+        {
+            case EN_ENUMS_ENGINE_MODE_INITIALIZATION:
+                EN_InitializationModeDraw(
+                    &instance->initialization_mode
+                );
+                break;
+            case EN_ENUMS_ENGINE_MODE_SCENE:
+                EN_SceneModeDraw(
+                    &instance->scene_mode
+                );
+                break;
+            default:
+                NK_Panic(
+                    "%s: Selected invalid mode: %d\n",
+                    NK_CURRENT_WHERE,
+                    (int)(instance->core.basics.current_mode)
+                );
+                break;
+        };
+
+        /** Increment the draw counter. */
+        instance->core.basics.draw_counter++;
+    }
 }

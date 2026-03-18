@@ -27,6 +27,9 @@ function(RR_Main)
     # like `NK` (our vector implementations and all), `3xjson` which is our
     # JSON parser and even `Progator` the abstraction layer for graphics.
     add_subdirectory(Base)
+
+    # Now we start to compile the Ruka elements, the engine itself.
+    add_subdirectory(Ruka)
 endfunction()
 
 # Call the main entry point:

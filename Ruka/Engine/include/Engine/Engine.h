@@ -5,6 +5,9 @@
 #ifndef EN_h
 #define EN_h
 
+#include "Engine/Core.h"
+#include "Engine/Instance.h"
+
 /**
  * @brief Initialize some systems that might be necessary for the engine.
  */
