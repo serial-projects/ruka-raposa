@@ -6,6 +6,7 @@
 #define ENCoreBasics_h
 
 #include "Engine/Types/Basics.h"
+#include "Engine/Redirects.h"
 
 /**
  * @brief Contains the counters, runtime information that is necessary for the
@@ -13,6 +14,12 @@
  */
 typedef struct EN_CoreBasics
 {
+    /**
+     * @brief This is the `NK_Validator` that contains all the messages, it must
+     * contain all the connections to the other smaller validators.
+     */
+    NK_Validator master_validator;
+
     /**
      * @brief The amount of ticks perfomed.
      */

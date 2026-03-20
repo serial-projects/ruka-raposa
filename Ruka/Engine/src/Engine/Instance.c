@@ -6,7 +6,7 @@
 #include "Engine/Instance.h"
 #include "Engine/Redirects/NK.h"
 #include "Engine/Enums.h"
-#include "Engine/Mode/Base.h"
+#include "Engine/Mode.h"
 
 EN_Instance*
 EN_InstanceNew()
@@ -33,15 +33,27 @@ EN_InstanceConstruct(
     EN_Instance* instance
 )
 {
+    /** Construct the core: */
+    EN_CoreConstruct(&instance->core);
+
+    /** Report an "Hello World!" here: */
+    NK_ValidatorPushMessage(
+        &instance->core.basics.master_validator,
+        NK_VALIDATOR_LEVEL_LOG,
+        "%s: Hello World!\n",
+        NK_CURRENT_WHERE
+    );
+
+
     /** We construct the modes: */
-    EN_InitializationModeConstruct(
-        (EN_InitializationMode*)(
+    EN_InitializationModeImplementationConstruct(
+        (EN_InitializationModeImplementation*)(
             &instance->modes[EN_ENUMS_ENGINE_MODE_INITIALIZATION]
         ),
         &instance->core
     );
-    EN_SceneModeConstruct(
-        (EN_SceneMode*)(
+    EN_SceneModeImplementationConstruct(
+        (EN_SceneModeImplementation*)(
             &instance->modes[EN_ENUMS_ENGINE_MODE_SCENE]
         ),
         &instance->core
@@ -58,13 +70,13 @@ EN_InstanceDestruct(
 )
 {
     /** We destruct the modes: */
-    EN_InitializationModeDestruct(
-        (EN_InitializationMode*)(
+    EN_InitializationModeImplementationDestruct(
+        (EN_InitializationModeImplementation*)(
             &instance->modes[EN_ENUMS_ENGINE_MODE_INITIALIZATION]
         )
     );
-    EN_SceneModeDestruct(
-        (EN_SceneMode*)(
+    EN_SceneModeImplementationDestruct(
+        (EN_SceneModeImplementation*)(
             &instance->modes[EN_ENUMS_ENGINE_MODE_SCENE]
         )
     );

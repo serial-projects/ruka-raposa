@@ -7,9 +7,8 @@
 
 #include "Engine/Types/Basics.h"
 #include "Engine/Core.h"
-#include "Engine/Mode/Initialization/Mode.h"
-#include "Engine/Mode/Scene/Mode.h"
 #include "Engine/Enums.h"
+#include "Engine/Mode.h"
 
 /**
  * @brief Contains the actual instance that holds the mode the game is running

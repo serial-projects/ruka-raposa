@@ -7,5 +7,6 @@
 
 #include "Engine/Mode/Initialization/Implementation.h"
 #include "Engine/Mode/Scene/Implementation.h"
+#include "Engine/Mode/Base.h"
 
 #endif
