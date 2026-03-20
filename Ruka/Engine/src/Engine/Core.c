@@ -4,6 +4,7 @@
  */
 
 #include "Engine/Core.h"
+#include "Engine/Mode.h"
 #include "Engine/Redirects/NK.h"
 
 EN_Core*

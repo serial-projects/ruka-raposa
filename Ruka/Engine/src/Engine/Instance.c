@@ -6,6 +6,7 @@
 #include "Engine/Instance.h"
 #include "Engine/Redirects/NK.h"
 #include "Engine/Enums.h"
+#include "Engine/Mode/Base.h"
 
 EN_Instance*
 EN_InstanceNew()
@@ -32,23 +33,23 @@ EN_InstanceConstruct(
     EN_Instance* instance
 )
 {
-    /** Initialize the core: */
-    EN_CoreConstruct(
-        &instance->core
-    );
-
-    /** Initialize the modes: */
+    /** We construct the modes: */
     EN_InitializationModeConstruct(
-        &instance->initialization_mode,
+        (EN_InitializationMode*)(
+            &instance->modes[EN_ENUMS_ENGINE_MODE_INITIALIZATION]
+        ),
         &instance->core
     );
     EN_SceneModeConstruct(
-        &instance->scene_mode,
+        (EN_SceneMode*)(
+            &instance->modes[EN_ENUMS_ENGINE_MODE_SCENE]
+        ),
         &instance->core
     );
 
     /** Everything fine? Then we go directly to the running: */
     instance->core.basics.flags_bits.running = true;
+    instance->core.basics.current_mode = 0;
 }
 
 void
@@ -56,18 +57,20 @@ EN_InstanceDestruct(
     EN_Instance* instance
 )
 {
-    /** NOTE: We need to follow the order here: Everything -> Core! */
+    /** We destruct the modes: */
     EN_InitializationModeDestruct(
-        &instance->initialization_mode
+        (EN_InitializationMode*)(
+            &instance->modes[EN_ENUMS_ENGINE_MODE_INITIALIZATION]
+        )
     );
     EN_SceneModeDestruct(
-        &instance->scene_mode
+        (EN_SceneMode*)(
+            &instance->modes[EN_ENUMS_ENGINE_MODE_SCENE]
+        )
     );
 
     /** See, finally destroy this: */
-    EN_CoreDestruct(
-        &instance->core
-    );
+    EN_CoreDestruct(&instance->core);
 }
 
 void
@@ -79,31 +82,11 @@ EN_InstanceTick(
     if(instance->core.basics.flags_bits.skip_tick)
     {
         instance->core.basics.flags_bits.skip_tick = false;
+        
     }
     else
     {
-        switch(instance->core.basics.current_mode)
-        {
-            case EN_ENUMS_ENGINE_MODE_INITIALIZATION:
-                EN_InitializationModeTick(
-                    &instance->initialization_mode
-                );
-                break;
-            case EN_ENUMS_ENGINE_MODE_SCENE:
-                EN_SceneModeTick(
-                    &instance->scene_mode
-                );
-                break;
-            default:
-                NK_Panic(
-                    "%s: Selected invalid mode: %d\n",
-                    NK_CURRENT_WHERE,
-                    (int)(instance->core.basics.current_mode)
-                );
-                break;
-        };
-
-        /** Increment on the tick counter here. */
+        EN_ModeTick(&instance->modes[instance->core.basics.current_mode]);
         instance->core.basics.tick_counter++;
     }
 }
@@ -122,28 +105,22 @@ EN_InstanceDraw(
      */
     if(!(instance->core.basics.flags_bits.skip_draw))
     {
-        switch(instance->core.basics.current_mode)
-        {
-            case EN_ENUMS_ENGINE_MODE_INITIALIZATION:
-                EN_InitializationModeDraw(
-                    &instance->initialization_mode
-                );
-                break;
-            case EN_ENUMS_ENGINE_MODE_SCENE:
-                EN_SceneModeDraw(
-                    &instance->scene_mode
-                );
-                break;
-            default:
-                NK_Panic(
-                    "%s: Selected invalid mode: %d\n",
-                    NK_CURRENT_WHERE,
-                    (int)(instance->core.basics.current_mode)
-                );
-                break;
-        };
-
+        EN_ModeDraw(
+            &instance->modes[instance->core.basics.current_mode]
+        );
         /** Increment the draw counter. */
         instance->core.basics.draw_counter++;
+    }
+}
+
+void
+EN_InstanceLoop(
+    EN_Instance* instance
+)
+{
+    while((instance->core.basics.flags_bits.running))
+    {
+        EN_InstanceTick(instance);
+        EN_InstanceDraw(instance);
     }
 }

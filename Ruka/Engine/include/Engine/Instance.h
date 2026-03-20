@@ -9,6 +9,7 @@
 #include "Engine/Core.h"
 #include "Engine/Mode/Initialization/Mode.h"
 #include "Engine/Mode/Scene/Mode.h"
+#include "Engine/Enums.h"
 
 /**
  * @brief Contains the actual instance that holds the mode the game is running
@@ -23,14 +24,9 @@ typedef struct EN_Instance
     EN_Core core;
 
     /**
-     * @brief Refers to the mode of initialization.
+     * @brief Contains the modes:
      */
-    EN_InitializationMode initialization_mode;
-
-    /**
-     * @brief Refers to the scene mode, which is the whole game running.
-     */
-    EN_SceneMode scene_mode;
+    EN_Mode modes[EN_ENUMS_ENGINE_MODE_QUANTITY];
 } EN_Instance;
 
 /**
@@ -81,6 +77,16 @@ EN_InstanceTick(
  */
 void
 EN_InstanceDraw(
+    EN_Instance* instance
+);
+
+/**
+ * @brief This will lock the thread into executing the code until forever and
+ * loop the game (until the game is active, although). This will loop everything
+ * until it ends. This loop also controls the speed, game speed and more.
+ */
+void
+EN_InstanceLoop(
     EN_Instance* instance
 );
 

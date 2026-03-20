@@ -47,7 +47,8 @@ EN_SceneModeTick(
     EN_SceneMode* mode
 )
 {
-    /** NOTE: Begin the pipeline: */    
+    /** NOTE: Begin the pipeline: */
+    
 }
 
 void

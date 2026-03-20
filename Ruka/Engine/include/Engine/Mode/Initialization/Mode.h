@@ -5,6 +5,7 @@
 #ifndef ENModeInitializationMode_h
 #define ENModeInitializationMode_h
 
+#include "Engine/Mode/Base.h"
 #include "Engine/Types/Basics.h"
 #include "Engine/Core.h"
 
@@ -14,6 +15,7 @@
  * Ruka Engine, but this is important to load the manifests, mods and more, the
  * game might not be found or be executable.
  */
+
 typedef struct EN_InitializationMode
 {
     /**
@@ -69,5 +71,10 @@ void
 EN_InitializationModeDraw(
     EN_InitializationMode* mode
 );
+
+/**
+ * @brief This contains the implementation virtual table.
+ */
+
 
 #endif

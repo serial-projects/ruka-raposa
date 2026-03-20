@@ -6,6 +6,15 @@
 #define ENEnumsEngineModes_h
 
 /**
+ * @brief This should always contain the number of modes that there can be, this
+ * is used on the `EN_Modes` inside the `EN_Instance`, this should be paid
+ * attention to.
+ * 
+ * @note Always write it as a sum of the types.
+ */
+#define EN_ENUMS_ENGINE_MODE_QUANTITY                                           1 + 1
+
+/**
  * @brief This mode will show an simple screen with the modules being loaded,
  * in this stage, everything loaded into cache (at least, things are very 
  * necessary). The game files and other plugins are also loaded here.

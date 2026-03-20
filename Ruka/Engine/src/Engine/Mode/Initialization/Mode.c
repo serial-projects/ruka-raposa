@@ -5,6 +5,7 @@
 
 #include "Engine/Mode/Initialization/Mode.h"
 #include "Engine/Redirects/NK.h"
+#include "Engine/Enums.h"
 
 EN_InitializationMode*
 EN_InitializationModeNew()
@@ -48,6 +49,7 @@ EN_InitializationModeTick(
 )
 {
     /** NOTE: Begin the pipeline: */
+    mode->linked_core->basics.current_mode = EN_ENUMS_ENGINE_MODE_SCENE;
 }
 
 void
@@ -56,4 +58,5 @@ EN_InitializationModeDraw(
 )
 {
     /** NOTE: Begin the pipeline (on Slugs): */
+    return;
 }
