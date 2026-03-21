@@ -1,5 +1,6 @@
 # This ignores everything I don't want ;-)
 Build
+Package
 *.o
 *.so
 *.dll
