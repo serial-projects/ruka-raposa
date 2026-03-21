@@ -6,6 +6,7 @@
 #define ENCore_h
 
 #include "Engine/Core/Basics.h"
+#include "Engine/Core/Graphics.h"
 
 /**
  * @brief Contains the generic core passed around every mode.
@@ -16,6 +17,12 @@ typedef struct EN_Core {
      * tick_counter, etc.
      */
     EN_CoreBasics basics;
+
+    /**
+     * @brief Contains the graphical system (implemented from Progator), things
+     * like `::window` and `::renderer`, which is shared across the engine.
+     */
+    EN_CoreGraphics graphics;
 } EN_Core;
 
 /** 
@@ -35,7 +42,7 @@ EN_CoreFree(
 /**
  * @brief Construct the `EN_Core`.
  */
-void
+EN_Result
 EN_CoreConstruct(
     EN_Core* core
 );

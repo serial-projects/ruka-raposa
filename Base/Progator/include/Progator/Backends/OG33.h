@@ -7,14 +7,6 @@
 #ifndef PGOG33_h
 #define PGOG33_h
 
-/** All the implementations: */
-#include "Progator/Backends/OG33/Window.h"
-#include "Progator/Backends/OG33/Renderer.h"
-#include "Progator/Backends/OG33/Shader.h"
-#include "Progator/Backends/OG33/Mesh.h"
-#include "Progator/Backends/OG33/Framebuffer.h"
-#include "Progator/Backends/OG33/Texture.h"
-
 /** Pointers we need to hold: */
 #include "Progator/Core/Pointers.h"
 

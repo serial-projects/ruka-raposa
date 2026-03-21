@@ -25,12 +25,29 @@ EN_CoreFree(
     NK_AllocatorFree(core);
 }
 
-void
+EN_Result
 EN_CoreConstruct(
     EN_Core* core
 )
 {
+    EN_Result good;
     EN_CoreBasicsConstruct(&core->basics);
+    good =
+        EN_CoreGraphicsConstruct(
+            &core->graphics,
+            &core->basics.master_validator,
+            PG_ENUMS_BACKEND_OPENGL_33C
+        );
+    if(!good)
+    {
+        /**
+         * NOTE: This only happens when the window creation resulted in complete
+         * failure.
+         */
+        goto core_graphics_failed_ending;
+    }
+core_graphics_failed_ending:
+    return good;
 }
 
 void

@@ -1,4 +1,19 @@
+/**
+ * Ruka Raposa Project by Ruka Raposa Team & Contribuitors.
+ * Pro'Gator "Progator" is part of the Ruka Raposa Project.
+ * 
+ * Project is under GPL3-license, read LICENSE.md on the root.
+ */
+
 #include "Progator/Backends/OG33.h"
+
+/** All the implementations: */
+#include "Progator/Backends/OG33/Window.h"
+#include "Progator/Backends/OG33/Renderer.h"
+#include "Progator/Backends/OG33/Shader.h"
+#include "Progator/Backends/OG33/Mesh.h"
+#include "Progator/Backends/OG33/Framebuffer.h"
+#include "Progator/Backends/OG33/Texture.h"
 
 /**
  * @brief Contains the function table for the `PG_Pointers` for OpenGL 33

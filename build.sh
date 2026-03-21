@@ -20,6 +20,7 @@ RR_RunCMAKEToConstructDebugVersionUseMake(){
             -DRR_ENABLE_ASAN=ON                     \
             -DRR_ENABLE_TESTS=ON
         [[ $? -eq 0 ]] && cmake --build . -j1
+        [[ $? -eq 0 ]] && make install -j1 DESTDIR=../Package
         #[[ $? -eq 0 ]] && ctest . --extra-verbose --stop-on-failure --progress
     cd ..
 }
@@ -41,6 +42,10 @@ RR_RunCMAKEToConstructDebugVersion(){
 }
 
 RR_Main(){
+    # Delete any built package
+    [[ -d './Package' ]] || mkdir ./Package
+    rm -v -r ./Package/*
+
     RR_TestBuildFolder
     RR_RunCMAKEToConstructDebugVersionUseMake
 }

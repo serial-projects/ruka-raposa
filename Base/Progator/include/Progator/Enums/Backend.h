@@ -4,11 +4,12 @@
  * 
  * Project is under GPL3-license, read LICENSE.md on the root.
  */
-#ifndef PGEnum_h
-#define PGEnum_h
+#ifndef PGEnumsBackend_h
+#define PGEnumsBackend_h
 
-#include "Progator/Enums/Window.h"
-#include "Progator/Enums/Renderer.h"
-#include "Progator/Enums/Backend.h"
+/**
+ * @brief This is the standard backend, `OpenGL 3.3`
+ */
+#define PG_ENUMS_BACKEND_OPENGL_33C                                             0
 
 #endif

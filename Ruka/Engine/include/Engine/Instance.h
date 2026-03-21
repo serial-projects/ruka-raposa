@@ -45,7 +45,7 @@ EN_InstanceFree(
 /**
  * @brief Construct `EN_Instance` modes and core.
  */
-void
+EN_Result
 EN_InstanceConstruct(
     EN_Instance* instance
 );

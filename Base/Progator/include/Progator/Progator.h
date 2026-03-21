@@ -12,5 +12,6 @@
 #include "Progator/Objects.h"
 #include "Progator/Types.h"
 #include "Progator/Backends.h"
+#include "Progator/Enum.h"
 
 #endif

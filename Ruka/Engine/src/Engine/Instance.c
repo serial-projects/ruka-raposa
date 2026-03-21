@@ -28,13 +28,20 @@ EN_InstanceFree(
     NK_AllocatorFree(instance);
 }
 
-void
+EN_Result
 EN_InstanceConstruct(
     EN_Instance* instance
 )
 {
+    EN_Result good;
+
     /** Construct the core: */
-    EN_CoreConstruct(&instance->core);
+    good = EN_CoreConstruct(&instance->core);
+    if(!good)
+    {
+        /** NOTE: Failed to initialize core, we can't proceed! */
+        goto failed_construct_core_ending;
+    }
 
     /** Report an "Hello World!" here: */
     NK_ValidatorPushMessage(
@@ -62,6 +69,8 @@ EN_InstanceConstruct(
     /** Everything fine? Then we go directly to the running: */
     instance->core.basics.flags_bits.running = true;
     instance->core.basics.current_mode = 0;
+failed_construct_core_ending:
+    return good;
 }
 
 void

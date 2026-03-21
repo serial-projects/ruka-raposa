@@ -20,10 +20,14 @@ main(
      * Create an new `EN_Instance`
      */
     EN_Instance instance;
-    
-    EN_InstanceConstruct(&instance);
+    if(! EN_InstanceConstruct(&instance))
+    {
+        goto failed_construct_instance_ending;
+    }
     EN_InstanceLoop(&instance);
     EN_InstanceDestruct(&instance);
+
+failed_construct_instance_ending:
 
     /**
      * After (or if) the game closes, we want to shutdown all the submodules.
