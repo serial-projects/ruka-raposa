@@ -25,56 +25,13 @@ void PG_BaseFree(
     NK_AllocatorFree(base);
 }
 
-NK_Result
+void
 PG_BaseConstruct(
     PG_Base* base,
     NK_Validator* validator
 )
 {
-    NK_Result initialized;
     base->validator = validator;
-
-    /**
-     * TODO: This gives an internal hint to what we are, but in the future, we
-     * should allow the game maker to also make their internal hints as well!
-     */
-    SDL_SetAppMetadata(
-        "Ruka Raposa Engine",
-        "1.0.0-Alpha(1)",
-        "io.rukaraposa.engine"
-    );
-    SDL_SetAppMetadataProperty(
-        SDL_PROP_APP_METADATA_CREATOR_STRING,
-        "Ruka Raposa Team"
-    );
-    
-    /** We initialize SDL here: */
-    initialized =
-        SDL_Init(
-            SDL_INIT_EVENTS |
-            SDL_INIT_VIDEO  |
-            SDL_INIT_AUDIO
-        );
-
-    if(!initialized)
-    {
-        NK_ValidatorPushMessage(
-            base->validator,
-            NK_VALIDATOR_LEVEL_ERROR,
-            "Failed to initialize SDL due: %s",
-            SDL_GetError()
-        );
-    }
-    else
-    {
-        NK_ValidatorPushMessage(
-            base->validator,
-            NK_VALIDATOR_LEVEL_DEBUG,
-            "Initialized SDL, version = %d",
-            SDL_GetVersion()
-        );
-    }
-    return initialized;
 }
 
 void PG_BaseDestruct(

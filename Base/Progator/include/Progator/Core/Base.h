@@ -47,7 +47,7 @@ PG_BaseFree(
 /**
  * @brief Constructs the base.
  */
-PG_Result
+void
 PG_BaseConstruct(
     PG_Base* base,
     NK_Validator* validator

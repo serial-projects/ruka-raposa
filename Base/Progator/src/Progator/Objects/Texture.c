@@ -46,6 +46,9 @@ PG_TextureDestruct(
     texture->renderer->pointers->texture_destruct(
         texture->backend_object
     );
+    texture->renderer->pointers->texture_free(
+        texture->backend_object
+    );
 }
 
 void

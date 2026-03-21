@@ -57,6 +57,9 @@ PG_FramebufferDestruct(
     framebuffer->renderer->pointers->framebuffer_destruct(
         framebuffer->backend_object
     );
+    framebuffer->renderer->pointers->framebuffer_free(
+        framebuffer->backend_object
+    );
 }
 
 void

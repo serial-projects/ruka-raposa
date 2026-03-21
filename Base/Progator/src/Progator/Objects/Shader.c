@@ -46,6 +46,9 @@ PG_ShaderDestruct(
     shader->renderer->pointers->shader_destruct(
         shader->backend_object
     );
+    shader->renderer->pointers->shader_free(
+        shader->backend_object
+    );
 }
 
 PG_Result

@@ -55,5 +55,6 @@ EN_CoreDestruct(
     EN_Core* core
 )
 {
+    EN_CoreGraphicsDestruct(&core->graphics);
     EN_CoreBasicsDestruct(&core->basics);
 }

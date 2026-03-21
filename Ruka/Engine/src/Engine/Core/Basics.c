@@ -168,6 +168,9 @@ EN_CoreBasicsDestruct(
     EN_CoreBasics* basics
 )
 {
+    NK_ValidatorDestruct(
+        &basics->master_validator
+    );
     NK_RedirectMemset(
         basics,
         0,

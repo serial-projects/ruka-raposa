@@ -50,6 +50,9 @@ PG_WindowDestruct(
     window->pointers->window_destruct(
         window->backend_object
     );
+    window->pointers->window_free(
+        window->backend_object
+    );
 }
 
 void

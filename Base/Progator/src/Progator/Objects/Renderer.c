@@ -50,6 +50,9 @@ PG_RendererDestruct(
     renderer->pointers->renderer_destruct(
         renderer->backend_object
     );
+    renderer->pointers->renderer_free(
+        renderer->backend_object
+    );
 }
 
 void

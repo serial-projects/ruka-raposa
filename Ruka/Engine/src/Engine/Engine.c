@@ -13,6 +13,18 @@ EN_Init()
     {
         NK_Init();
     }
+    if(!PG_IsConstructed())
+    {
+        /** Ruka can't run with a non-initialized Progator. */
+        if(!PG_Construct())
+        {
+            NK_Panic(
+                "%s: PG could not initialize due = %s",
+                NK_CURRENT_WHERE,
+                SDL_GetError()
+            );
+        }
+    }
 }
 
 void
@@ -21,5 +33,9 @@ EN_Quit()
     if(NK_IsInitialized())
     {
         NK_Quit();
+    }
+    if(PG_IsConstructed())
+    {
+        PG_Destruct();
     }
 }

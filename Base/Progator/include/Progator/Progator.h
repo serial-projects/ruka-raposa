@@ -14,4 +14,22 @@
 #include "Progator/Backends.h"
 #include "Progator/Enum.h"
 
+/**
+ * @brief Initialize all the subsystems (mostly SDL).
+ */
+PG_Result
+PG_Construct();
+
+/**
+ * @brief Deinitialize the subsystems (mostly SDL).
+ */
+void
+PG_Destruct();
+
+/**
+ * @brief Gets if Progator is initialized or not.
+ */
+const PG_Result
+PG_IsConstructed();
+
 #endif

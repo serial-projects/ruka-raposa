@@ -47,6 +47,9 @@ PG_MeshDestruct(
     mesh->renderer->pointers->mesh_destruct(
         mesh->backend_object
     );
+    mesh->renderer->pointers->mesh_free(
+        mesh->backend_object
+    );
 }
 
 void
