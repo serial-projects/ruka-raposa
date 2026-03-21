@@ -6,6 +6,7 @@
  */
 
 #include "Progator/Progator.h"
+#include "Progator/Internals/SDLIntegration.h"
 
 /**
  * @brief This is a global to keep track of the current state of the things, so
@@ -20,11 +21,17 @@ PG_Construct()
     PG_Result good = true;
     if(! PG_Initialized)
     {
+        /** 
+         * Before anything, we need to set the SDL allocation functions to the
+         * ones we just chose for it.
+         */
+        PG_SDLIntegrationLoadMemoryFunctions();
+
         /** TODO: Set the memory functions for SDL based on NK. */
         SDL_SetAppMetadata(
             "Ruka Raposa Engine",
             "1.0.0-Alpha(1)",
-            "io.rukaraposa.engine"
+            "com.ruka-raposa.engines"
         );
         SDL_SetAppMetadataProperty(
             SDL_PROP_APP_METADATA_CREATOR_STRING,
