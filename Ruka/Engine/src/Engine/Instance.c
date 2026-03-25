@@ -47,7 +47,7 @@ EN_InstanceConstruct(
     NK_ValidatorPushMessage(
         &instance->core.basics.master_validator,
         NK_VALIDATOR_LEVEL_LOG,
-        "%s: Hello World!\n",
+        "%s: Hello World!",
         NK_CURRENT_WHERE
     );
 
@@ -139,9 +139,50 @@ EN_InstanceLoop(
     EN_Instance* instance
 )
 {
+    EN_U64 next_tick = 0;
+    EN_U64 next_draw = 0;
+    EN_U64 delta;
+    EN_U8 align_with;
+    EN_U64 frame_span;
     while((instance->core.basics.flags_bits.running))
     {
-        EN_InstanceTick(instance);
-        EN_InstanceDraw(instance);
+        /** 
+         * Start locking the time, we want the frames to be exactly our
+         * `tick_rate` and `draw_rate` (when 0, it means no limits).
+         */
+        EN_U64 now = SDL_GetTicks();
+        if(now >= next_tick)
+        {
+            EN_InstanceTick(instance);
+            next_tick = now + (1000 / instance->core.basics.tick_rate);
+        }
+        if(instance->core.basics.draw_rate <= 0)
+        {
+            EN_InstanceDraw(instance);
+        }
+        else
+        {
+            if(now >= next_draw)
+            {
+                EN_InstanceDraw(instance);
+                next_draw = now + (1000 / instance->core.basics.draw_rate);
+            }
+        }
+
+        /**
+         * All the time is consistent, even if ONE of the stages lag, this
+         * asserts the `EN_EngineClock` for physics is always consistent.
+         */
+        delta = SDL_GetTicks() - now;
+        align_with = (
+            instance->core.basics.draw_rate > instance->core.basics.tick_rate
+            ? instance->core.basics.draw_rate
+            : instance->core.basics.tick_rate
+        );
+        frame_span = 1000 / align_with;
+        if(delta < frame_span)
+        {
+            SDL_Delay(frame_span - delta);
+        }
     }
 }

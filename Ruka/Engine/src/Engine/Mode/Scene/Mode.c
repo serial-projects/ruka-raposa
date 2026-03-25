@@ -44,7 +44,7 @@ EN_SceneModeDestruct(
 
 static
 void
-P_EN_HandleKeyboardInput(
+P_EN_SceneModeTickStageHandleKeyboardInput(
     EN_SceneMode* mode
 )
 {
@@ -57,14 +57,39 @@ P_EN_HandleKeyboardInput(
                 mode->linked_core->basics.flags_bits.running = false;
                 break;
             default:
-                NK_ValidatorPushMessage(
-                    &mode->linked_core->basics.master_validator,
-                    NK_VALIDATOR_LEVEL_LOG,
-                    "Got an SDL event, type = %d",
-                    (int)(event_handler.type)
-                );
                 break;
         };
+    }
+}
+
+static
+void
+P_EN_SceneModeTickStageDebug(
+    EN_SceneMode* mode
+)
+{
+    if(
+        (
+            mode->linked_core->basics.tick_counter % 
+            (mode->linked_core->basics.tick_rate * 5)
+        ) == 0
+    )
+    {
+        NK_AllocatorStatistics current_stats =
+            NK_AllocatorGetCurrentStatistics();
+        NK_ValidatorPushMessage(
+            &mode->linked_core->basics.master_validator,
+            NK_VALIDATOR_LEVEL_DEBUG,
+            "Memory `NK` (Online Allocations): %d",
+            current_stats.online_blocks
+        );
+        NK_ValidatorPushMessage(
+            &mode->linked_core->basics.master_validator,
+            NK_VALIDATOR_LEVEL_DEBUG,
+            "Memory `NK` (Absolute Usage): %d, Maximum: %d",
+            current_stats.absolute_size,
+            current_stats.absolute_max
+        );
     }
 }
 
@@ -74,7 +99,8 @@ EN_SceneModeTick(
 )
 {
     /** NOTE: Begin the pipeline: */
-    P_EN_HandleKeyboardInput(mode);
+    P_EN_SceneModeTickStageHandleKeyboardInput(mode);
+    P_EN_SceneModeTickStageDebug(mode);
 }
 
 void

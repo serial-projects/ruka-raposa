@@ -139,6 +139,15 @@ EN_CoreBasicsConstruct(
     );
 
     /**
+     * NOTE: We need to define an rate for the game.
+     *  Why `draw_rate` is 25? Because when the game is starting, we want to do
+     *  more `tick` than `draw`, the loading screen is less important than for
+     *  example, loading the cache.
+     */
+    basics->draw_rate = 25;
+    basics->tick_rate = 60;
+
+    /**
      * NOTE: This validator holds an pointer to the `EN_CoreBasics` attached to
      * it. It is to have access to better debug messages.
      */
