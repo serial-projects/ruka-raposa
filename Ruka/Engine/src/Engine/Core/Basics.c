@@ -106,22 +106,22 @@ P_EN_CoreBasicsConstructAttachDebugListenerOnValidator(
 {
     NK_ValidatorAddListener(
         &basics->master_validator,
-        NK_VALIDATOR_LEVEL_DEBUG,
+        NK_ENUMS_VALIDATOR_LEVEL_DEBUG,
         P_EN_CoreBasicsConstructAttachDebugListenerOnValidatorDebugListener
     );
     NK_ValidatorAddListener(
         &basics->master_validator,
-        NK_VALIDATOR_LEVEL_LOG,
+        NK_ENUMS_VALIDATOR_LEVEL_LOG,
         P_EN_CoreBasicsConstructAttachDebugListenerOnValidatorLogListener
     );
     NK_ValidatorAddListener(
         &basics->master_validator,
-        NK_VALIDATOR_LEVEL_WARNING,
+        NK_ENUMS_VALIDATOR_LEVEL_WARNING,
         P_EN_CoreBasicsConstructAttachDebugListenerOnValidatorWarningListener
     );
     NK_ValidatorAddListener(
         &basics->master_validator,
-        NK_VALIDATOR_LEVEL_ERROR,
+        NK_ENUMS_VALIDATOR_LEVEL_ERROR,
         P_EN_CoreBasicsConstructAttachDebugListenerOnValidatorErrorListener
     );
 }

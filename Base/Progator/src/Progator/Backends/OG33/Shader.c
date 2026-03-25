@@ -127,7 +127,7 @@ PG_BackendsOG33ShaderLoadVertexShader(
         );
         NK_ValidatorPushMessage(
             shader->renderer->base->validator,
-            NK_VALIDATOR_LEVEL_ERROR,
+            NK_ENUMS_VALIDATOR_LEVEL_ERROR,
             "[Progator/ OpenGL 3.3]: Failed to compile vertex shader due: %s",
             log_buffer
         );
@@ -164,7 +164,7 @@ PG_BackendsOG33ShaderLoadFragmentShader(
         );
         NK_ValidatorPushMessage(
             shader->renderer->base->validator,
-            NK_VALIDATOR_LEVEL_ERROR,
+            NK_ENUMS_VALIDATOR_LEVEL_ERROR,
             "[Progator/ OpenGL 3.3]: Failed to compile fragment shader due: %s",
             log_buffer
         );
@@ -200,7 +200,7 @@ PG_BackendsOG33ShaderLoadGeometryShader(
         );
         NK_ValidatorPushMessage(
             shader->renderer->base->validator,
-            NK_VALIDATOR_LEVEL_ERROR,
+            NK_ENUMS_VALIDATOR_LEVEL_ERROR,
             "[Progator/ OpenGL 3.3]: Failed to compile geometry shader due: %s",
             log_buffer
         );
@@ -240,7 +240,7 @@ PG_BackendsOG33ShaderFinishCompilation(
         );
         NK_ValidatorPushMessage(
             shader->renderer->base->validator,
-            NK_VALIDATOR_LEVEL_ERROR,
+            NK_ENUMS_VALIDATOR_LEVEL_ERROR,
             "[Progator/ OpenGL 3.3]: Failed to link shaders due: %s",
             log_buffer
         );
@@ -272,7 +272,7 @@ PG_BackendsOG33ShaderSetData(
     {
         NK_ValidatorPushMessage(
             shader->renderer->base->validator,
-            NK_VALIDATOR_LEVEL_WARNING,
+            NK_ENUMS_VALIDATOR_LEVEL_WARNING,
             "[Progator/ OpenGL 3.3]: Failed to copy data to slot %d (max: %d)",
             (PG_S32)(slot),
             (PG_S32)(PG_CONFIG_BACKENDS_OG33_MAX_SHADER_DATA_SLOTS)

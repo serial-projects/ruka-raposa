@@ -79,13 +79,13 @@ P_EN_SceneModeTickStageDebug(
             NK_AllocatorGetCurrentStatistics();
         NK_ValidatorPushMessage(
             &mode->linked_core->basics.master_validator,
-            NK_VALIDATOR_LEVEL_DEBUG,
+            NK_ENUMS_VALIDATOR_LEVEL_DEBUG,
             "Memory `NK` (Online Allocations): %d",
             current_stats.online_blocks
         );
         NK_ValidatorPushMessage(
             &mode->linked_core->basics.master_validator,
-            NK_VALIDATOR_LEVEL_DEBUG,
+            NK_ENUMS_VALIDATOR_LEVEL_DEBUG,
             "Memory `NK` (Absolute Usage): %d, Maximum: %d",
             current_stats.absolute_size,
             current_stats.absolute_max

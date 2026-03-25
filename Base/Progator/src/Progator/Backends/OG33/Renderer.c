@@ -106,7 +106,7 @@ PG_BackendsOG33RendererConstruct(
     {
         NK_ValidatorPushMessage(
             renderer->base->validator,
-            NK_VALIDATOR_LEVEL_ERROR,
+            NK_ENUMS_VALIDATOR_LEVEL_ERROR,
             "[Progator/ OpenGL 3.3]: Failed to initialize context due: %s",
             SDL_GetError()
         );
@@ -119,7 +119,7 @@ PG_BackendsOG33RendererConstruct(
     {
         NK_ValidatorPushMessage(
             renderer->base->validator,
-            NK_VALIDATOR_LEVEL_ERROR,
+            NK_ENUMS_VALIDATOR_LEVEL_ERROR,
             "[Progator/ OpenGL 3.3]: Failed to initialize GLAD"
         );
         good = false;
@@ -134,7 +134,7 @@ PG_BackendsOG33RendererConstruct(
      */
     NK_ValidatorPushMessage(
         renderer->base->validator,
-        NK_VALIDATOR_LEVEL_DEBUG,
+        NK_ENUMS_VALIDATOR_LEVEL_DEBUG,
         "[Progator/ OpenGL 3.3]: Setting Viewport to 800x640x0x0"
     );
     glViewport(0, 0, 800, 640);
@@ -145,19 +145,19 @@ PG_BackendsOG33RendererConstruct(
      */
     NK_ValidatorPushMessage(
         renderer->base->validator,
-        NK_VALIDATOR_LEVEL_DEBUG,
+        NK_ENUMS_VALIDATOR_LEVEL_DEBUG,
         "[Progator/ OpenGL 3.3]: GL_VENDOR = %s",
         glGetString(GL_VENDOR)
     );
     NK_ValidatorPushMessage(
         renderer->base->validator,
-        NK_VALIDATOR_LEVEL_DEBUG,
+        NK_ENUMS_VALIDATOR_LEVEL_DEBUG,
         "[Progator/ OpenGL 3.3]: GL_RENDERER = %s",
         glGetString(GL_RENDERER)
     );
     NK_ValidatorPushMessage(
         renderer->base->validator,
-        NK_VALIDATOR_LEVEL_DEBUG,
+        NK_ENUMS_VALIDATOR_LEVEL_DEBUG,
         "[Progator/ OpenGL 3.3]: GL_VERSION = %s",
         glGetString(GL_VERSION)
     );

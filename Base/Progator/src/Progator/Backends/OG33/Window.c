@@ -46,7 +46,7 @@ PG_BackendsOG33WindowConstruct(
     {
         NK_ValidatorPushMessage(
             window->base->validator,
-            NK_VALIDATOR_LEVEL_ERROR,
+            NK_ENUMS_VALIDATOR_LEVEL_ERROR,
             "[Progator/ OpenGL 3.3]: SDL_CreateWindow failed due: %s",
             SDL_GetError()
         );
@@ -57,7 +57,7 @@ PG_BackendsOG33WindowConstruct(
         window->id = SDL_GetWindowID(window->os_window);
         NK_ValidatorPushMessage(
             window->base->validator,
-            NK_VALIDATOR_LEVEL_DEBUG,
+            NK_ENUMS_VALIDATOR_LEVEL_DEBUG,
             "[Progator/ OpenGL 3.3]: SDL_CreateWindow has created window: %d",
             window->id
         );

@@ -46,7 +46,7 @@ EN_InstanceConstruct(
     /** Report an "Hello World!" here: */
     NK_ValidatorPushMessage(
         &instance->core.basics.master_validator,
-        NK_VALIDATOR_LEVEL_LOG,
+        NK_ENUMS_VALIDATOR_LEVEL_LOG,
         "%s: Hello World!",
         NK_CURRENT_WHERE
     );
