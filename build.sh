@@ -19,7 +19,7 @@ RR_RunCMAKEToConstructDebugVersionUseMake(){
             -DCMAKE_BUILD_TYPE="Debug"              \
             -DRR_ENABLE_ASAN=ON                     \
             -DRR_ENABLE_TESTS=ON
-        [[ $? -eq 0 ]] && cmake --build . -j20
+        [[ $? -eq 0 ]] && cmake --build . -j1
         [[ $? -eq 0 ]] && make install -j1 DESTDIR=../Package
         #[[ $? -eq 0 ]] && ctest . --extra-verbose --stop-on-failure --progress
     cd ..
