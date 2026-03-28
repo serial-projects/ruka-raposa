@@ -16,3 +16,6 @@
 [submodule "Base/NK"]
 	path = Base/NK
 	url = https://github.com/serial-projects/nk-project.git
+[submodule "Base/Progator"]
+	path = Base/Progator
+	url = https://github.com/serial-projects/progator-project.git
