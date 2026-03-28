@@ -14,11 +14,6 @@
 typedef struct XJ_Node
 {
     /**
-     * @brief Says if the `XJ_Node` is ready.
-     */
-    XJ_Boolean ready;
-
-    /**
      * @brief This is the root of the `XJ_Node`, contains all the elements.
      */
     XJ_Value root;

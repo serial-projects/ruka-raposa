@@ -34,8 +34,7 @@ XJ_NodeConstruct(
      * `XJ_DecoderInstance` internal functions. Because the initial root is
      * always determined by it.
      */
-    node->ready = false;
-    return;
+    XJ_ValueConstruct(&node->root);
 }
 
 void
@@ -43,8 +42,5 @@ XJ_NodeDestruct(
     XJ_Node* node
 )
 {
-    if(node->ready)
-    {
-        XJ_ValueDestruct(&node->root);
-    }
+    XJ_ValueDestruct(&node->root);
 }
