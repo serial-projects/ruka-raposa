@@ -1,0 +1,26 @@
+/**
+ * 2025 - 2026 (C) Konigs Infrastructure Project by Ruka Raposa Team & Contrib.
+ * Project is under the GPLv3 license, read `LICENSE.md` for more information.
+ */
+
+define(
+    @FAS_Init;
+    f() Kog_Result;
+    function(
+        f() Kog_Result;
+        return(
+            const(Kog_Result; @Kog_ResultGood)
+        )
+    )
+);
+
+define(
+    @FAS_Quit;
+    f() Kog_Result;
+    function(
+        f() Kog_Result;
+        return(
+            const(Kog_Result; @Kog_ResultGood)
+        )
+    )
+);

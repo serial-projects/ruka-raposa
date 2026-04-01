@@ -1,0 +1,21 @@
+/**
+ * 2025 - 2026 (C) Konigs Infrastructure Project by Ruka Raposa Team & Contrib.
+ * Project is under the GPLv3 license, read `LICENSE.md` for more information.
+ */
+
+/**
+ * There is many `Kog_Ark` implementations matched to the compiling arch, this
+ * because `Kog_Ark` is the only way you can `memory allocate` things on the
+ * heap, there is no `malloc` or anything like that. And there is a lot of
+ * special things going on with `Kog_Ark`, so it is optimized/baked to an
+ * architecture.
+ */
+
+@
+    when-defined KOGC_TARGET_X86 then
+        error "Not implemented"
+    done
+    when-defined KOG_TARGET_FE64 then
+        include "Kogs/Arch/Fe64/Ark.kop"
+    done
+@
