@@ -1,0 +1,33 @@
+/**
+ * 2025 - 2026 (C) Konigs Infrastructure Project by Ruka Raposa Team & Contrib.
+ * Project is under the GPLv3 license, read `LICENSE.md` for more information.
+ */
+
+
+@include "Kog/Kog.kop"@
+
+define(
+    @main;
+    f() nothing;
+    function(
+        f() nothing;
+        return(
+            define($count; u32; const(u32; 0));
+            loop(
+                select(
+                    gt($count; const(u32; 100));
+                    return(
+                        break
+                    );
+                    return(
+                        /** In this case, we increment after print */
+                        call(@Kog_SystemConsoleIOPrint; "Counting from %d/100!"; const(u32; $count));
+                        increment($count);
+                        continue;
+                    )
+                )
+            );
+            call(@Kog_SystemConsoleIOPrint; "Done!")
+        )
+    )
+)

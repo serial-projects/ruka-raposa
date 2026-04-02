@@ -1,0 +1,19 @@
+/**
+ * 2025 - 2026 (C) Konigs Infrastructure Project by Ruka Raposa Team & Contrib.
+ * Project is under the GPLv3 license, read `LICENSE.md` for more information.
+ */
+
+@include "Kog/Kog.kop"@
+
+define(
+    @main;
+    f() nothing;
+    function(
+        f() nothing;
+        return(
+            call(@Kog_SystemConsoleIOPrint; const(string; "Hello World"));
+            call(@Kog_SystemProgramExitCodeSet; const(u8; 0));
+            const(nothing; nothing)
+        )
+    )
+)

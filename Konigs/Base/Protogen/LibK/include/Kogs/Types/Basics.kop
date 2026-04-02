@@ -1,0 +1,82 @@
+/**
+ * 2025 - 2026 (C) Konigs Infrastructure Project by Ruka Raposa Team & Contrib.
+ * Project is under the GPLv3 license, read `LICENSE.md` for more information.
+ */
+
+/*
+ * Those types are provided (`MUST` be provided) by the compiler, there is not
+ * many operations on `Kog` to understand it. The pattern compiler uses is:
+ *  KOG(CT) where `CT` means Compiler Type.
+ */
+
+/** 
+ * Provides `U8` type for the language.
+ */
+type(Kog_U8;    @KOGCT_U8@);
+
+/**
+ * Provides `S8` type for the language.
+ */
+type(Kog_S8;    @KOGCT_S8@);
+
+/**
+ * Provides `U16` type for the language.
+ */
+type(Kog_U16;   @KOGCT_U16@);
+
+/**
+ * Provides `S16` type for the language.
+ */
+type(Kog_S16;   @KOGCT_S16@);
+
+/**
+ * Provides `U32` type for the language.
+ */
+type(Kog_U32;   @KOGCT_U32@);
+
+/**
+ * Provides `S32` type for the language.
+ */
+type(Kog_S32;   @KOGCT_S32@);
+
+/**
+ * Provides `U64` type for the language.
+ */
+type(Kog_U64;   @KOGCT_U64@);
+
+/**
+ * Provides `S64` type for the language.
+ */
+type(Kog_S64;   @KOGCT_S64@);
+
+/**
+ * Provides `F32` type for the language.
+ */
+type(Kog_F32;   @KOGCT_F32@);
+
+/**
+ * Provides `F64` type for the language.
+ */
+type(Kog_F64;   @KOGCT_F64@);
+
+/**
+ * Provides `C8` type for the language.
+ * 
+ * @warning There is only `C8` and `C32` supported by `Kog`
+ */
+type(Kog_C8;    Kog_U8);
+
+/**
+ * Provides `C32` type for the language.
+ */
+type(Kog_C32;   Kog_U32);
+
+/*
+ * Provides `Kog_Boolean` type for the language.
+ */
+type(Kog_Boolean; @KOGCT_BOOL@);
+
+/**
+ * Provides `Kog_Result` type for the language.
+ */
+type(Kog_Result; @KOGCT_RESULT@);

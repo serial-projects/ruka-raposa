@@ -1,0 +1,66 @@
+/**
+ * 2025 - 2026 (C) Konigs Infrastructure Project by Ruka Raposa Team & Contrib.
+ * Project is under the GPLv3 license, read `LICENSE.md` for more information.
+ */
+
+@include("Types/Basics.kop")@
+
+pre-type(
+    Kog_Maybe<T>;
+    struct(
+        member(T; value);
+        member(Kog_Presence; present)
+    )
+);
+
+/**
+ * @brief This creates an new `Kog_Maybe<T>`.
+ */
+prototype(
+    @Kog_MaybeCreate<T>;
+    f() Kog_Ark<Kog_Maybe<T>>
+);
+
+/**
+ * @brief This destroys the `Kog_Maybe<T>` Ark.
+ */
+prototype(
+    @Kog_MaybeDrop<T>;
+    f(dropping Kog_Ark<Kog_Maybe<T>>) nothing
+);
+
+/**
+ * @brief This constructs the `Kog_Maybe<T>`
+ */
+prototype(
+    @Kog_MaybeConstruct<T>
+    f(constructing *Kog_Maybe<T>, value T) nothing
+);
+
+/**
+ * @brief This destructs the `Kog_Maybe<T>`
+ */
+prototype(
+    @Kog_MaybeDestruct<T>
+    f(destructing *Kog_Maybe<T>) nothing
+);
+
+/**
+ * @brief This exposes the value.
+ */
+prototype(
+    @Kog_MaybeGet<T>
+    f(get_from *Kog_Maybe<T>) T
+);
+
+/**
+ * @brief Acts on the value.
+ */
+prototype(
+    @Kog_MaybeAct<T>
+    f(
+        acting_on *Kog_Maybe<T>,
+        do f(value T, userdata *any) nothing,
+        userdata *any
+    ) nothing
+);
