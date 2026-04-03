@@ -1,0 +1,685 @@
+# Konigs Infrastructure by Ruka Raposa Team & Contribuitors.
+# Project is under GPL3-license, read LICENSE.md on the root.
+
+import typing
+import os
+import sys
+import struct
+
+# Set the version:
+FAS_VERSION: str = '1.0.000'
+FAS_VERSION_NUM: int = int(FAS_VERSION.replace('.', ''))
+
+#
+# FAS_Reader `Implementation`
+#
+
+class FAS_Reader:
+    def init(
+        self
+    ) -> None:
+        pass
+
+    def close(
+        self
+    ) -> None:
+        pass
+
+    def get_character(
+        self
+    ) -> int:
+        return 0
+
+    def set_position(
+        self,
+        pos: int
+    ) -> None:
+        pass 
+
+    def get_position(
+        self
+    ) -> int:
+        return 0
+
+class FAS_FileReader(FAS_Reader):
+    def __init__(
+        self
+    ) -> None:
+        self.__file_pointer: typing.Optional[typing.BinaryIO] = None
+        self.__position: int = 0
+
+    def set_file(
+        self,
+        fn: str
+    ) -> bool:
+        actual_file = None
+        result: bool = True
+        try:
+            actual_file = open(fn, 'rb')
+            self.__file_pointer = actual_file
+        except:
+            result = False
+        return result
+        
+    def init(
+        self
+    ) -> None:
+        self.__position = 0
+        if self.__file_pointer:
+            self.__file_pointer.seek(0, os.SEEK_CUR)
+        
+    def close(
+        self
+    ) -> None:
+        self.__position = 0
+        if self.__file_pointer:
+            self.__file_pointer.close()
+        
+    def get_character(
+        self
+    ) -> int:
+        if self.__file_pointer:
+            content = self.__file_pointer.read( 1 )
+            value: int = -1
+            if content:		
+                value = int.from_bytes(content, 'big')
+                self.__position += 1
+            else:
+                pass
+            return value
+        else:
+            return -1
+    
+    def set_position(
+        self,
+        pos: int
+    ) -> None:
+        self.__position = pos
+        if self.__file_pointer:
+            self.__file_pointer.seek(self.__position, os.SEEK_CUR)
+    
+    def get_position(
+        self
+    ) -> int:
+        return self.__position
+
+#
+# FAS_Diagnostics `Implementation`
+#
+
+LOG_LEVEL_DEBUG: int = 1
+LOG_LEVEL_MESSAGE: int = 2
+LOG_LEVEL_WARNING: int = 3
+LOG_LEVEL_ERROR: int = 4
+LOG_LEVEL_SINK_QUANTITY: int = 1 + 1 + 1 + 1
+
+class FAS_Diagnostics:
+    class Core:
+        class Message:
+            """
+            Contains the messages and the sink it was originally put to.
+            """
+            sink: int
+            text: str
+
+            def __init__(
+                self
+            ) -> None:
+                self.sink = 0
+                self.text = str()
+        
+        userdata: typing.Any
+        messages: typing.List['FAS_Diagnostics.Core.Message']
+        msg_index: int
+        msg_limit: int
+        code: int
+
+        def __init__(
+            self,
+            msg_limit: int,
+            u_data: typing.Any
+        ) -> None:
+            self.userdata = u_data
+            self.messages = [
+                FAS_Diagnostics.Core.Message()
+                for _ in range(msg_limit)
+            ]
+            self.msg_index = 0
+            self.msg_limit = msg_limit
+            
+            # This code should always be 0, that means `OK`.
+            self.code = 0
+
+    core: 'FAS_Diagnostics.Core'
+    sinks: typing.List[typing.List[typing.Callable[['FAS_Diagnostics.Core', int, str], None]]]
+    
+    def __init__(
+        self,
+        msg_limit: int,
+        u_data: typing.Any
+    ) -> None:
+        self.core = FAS_Diagnostics.Core(msg_limit, u_data)
+        self.sinks = [list() for _ in range(LOG_LEVEL_SINK_QUANTITY)]
+
+    def add_listener(
+        self,
+        level: int,
+        listener: typing.Callable[['FAS_Diagnostics.Core', int, str], None],
+        dump: bool
+    ) -> None:
+        """
+        Add an listener.
+
+        `dump` tells if all the previous messages should be dumped on
+        the listener.
+        """
+        if dump:
+            dump_quantity: int
+            if self.core.msg_limit > self.core.msg_index:
+                dump_quantity = self.core.msg_limit
+            else:
+                dump_quantity = self.core.msg_index
+            for index in range(0, dump_quantity):
+                grab: int = (
+                    ((self.core.msg_index - 1) - index) %
+                    self.core.msg_limit
+                )
+                m = self.core.messages[grab]
+                if m.sink == level:
+                    listener(
+                        self.core,
+                        self.core.msg_index - index,
+                        m.text
+                    )
+        sink = self.sinks[level - 1]
+        sink.append(listener)
+
+    def write(
+        self,
+        level: int,
+        text: str,
+        code: int
+    ) -> None:
+        """
+        NOTE: Keep in mind that the code is persistant, you need to use `.treat`
+        method to remove it!
+        """
+        grab: int = self.core.msg_index % self.core.msg_limit
+        m = self.core.messages[grab]
+        m.text = text
+        m.sink = level
+        sink = self.sinks[level - 1]
+        for listener in sink:
+            listener(self.core, self.core.msg_index, text)
+        # NOTE: The code is PERSISTENT:
+        self.core.code = code if self.core.code == 0 else self.core.code
+        self.core.msg_index = self.core.msg_index + 1
+    
+    def treat(
+        self,
+        n_code: int
+    ) -> None:
+        self.core.code = n_code
+
+#
+# FAS_ArgumentParser `Implementation`
+#
+
+class FAS_ArgumentParser:
+    """
+    Simple argument parsing tool for FAS.
+    """
+
+    class Action:
+        """
+        Holds the information of the parameter, this is the action itself.
+        """
+
+        wrap: typing.Callable[['FAS_ArgumentParser', typing.List[str]], bool]
+        n_parameters: int
+        links: typing.Tuple[str, ...]
+        help: str
+
+        def __init__(
+            self,
+            wrap: typing.Callable[['FAS_ArgumentParser', typing.List[str]], bool],
+            n_parameters: int,
+            links: typing.Tuple[str, ...],
+            help: str 
+        ) -> None:
+            self.wrap = wrap
+            self.n_parameters = n_parameters
+            self.links = links
+            self.help = help
+
+        def get_help(
+            self
+        ) -> str:
+            return f"{', '.join(self.links)}: {self.help}"
+
+    userdata: typing.Any
+    __actions: typing.Dict[str, 'FAS_ArgumentParser.Action']
+    __links: typing.Dict[str, str]
+    __default: typing.Optional['FAS_ArgumentParser.Action']
+    __error_callback: typing.Optional[typing.Callable[['FAS_ArgumentParser',str], None]]
+    __args: typing.List[str]
+    __argi: int
+    __running: bool
+
+    __help_title: str
+    __help_buffer: str
+
+    def __init__(
+        self,
+        u_args: typing.List[str],
+        u_data: typing.Any,
+        help_title: str
+    ) -> None:
+        self.__args = u_args
+        # NOTE: We always start from '1' since python includes the file!
+        self.__argi = 1
+        self.__actions = dict()
+        self.__links = dict()
+        self.__default = None
+        self.userdata = u_data
+        self.__help_title = help_title
+        self.__help_buffer = str()
+        self.__error_callback = None
+
+        # Finally:
+        self.__running = True
+
+    def __die(
+        self,
+        reason: str
+    ) -> None:
+        if self.__error_callback:
+            self.__error_callback(self, reason)
+        self.__running = False
+
+    def __perform(
+        self,
+        action: str
+    ) -> None:
+        maybe_action: 'FAS_ArgumentParser.Action' = self.__actions[action]
+        if (self.__argi + maybe_action.n_parameters) > len(self.__args):
+            self.__die(
+                f"Parameter {self.__args[self.__argi - 1]} requires: {maybe_action.n_parameters} parameters"
+            )
+        else:
+            self.__running = maybe_action.wrap(
+                self,
+                self.__args[self.__argi:self.__argi+maybe_action.n_parameters]
+            )
+
+    def __perform_default(
+        self
+    ) -> None:
+        if self.__default:
+            # Then we have the action for it:
+            self.__running = self.__default.wrap(
+                self,
+                [self.__args[self.__argi - 1]]
+            )
+        else:
+            # Bad error:
+            self.__die(
+                f"Invalid parameter: {self.__args[self.__argi - 1]}"
+            )
+
+    def step(
+        self
+    ) -> bool:
+        if self.__running:
+            if self.__argi >= len(self.__args):
+                self.__running = False
+            else:
+                # In this case, we can get an argument:
+                maybe_arg: str = self.__args[self.__argi]
+                self.__argi = self.__argi + 1
+
+                # Get the link (which points to the action).
+                maybe_link: typing.Optional[str] = self.__links.get(maybe_arg)
+                if maybe_link:      self.__perform(maybe_link)
+                else:               self.__perform_default()
+        return self.__running
+    
+    def add(
+        self,
+        action: 'FAS_ArgumentParser.Action',
+        act_name: str,
+        links: typing.Iterable[str]
+    ) -> None:
+        self.__actions[act_name] = action
+        for link in links:
+            self.__links[link] = act_name
+        self.__help_buffer = self.__help_buffer + (action.get_help() + '\n')
+
+    def add_default(
+        self,
+        action: 'FAS_ArgumentParser.Action'
+    ) -> None:
+        self.__default = action
+
+    def add_error_callback(
+        self,
+        callback: typing.Callable[['FAS_ArgumentParser',str], None]
+    ) -> None:
+        self.__error_callback = callback
+    
+    def get_help(
+        self
+    ) -> str:
+        return f"{self.__help_title}\n{self.__help_buffer}"
+
+#
+# FAS_Core `Definition`
+#
+
+class FAS_Core:
+    """
+    This is the main object passed everywhere past the definition.
+    """
+    class FAS_Aspects:
+        """
+        Holds information about the assembly aspects, like certain optimizations
+        and other information about binary generation.
+        """
+        def __init__(
+            self
+        ):
+            pass
+    
+    diagnostics: 'FAS_Diagnostics'
+    source_file: typing.Optional[str]
+    target_file: typing.Optional[str]
+
+    def __init__(
+        self
+    ) -> None:
+        self.diagnostics = FAS_Diagnostics(1024, self)
+        self.source_file = None
+        self.target_file = None
+    
+    def get_return_code(
+        self
+    ) -> int:
+        return self.diagnostics.core.code
+
+    @staticmethod
+    def __diagnostics_listener_debug(
+        core: 'FAS_Diagnostics.Core',
+        msg_id: int,
+        msg_text: str
+    ) -> None:
+        print(
+            "[%0.8f] DEBUG: %s" % ((msg_id/core.msg_limit), msg_text)
+        )
+    
+    @staticmethod
+    def __diagnostics_listener_message(
+        core: 'FAS_Diagnostics.Core',
+        msg_id: int,
+        msg_text: str
+    ) -> None:
+        print(
+            "[%0.8f] MESSAGE: %s" % ((msg_id/core.msg_limit), msg_text)
+        )
+
+    @staticmethod
+    def __diagnostics_listener_warning(
+        core: 'FAS_Diagnostics.Core',
+        msg_id: int,
+        msg_text: str
+    ) -> None:
+        print(
+            "[%0.8f] WARNING: %s" % ((msg_id/core.msg_limit), msg_text)
+        )
+
+    @staticmethod
+    def __diagnostics_listener_error(
+        core: 'FAS_Diagnostics.Core',
+        msg_id: int,
+        msg_text: str
+    ) -> None:
+        print(
+            "[%0.8f] ERROR: %s" % ((msg_id/core.msg_limit), msg_text)
+        )
+
+    def init(
+        self
+    ) -> None:
+        # NOTE: This is the only two sinks enabled initially.
+        self.diagnostics.add_listener(
+            LOG_LEVEL_MESSAGE,
+            self.__diagnostics_listener_message,
+            True
+        )
+        self.diagnostics.add_listener(
+            LOG_LEVEL_WARNING,
+            self.__diagnostics_listener_warning,
+            True
+        )
+        self.diagnostics.add_listener(
+            LOG_LEVEL_ERROR,
+            self.__diagnostics_listener_error,
+            True
+        )
+
+    def enable_debug_diagnostics(
+        self
+    ) -> None:
+        self.diagnostics.add_listener(
+            LOG_LEVEL_DEBUG,
+            self.__diagnostics_listener_debug,
+            True
+        )
+
+#
+# FAS_App: `The Application itself`
+#
+
+class FAS_App:
+    core: 'FAS_Core'
+    __ap: 'FAS_ArgumentParser'
+
+    # NOTE: UP = User Parameter;
+    @staticmethod
+    def __up_debug(
+        ap: 'FAS_ArgumentParser',
+        parameters: typing.List[str]
+    ) -> bool:
+        # NOTE: We need to cast:
+        core: 'FAS_Core' = typing.cast(
+            'FAS_Core',
+            ap.userdata
+        )
+        core.enable_debug_diagnostics()
+        core.diagnostics.write(
+            LOG_LEVEL_DEBUG,
+            "Debug was enabled",
+            0
+        )
+        return True
+    
+    @staticmethod
+    def __up_help(
+        ap: 'FAS_ArgumentParser',
+        parameters: typing.List[str]
+    ) -> bool:
+        core: 'FAS_Core' = typing.cast(
+            'FAS_Core',
+            ap.userdata
+        )
+        # NOTE: In this case, we want to leave!
+        core.diagnostics.core.code = 1
+        print(ap.get_help())
+        return False
+    
+    @staticmethod
+    def __up_target(
+        ap: 'FAS_ArgumentParser',
+        parameters: typing.List[str]
+    ) -> bool:
+        print(parameters)
+        return False
+    
+    @staticmethod
+    def __up_default(
+        ap: 'FAS_ArgumentParser',
+        parameters: typing.List[str]
+    ) -> bool:
+        if os.path.isfile(parameters[0]):
+            core: 'FAS_Core' = typing.cast(
+                'FAS_Core',
+                ap.userdata
+            )
+            core.source_file = os.path.abspath(parameters[0])
+        return True
+
+    @staticmethod
+    def __ap_error(
+        ap: 'FAS_ArgumentParser',
+        reason: str
+    ) -> None:
+        core: 'FAS_Core' = typing.cast(
+            'FAS_Core',
+            ap.userdata
+        )
+        core.diagnostics.write(
+            LOG_LEVEL_ERROR,
+            f"Error on Argument Parsing: {reason}",
+            1
+        )
+
+    def __init__(
+        self,
+        u_args: typing.List[str]
+    ) -> None:
+        self.core = FAS_Core()
+        self.__ap = FAS_ArgumentParser(
+            u_args,
+            self.core,
+f"""FAS (Ferro x64 ISA Assembler) Version: {FAS_VERSION}
+Python Edition, running on python {sys.version}
+{'-' * (33 + 1 + len(sys.version))}
+"""
+        )
+        self.__ap.add(
+            FAS_ArgumentParser.Action(
+                self.__up_debug,
+                0,
+                ("-d", "--debug"),
+                "Enables debugging for FAS; This shows a lot of message!"
+            ),
+            "fas.debug_enable",
+            ("-d", "--debug")
+        )
+        self.__ap.add(
+            FAS_ArgumentParser.Action(
+                self.__up_help,
+                0,
+                ("-h", "--help"),
+                "Shows this message and quits (return 1)."
+            ),
+            "fas.show_help",
+            ("-h", "--help")
+        )
+        self.__ap.add(
+            FAS_ArgumentParser.Action(
+                self.__up_target,
+                1,
+                ("-t", "--target"),
+                "Sets an target for the assembler (possible: fe64 [default], fe32)"
+            ),
+            "fas.target",
+            ("-t", "--target")
+        )
+        self.__ap.add_default(
+            FAS_ArgumentParser.Action(
+                self.__up_default,
+                0,
+                (),
+                ""
+            ),
+        )
+        self.__ap.add_error_callback(self.__ap_error)
+
+    # Run Sequence:
+
+    def __load_user_parameters(
+        self
+    ) -> int:
+        while True:
+            if not self.__ap.step():
+                break
+        self.core.diagnostics.write(
+            LOG_LEVEL_DEBUG,
+            "Finished parsing user arguments",
+            0
+        )
+        return self.core.get_return_code()
+
+    def run(
+        self
+    ) -> int:
+        # Initialize the core:
+        self.core.init()
+
+        # Begin sequence before compiling:
+
+        self.core.diagnostics.write(
+            LOG_LEVEL_DEBUG,
+            f"FAS [Python Edition] (Ferro x64 Assembler), Version: {FAS_VERSION}",
+            0
+        )
+        self.core.diagnostics.write(
+            LOG_LEVEL_DEBUG,
+            f"Running on Python: {sys.version}",
+            0
+        )
+
+        if self.__load_user_parameters() != 0:
+            return self.core.get_return_code()
+        
+        # Do we have everything we need to work with?
+        if not self.core.source_file:
+            self.core.diagnostics.write(
+                LOG_LEVEL_ERROR,
+                "Nothing to do, no source file provided!",
+                1
+            )
+            return self.core.get_return_code()
+        
+        # Since the target file can be omitted:
+        self.core.target_file = (
+            "a.out"
+            if self.core.target_file == None else self.core.target_file
+        )
+        self.core.diagnostics.write(
+            LOG_LEVEL_DEBUG,
+            f"Source: {self.core.source_file}, Target: {self.core.target_file}",
+            0
+        )
+        return self.core.get_return_code()
+
+#
+# Main Function (When executing as standalone file)
+#
+
+def main(
+    args: typing.List[str]
+) -> int:
+    app: 'FAS_App' = FAS_App(args)
+    app.run()
+    return app.core.get_return_code()
+
+if __name__ == '__main__':
+    rc: int = main(
+        sys.argv
+    )
+    # We want the program to always return to something to the system.
+    exit(rc)
+else:
+    # NOTE: Show an important message in case you running it as a module.
+    raise ImportWarning("FAS was supposed to be executed as an application!")
