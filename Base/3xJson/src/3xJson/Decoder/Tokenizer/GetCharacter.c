@@ -12,8 +12,8 @@ XJ_DecoderTokenizerGetCharacter(
     XJ_DecoderTokenizer* tokenizer
 )
 {
-    XJ_S32 cc = NK_ReaderGetCharacter(&tokenizer->source);
-    XJ_U64 cp = NK_ReaderGetPosition(&tokenizer->source);
+    XJ_S32 cc = NK_ReaderGetCharacter(tokenizer->source);
+    XJ_U64 cp = NK_ReaderGetPosition(tokenizer->source);
     if((cc == '\n') && (tokenizer->max_buffer_position > cp))
     {
         tokenizer->line_counter++;

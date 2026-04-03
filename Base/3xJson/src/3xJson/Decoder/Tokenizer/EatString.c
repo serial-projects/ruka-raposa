@@ -17,6 +17,9 @@ XJ_DecoderTokenizerEatString(
     XJ_Result good = true;
     XJ_S32 cc;
     NK_DynamicStringPush(&tokenizer->token, (NK_C8)(entrypoint));
+    
+    /** We need to update the register: */
+    tokenizer->state_register_bits.string = true;
 top_position:
     cc = XJ_DecoderTokenizerGetCharacter(tokenizer);
     if(cc != -1)

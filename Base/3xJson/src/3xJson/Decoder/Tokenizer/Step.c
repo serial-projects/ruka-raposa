@@ -17,6 +17,9 @@ XJ_DecoderTokenizerStep(
 {
     /** Reset the machine: */
     XJ_DecoderTokenizerResetState(tokenizer);
+    
+    /** Clean the buffer: */
+    NK_DynamicStringClear(&tokenizer->token);
 
     /** CC = Current Character; */
     XJ_S32 cc = 0;
@@ -52,6 +55,7 @@ XJ_DecoderTokenizerStep(
         case '[':
         case ']':
             tokenizer->special_token_handler = (NK_U8)(cc);
+            tokenizer->state_register_bits.special_token = true;
             break;
         /** Anything else: */
         default:

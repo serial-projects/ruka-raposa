@@ -30,6 +30,8 @@ XJ_DecoderTokenizerConstruct(
 )
 {
     NK_DynamicStringConstruct(&tokenizer->token);
+    tokenizer->source = source;
+
     /** The line must start on the 1 (there is no '0' line) */
     tokenizer->line_counter = 1;
     tokenizer->max_buffer_position = 0;

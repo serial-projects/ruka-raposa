@@ -6,5 +6,7 @@
 #define XJ_h
 
 #include "3xJson/Redirects.h"
+#include "3xJson/Decoder.h"
+#include "3xJson/Enums.h"
 
 #endif

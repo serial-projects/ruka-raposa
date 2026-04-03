@@ -6,6 +6,9 @@ Package
 *.dll
 *.a
 
+# Some random testing files:
+A.json
+
 # Some scripts I don't want people to see ;-)
 RRBuildAll.sh
 RRBuildReleaseAll.sh

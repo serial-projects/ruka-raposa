@@ -5,6 +5,10 @@
 include(RR_SetupNK)
 add_subdirectory(NK)
 
+# Load 3xjson:
+include(RR_SetupXJ)
+add_subdirectory(3xJson)
+
 # Load Progator:
 include(RR_SetupPG)
 add_subdirectory(Progator)
