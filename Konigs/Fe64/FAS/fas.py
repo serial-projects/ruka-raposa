@@ -392,14 +392,16 @@ class FAS_Core:
     
     diagnostics: 'FAS_Diagnostics'
     source_file: typing.Optional[str]
-    target_file: typing.Optional[str]
+    output_file: typing.Optional[str]
+    source: typing.Optional[FAS_Reader]
 
     def __init__(
         self
     ) -> None:
         self.diagnostics = FAS_Diagnostics(1024, self)
         self.source_file = None
-        self.target_file = None
+        self.output_file = None
+        self.source = None
     
     def get_return_code(
         self
@@ -476,6 +478,177 @@ class FAS_Core:
         )
 
 #
+# FAS_Tokenizer: `Implementation`
+#
+
+class FAS_Tokenizer:
+    source: 'FAS_Reader'
+    line_count: int
+    __max_line_height: int
+
+    def __init__(
+        self,
+        source: 'FAS_Reader'
+    ) -> None:
+        self.source = source
+        self.line_count = 0
+        self.__max_line_height = 0
+    
+    def __incr_line(
+        self
+    ) -> None:
+        if self.source.get_position() > self.__max_line_height:
+            self.line_count = self.line_count + 1
+            self.__max_line_height = self.source.get_position()
+
+    def __getc(
+        self
+    ) -> typing.Optional[str]:
+        v: int = self.source.get_character()
+        if v == -1:
+            return None
+        # Continue:
+        k: str = chr(v)
+        if k == '\n':
+            self.__incr_line()
+        return k
+    
+    def __rewind(
+        self,
+        amount: int
+    ) -> None:
+        self.source.set_position(self.source.get_position() - amount)
+
+    def __eat_string(
+        self,
+        entrypoint: str
+    ) -> typing.Optional[str]:
+        acc: str = entrypoint
+        while True:
+            ch: typing.Optional[str] = self.__getc()
+            # NOTE: We don't accept an string to finish with a EOF:
+            if not ch: return None
+            else:
+                # In this very case, then continue:
+                acc = acc + ch
+                if ch == entrypoint:
+                    break
+        return acc
+
+    def __eat_token(
+        self,
+        entrypoint: str
+    ) -> typing.Optional[str]:
+        acc: str = entrypoint
+        while True:
+            ch: typing.Optional[str] = self.__getc()
+            if not ch: break
+            else:
+                if ch in (' ', '\n', '\t', '\r'):
+                    break            
+                elif ch in ('\'', '"'):
+                    self.__rewind(1)
+                    break
+                else:
+                    acc = acc + ch
+        return acc
+    
+    def __consume_line_comment(
+        self
+    ) -> None:
+        while True:
+            ch: typing.Optional[str] = self.__getc()
+            if ch:
+                if ch == '\n': break
+            else:
+                # At EOF, we break
+                break
+
+    def get(
+        self
+    ) -> typing.Optional[str]:
+        # Check this:
+        v: typing.Optional[str] = None
+        while True:
+            ch: typing.Optional[str] = self.__getc()
+            if not ch: return None
+            else:
+                if ch in ('\n', '\r', '\t', ' '): continue
+                elif ch in (';'):
+                    self.__consume_line_comment()
+                elif ch in ('\'', '"'):
+                    v = self.__eat_string(ch)
+                    break
+                else:
+                    v = self.__eat_token(ch)
+                    break
+        return v
+
+#
+# FAS_Operation: `Implementation`
+#
+
+FAS_OPERATIONS: typing.Tuple[str, ...] = (
+    'nop',
+    'mov.r',
+    'swp.r',
+    ''
+)
+
+FAS_OPERATION_TABLE: typing.Dict[str, int] = {
+}
+
+class FAS_Code:
+    class Operation:
+        """
+        Since there is only RdRs; RdIm; Rd and X (four types possible) then,
+        we only have source and destination.
+        """
+
+#
+# FAS_Tree: `Implementation`
+#
+
+class FAS_Sectionizer:
+    class Section:
+        def __init__(
+            self
+        ) -> None:
+            pass
+
+    core: FAS_Core
+
+
+#
+# FAS_Parser: `Implementation`
+#
+
+class FAS_Parser:
+    core: FAS_Core
+
+    def __init__(
+        self,
+        core: FAS_Core
+    ) -> None:
+        self.core = core
+
+    def parse(
+        self
+    ) -> None:
+        """
+        This requires the core to be settled down. It won't work in case you 
+        didn't set the `FAS_Core.source` by the way.
+        """
+        tokenizer: FAS_Tokenizer = FAS_Tokenizer(
+            typing.cast(FAS_Reader, self.core.source)
+        )
+        token: typing.Optional[str] = None
+        while True:
+            token = tokenizer.get()
+            if token: print(token, tokenizer.line_count)
+            else: break
+
+#
 # FAS_App: `The Application itself`
 #
 
@@ -521,9 +694,21 @@ class FAS_App:
         ap: 'FAS_ArgumentParser',
         parameters: typing.List[str]
     ) -> bool:
-        print(parameters)
+        # TODO: not implemented yet ;-)
         return False
     
+    @staticmethod
+    def __up_output(
+        ap: 'FAS_ArgumentParser',
+        parameters: typing.List[str]
+    ) -> bool:
+        core: 'FAS_Core' = typing.cast(
+            'FAS_Core',
+            ap.userdata
+        )
+        core.output_file = os.path.abspath(parameters[0])
+        return False
+
     @staticmethod
     def __up_default(
         ap: 'FAS_ArgumentParser',
@@ -563,6 +748,8 @@ class FAS_App:
 f"""FAS (Ferro x64 ISA Assembler) Version: {FAS_VERSION}
 Python Edition, running on python {sys.version}
 {'-' * (33 + 1 + len(sys.version))}
+
+Usage:      /usr/bin/python3 fas.py [file] [parameters]
 """
         )
         self.__ap.add(
@@ -584,6 +771,16 @@ Python Edition, running on python {sys.version}
             ),
             "fas.show_help",
             ("-h", "--help")
+        )
+        self.__ap.add(
+            FAS_ArgumentParser.Action(
+                self.__up_output,
+                1,
+                ("-o", "--output"),
+                "[<file>]; Set the output of the assembler (default is 'a.out')"
+            ),
+            "fas.output",
+            ("-o", "--output")
         )
         self.__ap.add(
             FAS_ArgumentParser.Action(
@@ -652,15 +849,24 @@ Python Edition, running on python {sys.version}
             return self.core.get_return_code()
         
         # Since the target file can be omitted:
-        self.core.target_file = (
+        self.core.output_file = (
             "a.out"
-            if self.core.target_file == None else self.core.target_file
+            if self.core.output_file == None else self.core.output_file
         )
         self.core.diagnostics.write(
             LOG_LEVEL_DEBUG,
-            f"Source: {self.core.source_file}, Target: {self.core.target_file}",
+            f"Source: {self.core.source_file}, Target: {self.core.output_file}",
             0
         )
+
+        # Set the source on the FAS_FileReader:
+        self.core.source = FAS_FileReader()
+        self.core.source.set_file(self.core.source_file)
+
+        # Set the file:
+        parser: FAS_Parser = FAS_Parser(self.core)
+        parser.parse()
+
         return self.core.get_return_code()
 
 #
