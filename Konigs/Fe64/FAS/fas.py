@@ -588,22 +588,96 @@ class FAS_Tokenizer:
 # FAS_Operation: `Implementation`
 #
 
-FAS_OPERATIONS: typing.Tuple[str, ...] = (
-    'nop',
-    'mov.r',
-    'swp.r',
-    ''
-)
-
-FAS_OPERATION_TABLE: typing.Dict[str, int] = {
-}
+FAS_OPERATION_SUPPORT_RDRS: int = 0b1000_0000
+FAS_OPERATION_SUPPORT_RDIM: int = 0b0100_0000
+FAS_OPERATION_SUPPORT_RD: int = 0b0010_0000
+FAS_OPERATION_SUPPORT_IM: int = 0b0001_0000
+FAS_OPERATION_SUPPORT_NO: int = 0b0000_0001
 
 class FAS_Code:
-    class Operation:
-        """
-        Since there is only RdRs; RdIm; Rd and X (four types possible) then,
-        we only have source and destination.
-        """
+    class OperationSpecification:
+        name: str
+        shapes: int
+
+        def __init__(
+            self,
+            name: str,
+            shapes: int
+        ) -> None:
+            self.name = name
+            self.shapes = shapes
+
+        def __str__(
+            self
+        ) -> str:
+            return f"<operation: {self.name}, supports: {','.join( filter((lambda x: x == 'n'), [('NO' if self.shapes & FAS_OPERATION_SUPPORT_NO else 'n'), ('IM' if self.shapes & FAS_OPERATION_SUPPORT_IM else 'n'), ('RD' if self.shapes & FAS_OPERATION_SUPPORT_RD else 'n'), ('RDRS' if self.shapes & FAS_OPERATION_SUPPORT_RDRS else 'n'), ('RDIM' if self.shapes & FAS_OPERATION_SUPPORT_RDIM else 'n')]) )}>"
+
+FAS_OPERATIONS: typing.Tuple['FAS_Code.OperationSpecification', ...] = (
+    FAS_Code.OperationSpecification('mov', FAS_OPERATION_SUPPORT_RDIM | FAS_OPERATION_SUPPORT_RDRS),    # Move
+    FAS_Code.OperationSpecification('nop', FAS_OPERATION_SUPPORT_NO),                                   # No Operation
+    FAS_Code.OperationSpecification('swp', FAS_OPERATION_SUPPORT_RDRS),                                 # Swap
+    FAS_Code.OperationSpecification('loa', FAS_OPERATION_SUPPORT_RDIM | FAS_OPERATION_SUPPORT_RDRS),    # LOAd
+    FAS_Code.OperationSpecification('sto', FAS_OPERATION_SUPPORT_RDIM | FAS_OPERATION_SUPPORT_RDRS),    # STOre
+    FAS_Code.OperationSpecification('add', FAS_OPERATION_SUPPORT_RDIM | FAS_OPERATION_SUPPORT_RDRS),    # Signed
+    FAS_Code.OperationSpecification('sub', FAS_OPERATION_SUPPORT_RDIM | FAS_OPERATION_SUPPORT_RDRS),  
+    FAS_Code.OperationSpecification('mul', FAS_OPERATION_SUPPORT_RDIM | FAS_OPERATION_SUPPORT_RDRS),  
+    FAS_Code.OperationSpecification('div', FAS_OPERATION_SUPPORT_RDIM | FAS_OPERATION_SUPPORT_RDRS),
+    FAS_Code.OperationSpecification('neg', FAS_OPERATION_SUPPORT_RD),                                   # NEGate an Register.
+    FAS_Code.OperationSpecification('uad', FAS_OPERATION_SUPPORT_RDIM | FAS_OPERATION_SUPPORT_RDRS),    # Unsigned ADdition
+    FAS_Code.OperationSpecification('usb', FAS_OPERATION_SUPPORT_RDIM | FAS_OPERATION_SUPPORT_RDRS),    # Unsigned SuBtraction
+    FAS_Code.OperationSpecification('uml', FAS_OPERATION_SUPPORT_RDIM | FAS_OPERATION_SUPPORT_RDRS),  
+    FAS_Code.OperationSpecification('udv', FAS_OPERATION_SUPPORT_RDIM | FAS_OPERATION_SUPPORT_RDRS),
+    FAS_Code.OperationSpecification('inc', FAS_OPERATION_SUPPORT_RDRS),                                 # Signed Increment
+    FAS_Code.OperationSpecification('dec', FAS_OPERATION_SUPPORT_RDRS),
+    FAS_Code.OperationSpecification('ins', FAS_OPERATION_SUPPORT_RDRS),                                 # Unsigned Increment
+    FAS_Code.OperationSpecification('des', FAS_OPERATION_SUPPORT_RDRS),
+    FAS_Code.OperationSpecification('mod', FAS_OPERATION_SUPPORT_RDIM | FAS_OPERATION_SUPPORT_RDRS),    # MODule
+    FAS_Code.OperationSpecification('bsl', FAS_OPERATION_SUPPORT_RDIM | FAS_OPERATION_SUPPORT_RDRS),    # Bit Shift Left
+    FAS_Code.OperationSpecification('bsr', FAS_OPERATION_SUPPORT_RDIM | FAS_OPERATION_SUPPORT_RDRS),    # Bit Shift Right
+    FAS_Code.OperationSpecification('ban', FAS_OPERATION_SUPPORT_RDIM | FAS_OPERATION_SUPPORT_RDRS),    # Bit ANd
+    FAS_Code.OperationSpecification('bor', FAS_OPERATION_SUPPORT_RDIM | FAS_OPERATION_SUPPORT_RDRS),    # Bit OR
+    FAS_Code.OperationSpecification('bxr', FAS_OPERATION_SUPPORT_RDIM | FAS_OPERATION_SUPPORT_RDRS),    # Bit XoR
+    FAS_Code.OperationSpecification('brl', FAS_OPERATION_SUPPORT_RDIM | FAS_OPERATION_SUPPORT_RDRS),    # Bit Rotate Left
+    FAS_Code.OperationSpecification('brr', FAS_OPERATION_SUPPORT_RDIM | FAS_OPERATION_SUPPORT_RDRS),    # Bit Rotate Right
+    FAS_Code.OperationSpecification('bng', FAS_OPERATION_SUPPORT_RDIM | FAS_OPERATION_SUPPORT_RDRS),    # Bit NeGate
+    FAS_Code.OperationSpecification('tst', FAS_OPERATION_SUPPORT_RDIM | FAS_OPERATION_SUPPORT_RDRS),    # TeST
+    FAS_Code.OperationSpecification('cmp', FAS_OPERATION_SUPPORT_RDIM | FAS_OPERATION_SUPPORT_RDRS),    # CoMPare
+    FAS_Code.OperationSpecification('clr', FAS_OPERATION_SUPPORT_NO),                                   # CLeaR Flags (Overflow, Equal Flag, etc)
+    FAS_Code.OperationSpecification('jmp', FAS_OPERATION_SUPPORT_IM | FAS_OPERATION_SUPPORT_RD),        # JuMP (Set PC to RD/IM)
+    FAS_Code.OperationSpecification('jeq', FAS_OPERATION_SUPPORT_IM | FAS_OPERATION_SUPPORT_RD),        # Jump when EQual
+    FAS_Code.OperationSpecification('jnq', FAS_OPERATION_SUPPORT_IM | FAS_OPERATION_SUPPORT_RD),        # Jump when Not Equal
+    FAS_Code.OperationSpecification('jgr', FAS_OPERATION_SUPPORT_IM | FAS_OPERATION_SUPPORT_RD),        # Jump when GReater
+    FAS_Code.OperationSpecification('jge', FAS_OPERATION_SUPPORT_IM | FAS_OPERATION_SUPPORT_RD),        # Jump when Greater or Equal
+    FAS_Code.OperationSpecification('jls', FAS_OPERATION_SUPPORT_IM | FAS_OPERATION_SUPPORT_RD),        # Jump when LeSs
+    FAS_Code.OperationSpecification('jle', FAS_OPERATION_SUPPORT_IM | FAS_OPERATION_SUPPORT_RD),        # Jump when Less or Equal
+    FAS_Code.OperationSpecification('bra', FAS_OPERATION_SUPPORT_IM | FAS_OPERATION_SUPPORT_RD),        # BRAnch (Push PC and set PC to RD/IM)
+    FAS_Code.OperationSpecification('beq', FAS_OPERATION_SUPPORT_IM | FAS_OPERATION_SUPPORT_RD),        # Branch when EQual
+    FAS_Code.OperationSpecification('bne', FAS_OPERATION_SUPPORT_IM | FAS_OPERATION_SUPPORT_RD),        # Branch when Not Equal
+    FAS_Code.OperationSpecification('bgr', FAS_OPERATION_SUPPORT_IM | FAS_OPERATION_SUPPORT_RD),        # Branch when GReater
+    FAS_Code.OperationSpecification('bge', FAS_OPERATION_SUPPORT_IM | FAS_OPERATION_SUPPORT_RD),        # Branch when Greater or Equal
+    FAS_Code.OperationSpecification('bls', FAS_OPERATION_SUPPORT_IM | FAS_OPERATION_SUPPORT_RD),        # Branch when LeSs
+    FAS_Code.OperationSpecification('ble', FAS_OPERATION_SUPPORT_IM | FAS_OPERATION_SUPPORT_RD),        # Branch when Less or Equal
+    FAS_Code.OperationSpecification('ret', FAS_OPERATION_SUPPORT_NO),                                   # RETurn
+    FAS_Code.OperationSpecification('psh', FAS_OPERATION_SUPPORT_IM | FAS_OPERATION_SUPPORT_RD),        # PuSH
+    FAS_Code.OperationSpecification('pop', FAS_OPERATION_SUPPORT_IM | FAS_OPERATION_SUPPORT_RD),        # POP
+    FAS_Code.OperationSpecification('sys', FAS_OPERATION_SUPPORT_IM | FAS_OPERATION_SUPPORT_RD),        # SYStem Call
+    FAS_Code.OperationSpecification('hlt', FAS_OPERATION_SUPPORT_NO),                                   # HaLT
+)
+
+def __generate_operation_table(
+    recipe: typing.Tuple['FAS_Code.OperationSpecification', ...]
+) -> typing.Dict[str, int]:
+    table: typing.Dict[str, int] = {
+        recipe[index].name : index for index in range(0, len(recipe))
+    }
+    return table
+
+FAS_OPERATION_TABLE: typing.Dict[str, int] = __generate_operation_table(
+    FAS_OPERATIONS
+)
+
+print(FAS_OPERATIONS)
+raise IOError("BRUH")
 
 #
 # FAS_Tree: `Implementation`

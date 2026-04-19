@@ -1,5 +1,7 @@
 # This ignores everything I don't want ;-)
 Build
+build
+
 Package
 *.o
 *.so
